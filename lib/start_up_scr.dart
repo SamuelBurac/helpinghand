@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:helping_hand/themes.dart';
-import 'package:provider/provider.dart';
-import 'counter.dart';
 
 class StartupScr extends StatelessWidget {
   const StartupScr({super.key});

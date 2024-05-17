@@ -3,8 +3,14 @@ import 'package:helping_hand/start_up_scr.dart';
 import 'package:helping_hand/themes.dart';
 import 'package:provider/provider.dart';
 import 'counter.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
-void main() {
+ThemeMode thema = ThemeMode.system;
+//todo change later use provider to add button when time comes
+
+void main() async {
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform,);
   runApp(
     ChangeNotifierProvider(
       create: (context) => Counter(),
@@ -22,8 +28,8 @@ class MainApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme:lightTheme,
       darkTheme: darkTheme,
-      themeMode: ThemeMode.system,
-      home: StartupScr(),
+      themeMode: thema,
+      home: const StartupScr(),
     );
   }
 }
