@@ -1,0 +1,1 @@
+// page seen when click on another user's profile
