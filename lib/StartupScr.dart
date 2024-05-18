@@ -40,6 +40,7 @@ class StartupScr extends StatelessWidget {
               width: MediaQuery.of(context).size.width * 0.8,
               child: TextButton(
                 onPressed: () {
+                  Navigator.pushNamed(context, '/emailSignup');
                   //sign up
                 },
                 style: Theme.of(context).textButtonTheme.style,
@@ -56,7 +57,7 @@ class StartupScr extends StatelessWidget {
                   //login
                 },
                 style: Theme.of(context).textButtonTheme.style?.copyWith(
-                  backgroundColor: MaterialStateProperty.all<Color>(Colors.grey.shade800),
+                  backgroundColor: WidgetStateProperty.all<Color>(Colors.grey.shade800),
                 ),
                 child: const Text("Log in"),
               ),

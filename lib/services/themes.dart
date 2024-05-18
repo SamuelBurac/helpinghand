@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 final ThemeData lightTheme = ThemeData(
   brightness: Brightness.light,
@@ -6,23 +7,24 @@ final ThemeData lightTheme = ThemeData(
   visualDensity: VisualDensity.adaptivePlatformDensity,
   textTheme: const TextTheme(
     displayLarge: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
+    displayMedium: TextStyle(fontSize: 48.0, fontWeight: FontWeight.bold),
     titleLarge: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
     bodyMedium: TextStyle(fontSize: 14.0, fontFamily: 'Hind'),
   ),
   textButtonTheme: TextButtonThemeData(
-      style: ButtonStyle(
-        foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
-        backgroundColor: MaterialStateProperty.all<Color>(Colors.orange),
-        textStyle:
-            MaterialStateProperty.all<TextStyle>(const TextStyle(fontSize: 12.5, fontWeight: FontWeight.bold, color: Colors.black)),
-        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-          RoundedRectangleBorder(
-            borderRadius:
-                BorderRadius.circular(30.0), // adjust the value as needed
-          ),
+    style: ButtonStyle(
+      foregroundColor: WidgetStateProperty.all<Color>(Colors.white),
+      backgroundColor: WidgetStateProperty.all<Color>(Colors.orange),
+      textStyle: WidgetStateProperty.all<TextStyle>(const TextStyle(
+          fontSize: 12.5, fontWeight: FontWeight.bold, color: Colors.black)),
+      shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+        RoundedRectangleBorder(
+          borderRadius:
+              BorderRadius.circular(30.0), // adjust the value as needed
         ),
       ),
     ),
+  ),
 );
 
 final ThemeData darkTheme = ThemeData(
@@ -32,6 +34,8 @@ final ThemeData darkTheme = ThemeData(
     textTheme: const TextTheme(
       displayLarge: TextStyle(
           fontSize: 72.0, fontWeight: FontWeight.bold, color: Colors.white),
+      displayMedium: TextStyle(
+          fontSize: 35.0, fontWeight: FontWeight.bold, color: Colors.white),
       titleLarge: TextStyle(
           fontSize: 36.0, fontStyle: FontStyle.italic, color: Colors.white),
       bodyMedium:
@@ -39,11 +43,11 @@ final ThemeData darkTheme = ThemeData(
     ),
     textButtonTheme: TextButtonThemeData(
       style: ButtonStyle(
-        foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
-        backgroundColor: MaterialStateProperty.all<Color>(Colors.orange),
-        textStyle:
-            MaterialStateProperty.all<TextStyle>(const TextStyle(fontSize: 12.5, fontWeight: FontWeight.bold, color: Colors.black)),
-        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+        foregroundColor: WidgetStateProperty.all<Color>(Colors.white),
+        backgroundColor: WidgetStateProperty.all<Color>(Colors.orange),
+        textStyle: WidgetStateProperty.all<TextStyle>(const TextStyle(
+            fontSize: 12.5, fontWeight: FontWeight.bold, color: Colors.black)),
+        shape: WidgetStateProperty.all<RoundedRectangleBorder>(
           RoundedRectangleBorder(
             borderRadius:
                 BorderRadius.circular(30.0), // adjust the value as needed
@@ -51,4 +55,4 @@ final ThemeData darkTheme = ThemeData(
         ),
       ),
     ),
-    colorScheme: const ColorScheme.dark().copyWith(background: Colors.black));
+    colorScheme: const ColorScheme.dark().copyWith(surface: Colors.black));

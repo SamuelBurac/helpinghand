@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:helping_hand/start_up_scr.dart';
-import 'package:helping_hand/themes.dart';
+import 'package:helping_hand/services/routes.dart';
+import 'package:helping_hand/services/themes.dart';
 import 'package:provider/provider.dart';
-import 'counter.dart';
+import 'services/counter.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'firebase_options.dart';
+import 'services/firebase_options.dart';
 
 ThemeMode thema = ThemeMode.system;
 //todo change later use provider to add button when time comes
@@ -29,7 +29,8 @@ class MainApp extends StatelessWidget {
       theme:lightTheme,
       darkTheme: darkTheme,
       themeMode: thema,
-      home: const StartupScr(),
+      routes: appRoutes,
+      initialRoute: '/',
     );
   }
 }
