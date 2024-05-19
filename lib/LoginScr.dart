@@ -1,16 +1,13 @@
-//gets name and location from user
-//gets phone number and type of user
-
 import 'package:flutter/material.dart';
 
-class PersonalInfoScr extends StatelessWidget {
-  const PersonalInfoScr({super.key});
+class LoginScr extends StatelessWidget {
+  const LoginScr({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Funny Joke App'),
+        title: Text('Login screen'),
       ),
       body: Center(
         child: Padding(
@@ -19,7 +16,7 @@ class PersonalInfoScr extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                "_currentJoke",
+                "Login Screen",
                 style: TextStyle(fontSize: 24.0, fontStyle: FontStyle.italic),
                 textAlign: TextAlign.center,
               ),

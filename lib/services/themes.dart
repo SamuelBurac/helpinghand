@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 final ThemeData lightTheme = ThemeData(
   brightness: Brightness.light,
   primarySwatch: Colors.orange,
+  primaryColor: Colors.orange,
   visualDensity: VisualDensity.adaptivePlatformDensity,
   textTheme: const TextTheme(
     displayLarge: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
@@ -30,6 +30,8 @@ final ThemeData lightTheme = ThemeData(
 final ThemeData darkTheme = ThemeData(
     brightness: Brightness.dark,
     primarySwatch: Colors.orange,
+    primaryColor: Colors.orange,
+    
     visualDensity: VisualDensity.adaptivePlatformDensity,
     textTheme: const TextTheme(
       displayLarge: TextStyle(

@@ -4,7 +4,7 @@ import 'package:helping_hand/Chats_screens/ChatsOverviewScr.dart';
 import 'package:helping_hand/Chats_screens/ChatScr.dart';
 
 //onboarding pipeline
-import 'package:helping_hand/onboarding_pipeline/EmailSignupScr.dart';
+import 'package:helping_hand/onboarding_pipeline/SignupScr.dart';
 import 'package:helping_hand/onboarding_pipeline/PersonalInfoScr.dart';
 import 'package:helping_hand/onboarding_pipeline/ProfileSetupScr.dart';
 
@@ -22,6 +22,7 @@ import 'package:helping_hand/JobListingsScr.dart';
 import 'package:helping_hand/PersonReviewsScr.dart';
 import '../StartupScr.dart';
 import 'package:helping_hand/UserPublicProfileScr.dart';
+import 'package:helping_hand/LoginScr.dart';
 
 
 var appRoutes = {
@@ -42,4 +43,5 @@ var appRoutes = {
   "/jobListingFull": (context) => const JobListingFullScr(),
   "/personReviews": (context) => const PersonReviewsScr(),
   "/userPublicProfile": (context) => const UserPublicProfileScr(),
+  "/login": (context) => const LoginScr(),
 };
