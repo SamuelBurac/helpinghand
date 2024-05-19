@@ -10,7 +10,7 @@ class PersonalInfoScr extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Funny Joke App'),
+        title: const Text('Funny Joke App'),
       ),
       body: Center(
         child: Padding(
@@ -18,17 +18,17 @@ class PersonalInfoScr extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
+              const Text(
                 "_currentJoke",
                 style: TextStyle(fontSize: 24.0, fontStyle: FontStyle.italic),
                 textAlign: TextAlign.center,
               ),
-              SizedBox(height: 20.0),
+              const SizedBox(height: 20.0),
               ElevatedButton(
                 onPressed: () {
                   // _getJoke();
                 },
-                child: Text('Get a Joke'),
+                child: const Text('Get a Joke'),
               ),
             ],
           ),

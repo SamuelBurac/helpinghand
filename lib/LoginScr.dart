@@ -7,7 +7,7 @@ class LoginScr extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Login screen'),
+        title: const Text('Login screen'),
       ),
       body: Center(
         child: Padding(
@@ -15,17 +15,17 @@ class LoginScr extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
+              const Text(
                 "Login Screen",
                 style: TextStyle(fontSize: 24.0, fontStyle: FontStyle.italic),
                 textAlign: TextAlign.center,
               ),
-              SizedBox(height: 20.0),
+              const SizedBox(height: 20.0),
               ElevatedButton(
                 onPressed: () {
                   // _getJoke();
                 },
-                child: Text('Get a Joke'),
+                child: const Text('Get a Joke'),
               ),
             ],
           ),
