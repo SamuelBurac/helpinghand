@@ -12,10 +12,7 @@ ThemeMode thema = ThemeMode.system;
 void main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform,);
   runApp(
-    ChangeNotifierProvider(
-      create: (context) => Counter(),
-      child: const MainApp(),
-    ),
+    const MainApp(),
   );
 }
 

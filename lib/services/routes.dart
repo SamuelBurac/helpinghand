@@ -2,11 +2,13 @@
 //chats screens
 import 'package:helping_hand/Chats_screens/ChatsOverviewScr.dart';
 import 'package:helping_hand/Chats_screens/ChatScr.dart';
+import 'package:helping_hand/home.dart';
 
 //onboarding pipeline
 import 'package:helping_hand/onboarding_pipeline/SignupScr.dart';
 import 'package:helping_hand/onboarding_pipeline/PersonalInfoScr.dart';
 import 'package:helping_hand/onboarding_pipeline/ProfileSetupScr.dart';
+import 'package:helping_hand/onboarding_pipeline/CongratsScr.dart';
 
 //job listing pipeline
 import 'package:helping_hand/job_listing_pipeline/InputJobScr.dart';
@@ -20,13 +22,14 @@ import 'package:helping_hand/person_listing_pipeline/ReviewPersonListingScr.dart
 import 'package:helping_hand/JobListingFullScr.dart';
 import 'package:helping_hand/JobListingsScr.dart';
 import 'package:helping_hand/PersonReviewsScr.dart';
-import '../StartupScr.dart';
+import '../StartupScr.dart'; 
 import 'package:helping_hand/UserPublicProfileScr.dart';
 import 'package:helping_hand/LoginScr.dart';
 
 
 var appRoutes = {
-  "/": (context) => const StartupScr(),
+  "/": (context) => const HomeScreen(),
+  "/startup": (context) => const StartupScr(),
 
   "/chatScreen": (context) => const ChatScr(),
   "/chatsOverview": (context) => const ChatsOverviewScr(),
@@ -34,9 +37,10 @@ var appRoutes = {
   "/inputJob": (context) => const InputJobScr(),
   "/reviewJob": (context) => const ReviewListingScr(),
   
-  "/emailSignup": (context) => const EmailSignupScr(),
+  "/signup": (context) => const SignupScr(),
   "/personalInfo": (context) => const PersonalInfoScr(),
   "/profileSetup": (context) => const ProfileSetupScr(),
+
   "/inputAvailability": (context) => const InputAvailabilityScr(),
   "/reviewPerson": (context) => const ReviewPersonListingScr(),
   "/jobListings": (context) => const JobListingsScr(),
@@ -44,4 +48,5 @@ var appRoutes = {
   "/personReviews": (context) => const PersonReviewsScr(),
   "/userPublicProfile": (context) => const UserPublicProfileScr(),
   "/login": (context) => const LoginScr(),
+  "/congrats": (context) => const CongratsScr(),
 };

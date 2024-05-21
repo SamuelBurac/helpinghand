@@ -5,7 +5,7 @@ class StartupScr extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double boxSize = MediaQuery.of(context).size.width * 0.5;
+    double boxSize = MediaQuery.of(context).size.height * 0.3;
     return Scaffold(
       body: Center(
         child: Column(
@@ -34,37 +34,71 @@ class StartupScr extends StatelessWidget {
               ),
             ),
             SizedBox(
-              height: MediaQuery.of(context).size.height * 0.4,
+              height: MediaQuery.of(context).size.height * 0.3,
             ),
-            SizedBox(
-              width: MediaQuery.of(context).size.width * 0.8,
-              child: TextButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, '/emailSignup');
-                  //sign up
-                },
-                style: Theme.of(context).textButtonTheme.style,
-                child: const Text("Sign up to work"),
-              ),
-            ),
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.01,
-            ),
-            SizedBox(
-              width: MediaQuery.of(context).size.width * 0.8,
-              child: TextButton(
-                onPressed: () {
-                  //login
-                },
-                style: Theme.of(context).textButtonTheme.style?.copyWith(
-                  backgroundColor: WidgetStateProperty.all<Color>(Colors.grey.shade800),
+            Flexible(
+            child: Container(
+              padding: const EdgeInsets.all(10.0).copyWith(bottom: 25.0),
+              constraints:
+                  BoxConstraints(maxHeight: MediaQuery.of(context).size.height),
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.8,
+                      child: TextButton(
+                        onPressed: () {
+                          Navigator.pushNamed(context, '/login');
+                        },
+                        style: Theme.of(context)
+                            .textButtonTheme
+                            .style
+                            ?.copyWith(
+                              backgroundColor: WidgetStateProperty.all<Color>(
+                                  Colors.grey.shade600),
+                              textStyle: WidgetStateProperty.all<TextStyle>(
+                                const TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              minimumSize: WidgetStateProperty.all<Size>(
+                                  const Size(
+                                      0, 50)), // set the height as needed
+                            ),
+                        child: const Text("Log in"),
+                      ),
+                    ),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.01,
+                    ),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.8,
+                      child: TextButton(
+                        onPressed: () {
+                          Navigator.pushNamed(context, '/signup');
+                        },
+                        style:
+                            Theme.of(context).textButtonTheme.style?.copyWith(
+                                  textStyle: WidgetStateProperty.all<TextStyle>(
+                                    const TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  minimumSize: WidgetStateProperty.all<Size>(
+                                      const Size(
+                                          0, 50)), // set the height as needed
+                                ),
+                        child: const Text("Sign up to work"),
+                      ),
+                    ),
+                  ],
                 ),
-                child: const Text("Log in"),
               ),
             ),
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.01,
-            ),
+          )
           ],
         ),
       ),
