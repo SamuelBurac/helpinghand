@@ -1,5 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_password_strength/flutter_password_strength.dart';
+import 'package:validation_pro/validate.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 
 class SignupInputs {
   SignupInputs(this.firstName, this.lastName, this.email, this.phoneNumber,
@@ -19,11 +23,24 @@ class SignupScr extends StatefulWidget {
 }
 
 class _SignupScrState extends State<SignupScr> {
+  String password = '';
+  String phoneNumber = '';
   final firstNameController = TextEditingController();
   final lastNameController = TextEditingController();
   final emailController = TextEditingController();
   final phoneNumberController = TextEditingController();
   final passwordController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+
+    passwordController.addListener(() {
+      setState(() {
+        password = passwordController.text;
+      });
+    });
+  }
 
   @override
   void dispose() {
@@ -62,6 +79,7 @@ class _SignupScrState extends State<SignupScr> {
                   BoxConstraints(maxHeight: MediaQuery.of(context).size.height),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   CustomTextField(
                       labelText: 'First Name',
@@ -71,18 +89,37 @@ class _SignupScrState extends State<SignupScr> {
                       labelText: 'Last Name',
                       obscureText: false,
                       controller: lastNameController),
-                  CustomTextField(
-                      labelText: 'Email',
-                      obscureText: false,
-                      controller: emailController),
+                  InternationalPhoneNumberInput(
+                    initialValue: PhoneNumber(isoCode: 'US'),
+                    textFieldController: phoneNumberController,
+                    onInputChanged: (PhoneNumber number) {
+                       print('Phone number: ${number.phoneNumber}');
+                    },
+                    ),
                   CustomTextField(
                       labelText: 'Phone Number',
                       obscureText: false,
                       controller: phoneNumberController),
                   CustomTextField(
+                      labelText: 'Email',
+                      obscureText: false,
+                      controller: emailController),
+                  CustomTextField(
                       labelText: 'Password',
                       obscureText: true,
                       controller: passwordController),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      FlutterPasswordStrength(
+                        password: password,
+                        width: MediaQuery.of(context).size.width * 0.2,
+                        height: 10,
+                        radius: 10,
+                      ),
+                      const Text("Password must be at least 8 characters long"),
+                    ],
+                  )
                 ],
               ),
             ),
@@ -127,25 +164,19 @@ class _SignupScrState extends State<SignupScr> {
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 0.8,
                       child: TextButton(
-                        onPressed: () {
+                        onPressed: () async {
                           SignupInputs inputs = SignupInputs(
                               firstNameController.text,
                               lastNameController.text,
-                              emailController.text,
-                              phoneNumberController.text,
+                              emailController.text.trim(),
+                              phoneNumberController.text.trim().substring(1),
                               passwordController.text);
-                          String firstName = firstNameController.text;
-                          print("forgetti" + firstName + "spaghet");
-                          print(inputs.lastName);
-                          print(inputs.email);
-                          print(inputs.phoneNumber);
-                          print(inputs.password);
 
-                          validateInputs();
-                          storeInputs();
-                          // createAccount(
-                          //     'email', 'password'); //update email and password
-                          // Navigator.pushNamed(context, '/personalInfo');
+                          if (validateInputs(inputs, context)) {
+                            // if (await storeInputs(inputs, context)) {
+                            //   Navigator.pushNamed(context, '/personalInfo');
+                            // }
+                          }
                         },
                         style:
                             Theme.of(context).textButtonTheme.style?.copyWith(
@@ -173,25 +204,77 @@ class _SignupScrState extends State<SignupScr> {
   }
 }
 
-void validateInputs() {}
+bool validateInputs(SignupInputs inputs, BuildContext context) {
+  // validate inputs
+  List invalids = [];
+  if (inputs.firstName.isEmpty) {
+    invalids.add('First Name');
+  }
+  if (inputs.lastName.isEmpty) {
+    invalids.add('Last Name');
+  }
+  if (inputs.email.isEmpty || !Validate.isEmail(inputs.email)) {
+    invalids.add('Email');
+  }
 
-void storeInputs() {}
-
-void createAccount(String emailAddress, String password) async {
-  try {
-    final credential =
-        await FirebaseAuth.instance.createUserWithEmailAndPassword(
-      email: emailAddress,
-      password: password,
+  if (inputs.phoneNumber.isEmpty || !Validate.isMobile(inputs.phoneNumber)) {
+    invalids.add('Phone Number');
+  }
+  if (inputs.password.isEmpty || inputs.password.length < 8) {
+    invalids.add('Password');
+  }
+  if (invalids.isEmpty) {
+    return true;
+  } else {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        backgroundColor: Colors.grey.shade600,
+        content: Text(
+            'The field(s) ${invalids.join(', ')} are invalid. Please correct them.',
+            style: const TextStyle(color: Colors.white),
+      ),
+      ),
     );
-  } on FirebaseAuthException catch (e) {
-    if (e.code == 'weak-password') {
-      print('The password provided is too weak.');
-    } else if (e.code == 'email-already-in-use') {
-      print('The account already exists for that email.');
+    return false;
+  }
+}
+
+Future<bool> storeInputs(SignupInputs inputs, BuildContext context) async {
+  final firestoreInstance = FirebaseFirestore.instance;
+  final auth = FirebaseAuth.instance;
+  try {
+    UserCredential userCredential = await auth.createUserWithEmailAndPassword(
+      email: inputs.email,
+      password: inputs.password,
+    );
+
+    var docRef = firestoreInstance.collection('users').doc();
+
+    await docRef.set({
+      'first_name': inputs.firstName,
+      'last_name': inputs.lastName,
+      'email': inputs.email,
+      'phone_number': inputs.phoneNumber,
+      'UID': userCredential.user!.uid,
+    });
+
+    return true;
+  } catch (error) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        backgroundColor: Colors.grey.shade600,
+        content: Text('Failed with error $error',
+        style: const TextStyle(color: Colors.white),
+        ),
+      ),
+    );
+
+    // If a user was created, delete it
+    if (auth.currentUser != null) {
+      await auth.currentUser!.delete();
     }
-  } catch (e) {
-    print(e);
+
+    return false;
   }
 }
 

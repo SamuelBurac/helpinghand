@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 //maybe use https://api.flutter.dev/flutter/material/BottomSheet-class.html
 
@@ -33,8 +34,6 @@ final List<Job> jobListings = [
   ),
   // Add more job listings here
 ];
-
-
 
 class JobListingsScr extends StatelessWidget {
   const JobListingsScr({super.key});
@@ -96,6 +95,15 @@ class JobCard extends StatelessWidget {
             ),
             const SizedBox(height: 10),
             Text(job.description),
+            ElevatedButton(
+                onPressed: () {
+                  try {
+                    FirebaseAuth.instance.signOut();
+                  } catch (e) {
+                    print('Failed to sign out: $e');
+                  }
+                },
+                child: Text("Logout")),
           ],
         ),
       ),
