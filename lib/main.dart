@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:helping_hand/services/routes.dart';
 import 'package:helping_hand/services/themes.dart';
-import 'package:provider/provider.dart';
-import 'services/counter.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'services/firebase_options.dart';
 

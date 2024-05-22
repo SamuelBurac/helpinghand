@@ -103,7 +103,7 @@ class JobCard extends StatelessWidget {
                     print('Failed to sign out: $e');
                   }
                 },
-                child: Text("Logout")),
+                child: const Text("Logout")),
           ],
         ),
       ),

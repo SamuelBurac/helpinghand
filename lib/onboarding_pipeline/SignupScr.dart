@@ -1,9 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_password_strength/flutter_password_strength.dart';
 import 'package:validation_pro/validate.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:intl_phone_number_input/intl_phone_number_input.dart';
+import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
 
 class SignupInputs {
   SignupInputs(this.firstName, this.lastName, this.email, this.phoneNumber,
@@ -84,29 +85,35 @@ class _SignupScrState extends State<SignupScr> {
                   CustomTextField(
                       labelText: 'First Name',
                       obscureText: false,
-                      controller: firstNameController),
+                      controller: firstNameController,
+                      keyboardType: TextInputType.name),
                   CustomTextField(
                       labelText: 'Last Name',
                       obscureText: false,
-                      controller: lastNameController),
-                  InternationalPhoneNumberInput(
-                    initialValue: PhoneNumber(isoCode: 'US'),
-                    textFieldController: phoneNumberController,
-                    onInputChanged: (PhoneNumber number) {
-                       print('Phone number: ${number.phoneNumber}');
-                    },
-                    ),
+                      controller: lastNameController,
+                      keyboardType: TextInputType.name),
                   CustomTextField(
                       labelText: 'Phone Number',
                       obscureText: false,
-                      controller: phoneNumberController),
+                      controller: phoneNumberController,
+                      keyboardType: TextInputType.phone,
+                      inputFormatters: [
+                        PhoneInputFormatter(
+                          allowEndlessPhone: false,
+                          defaultCountryCode: 'US',
+                          
+                        ),
+                        LengthLimitingTextInputFormatter(14)
+                      ]),
                   CustomTextField(
                       labelText: 'Email',
                       obscureText: false,
+                      keyboardType: TextInputType.emailAddress,
                       controller: emailController),
                   CustomTextField(
                       labelText: 'Password',
                       obscureText: true,
+                      keyboardType: TextInputType.visiblePassword,
                       controller: passwordController),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -169,13 +176,12 @@ class _SignupScrState extends State<SignupScr> {
                               firstNameController.text,
                               lastNameController.text,
                               emailController.text.trim(),
-                              phoneNumberController.text.trim().substring(1),
+                              phoneNumberController.text.replaceAll(RegExp(r'\D'), ''),
                               passwordController.text);
-
                           if (validateInputs(inputs, context)) {
-                            // if (await storeInputs(inputs, context)) {
-                            //   Navigator.pushNamed(context, '/personalInfo');
-                            // }
+                            if (await storeInputs(inputs, context)) {
+                              Navigator.pushNamed(context, '/personalInfo');
+                            }
                           }
                         },
                         style:
@@ -216,8 +222,8 @@ bool validateInputs(SignupInputs inputs, BuildContext context) {
   if (inputs.email.isEmpty || !Validate.isEmail(inputs.email)) {
     invalids.add('Email');
   }
-
-  if (inputs.phoneNumber.isEmpty || !Validate.isMobile(inputs.phoneNumber)) {
+RegExp regExp = RegExp(r'^\d{10}$');
+  if (inputs.phoneNumber.isEmpty || !regExp.hasMatch(inputs.phoneNumber)) {
     invalids.add('Phone Number');
   }
   if (inputs.password.isEmpty || inputs.password.length < 8) {
@@ -230,9 +236,9 @@ bool validateInputs(SignupInputs inputs, BuildContext context) {
       SnackBar(
         backgroundColor: Colors.grey.shade600,
         content: Text(
-            'The field(s) ${invalids.join(', ')} are invalid. Please correct them.',
-            style: const TextStyle(color: Colors.white),
-      ),
+          'The field(s) ${invalids.join(', ')} are invalid. Please correct them.',
+          style: const TextStyle(color: Colors.white),
+        ),
       ),
     );
     return false;
@@ -263,8 +269,9 @@ Future<bool> storeInputs(SignupInputs inputs, BuildContext context) async {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         backgroundColor: Colors.grey.shade600,
-        content: Text('Failed with error $error',
-        style: const TextStyle(color: Colors.white),
+        content: Text(
+          'Failed with error $error',
+          style: const TextStyle(color: Colors.white),
         ),
       ),
     );
@@ -278,40 +285,20 @@ Future<bool> storeInputs(SignupInputs inputs, BuildContext context) async {
   }
 }
 
-TextField buildTextField(
-    TextEditingController controller, String labelText, bool obscureText) {
-  return TextField(
-    controller: controller,
-    obscureText: obscureText,
-    cursorColor: Colors.orange,
-    decoration: InputDecoration(
-      border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(10.0),
-      ),
-      floatingLabelStyle: const TextStyle(
-        color: Colors.orange,
-      ),
-      focusedBorder: const OutlineInputBorder(
-        borderSide: BorderSide(
-          color: Colors.orange,
-          width: 1.0,
-        ),
-      ),
-      labelText: labelText,
-    ),
-  );
-}
-
 class CustomTextField extends StatefulWidget {
   final String labelText;
   final bool obscureText;
   final TextEditingController controller;
+  final List<TextInputFormatter> inputFormatters;
+  final TextInputType keyboardType;
 
   const CustomTextField({
     super.key,
     required this.labelText,
     this.obscureText = false,
     required this.controller,
+    this.inputFormatters = const [],
+    required this.keyboardType,
   });
 
   @override
@@ -336,6 +323,8 @@ class _CustomTextFieldState extends State<CustomTextField> {
   @override
   Widget build(BuildContext context) {
     return TextField(
+      inputFormatters: widget.inputFormatters,
+      keyboardType: widget.keyboardType,
       controller: widget.controller,
       obscureText: _obscureText,
       cursorColor: Colors.orange,
