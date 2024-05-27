@@ -7,6 +7,7 @@ class StartupScr extends StatelessWidget {
   Widget build(BuildContext context) {
     double boxSize = MediaQuery.of(context).size.height * 0.3;
     return Scaffold(
+        resizeToAvoidBottomInset: false,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,

@@ -5,6 +5,10 @@ final ThemeData lightTheme = ThemeData(
   primarySwatch: Colors.orange,
   primaryColor: Colors.orange,
   visualDensity: VisualDensity.adaptivePlatformDensity,
+   textSelectionTheme: const TextSelectionThemeData(
+      cursorColor: Colors.orange,
+      selectionHandleColor: Colors.orange,
+    ),
   textTheme: const TextTheme(
     displayLarge: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
     displayMedium: TextStyle(fontSize: 48.0, fontWeight: FontWeight.bold),
@@ -31,7 +35,10 @@ final ThemeData darkTheme = ThemeData(
     brightness: Brightness.dark,
     primarySwatch: Colors.orange,
     primaryColor: Colors.orange,
-    
+    textSelectionTheme: const TextSelectionThemeData(
+      cursorColor: Colors.orange,
+      selectionHandleColor: Colors.orange,
+    ),
     visualDensity: VisualDensity.adaptivePlatformDensity,
     textTheme: const TextTheme(
       displayLarge: TextStyle(
