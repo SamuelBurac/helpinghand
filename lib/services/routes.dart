@@ -1,12 +1,13 @@
 // Routes for the application
 //chats screens
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:helping_hand/Chats_screens/ChatsOverviewScr.dart';
 import 'package:helping_hand/Chats_screens/ChatScr.dart';
 import 'package:helping_hand/home.dart';
 
 //onboarding pipeline
 import 'package:helping_hand/onboarding_pipeline/SignupScr.dart';
-import 'package:helping_hand/onboarding_pipeline/PersonalInfoScr.dart';
 import 'package:helping_hand/onboarding_pipeline/ProfileSetupScr.dart';
 import 'package:helping_hand/onboarding_pipeline/CongratsScr.dart';
 
@@ -38,8 +39,7 @@ var appRoutes = {
   "/reviewJob": (context) => const ReviewListingScr(),
   
   "/signup": (context) => const SignupScr(),
-  "/personalInfo": (context) => const PersonalInfoScr(),
-  "/profileSetup": (context) => const ProfileSetupScr(),
+  "/profileSetup": (context) => ProfileSetupScr(docRef: ModalRoute.of(context)!.settings.arguments as DocumentReference),
 
   "/inputAvailability": (context) => const InputAvailabilityScr(),
   "/reviewPerson": (context) => const ReviewPersonListingScr(),

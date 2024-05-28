@@ -11,8 +11,15 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_places_autocomplete_text_field/google_places_autocomplete_text_field.dart';
 
 class SignupInputs {
-  SignupInputs(this.firstName, this.lastName, this.email, this.phoneNumber,
-      this.password, this.lookingForWork, this.lookingForWorkers, this.location);
+  SignupInputs(
+      this.firstName,
+      this.lastName,
+      this.email,
+      this.phoneNumber,
+      this.password,
+      this.lookingForWork,
+      this.lookingForWorkers,
+      this.location);
   String firstName = '';
   String lastName = '';
   String email = '';
@@ -42,6 +49,7 @@ class _SignupScrState extends State<SignupScr> {
   final phoneNumberController = TextEditingController();
   final passwordController = TextEditingController();
   final locationController = TextEditingController();
+  var docRef;
 
   @override
   void initState() {
@@ -189,6 +197,7 @@ class _SignupScrState extends State<SignupScr> {
                                 GooglePlacesAutoCompleteTextFormField(
                                   cursorColor: Colors.orange,
                                   textEditingController: locationController,
+                                  countries: const ['US'],
                                   googleAPIKey: dotenv.env['GOOGLE_API_KEY']!,
                                   decoration: InputDecoration(
                                     border: OutlineInputBorder(
@@ -338,9 +347,9 @@ class _SignupScrState extends State<SignupScr> {
                                 locationController.text);
 
                             if (validateInputs(inputs, context)) {
-                              if (await storeInputs(inputs, context)) {
-                                Navigator.pushNamed(context, '/profileSetup');
-                              }
+                              docRef = await storeInputs(inputs, context);
+                              Navigator.pushNamed(context, '/profileSetup',
+                                  arguments: docRef);
                             }
                           },
                           style: Theme.of(context)
@@ -423,7 +432,8 @@ bool validateInputs(SignupInputs inputs, BuildContext context) {
   }
 }
 
-Future<bool> storeInputs(SignupInputs inputs, BuildContext context) async {
+Future<DocumentReference> storeInputs(
+    SignupInputs inputs, BuildContext context) async {
   final firestoreInstance = FirebaseFirestore.instance;
   final auth = FirebaseAuth.instance;
   try {
@@ -445,7 +455,7 @@ Future<bool> storeInputs(SignupInputs inputs, BuildContext context) async {
       'location': inputs.location,
     });
 
-    return true;
+    return docRef;
   } catch (error) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -462,7 +472,7 @@ Future<bool> storeInputs(SignupInputs inputs, BuildContext context) async {
       await auth.currentUser!.delete();
     }
 
-    return false;
+    rethrow;
   }
 }
 

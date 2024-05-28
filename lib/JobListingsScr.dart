@@ -100,7 +100,7 @@ class JobCard extends StatelessWidget {
                   try {
                     FirebaseAuth.instance.signOut();
                   } catch (e) {
-                    print('Failed to sign out: $e');
+                    SnackBar(content: Text('Failed to sign out: $e'));
                   }
                 },
                 child: const Text("Logout")),
