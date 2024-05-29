@@ -7,8 +7,11 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path/path.dart' as Path;
 
 class ProfileSetupScr extends StatefulWidget {
   final DocumentReference docRef;
@@ -90,7 +93,13 @@ class _ProfileSetupScrState extends State<ProfileSetupScr> {
                           backgroundColor: Colors.transparent,
                           radius: 35,
                           child: _selectedImage != null
-                              ? Image.file(_selectedImage!)
+                              ? ClipRRect(
+                                  borderRadius: BorderRadius.circular(50),
+                                  child: Image.file(
+                                    _selectedImage!,
+                                    fit: BoxFit.cover,
+                                  ),
+                                )
                               : Image.asset("assets/emptyProfilePic.png"),
                         ),
                         const Text(
@@ -159,11 +168,28 @@ class _ProfileSetupScrState extends State<ProfileSetupScr> {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       IconButton(
-                        onPressed: () {
+                        onPressed: () async {
+                          String storageURL = "";
                           DocumentReference docRef = widget.docRef;
+                          final userID = FirebaseAuth.instance.currentUser!.uid;
+
+                          final storageRef = FirebaseStorage.instance.ref();
+
+                          final profilePicRef = storageRef.child(
+                              'profilePics/$userID.${Path.extension(_selectedImage!.path)}');
+
+                          try {
+                            await profilePicRef.putFile(_selectedImage!);
+                          } catch (e) {
+                            SnackBar(content: Text("Error uploading image$e"));
+                          }
+
+                          storageURL = await profilePicRef.getDownloadURL();
+
                           docRef.update({
                             "description": descriptionController.text,
                             "displayPhoneNumber": _displayPhoneNumber,
+                            "profilePicURL": storageURL,
                           });
 
                           Navigator.pushNamed(context, '/congrats');
