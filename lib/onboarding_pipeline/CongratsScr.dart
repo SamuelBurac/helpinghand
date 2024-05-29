@@ -32,25 +32,16 @@ class CongratsScr extends StatelessWidget {
             Column(
               children: [
                 ElevatedButton(
-                  style: ButtonStyle(
-                    shape: WidgetStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(18.0),
-                      ),
-                    ),
-                  ),
                   onPressed: () {
-                    Navigator.pushNamed(context, '/jobListings');
+                    Navigator.pushNamed(context, '/');
                   },
                   child: const Column(
                     children: [
                       Text(
                         'Continue',
-                        style: TextStyle(fontSize: 40, color: Colors.white),
                       ),
                       Icon(
                         Icons.arrow_forward,
-                        color: Colors.white,
                         size: 40,
                       )
                     ],

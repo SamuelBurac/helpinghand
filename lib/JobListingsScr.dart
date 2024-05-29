@@ -102,6 +102,7 @@ class JobCard extends StatelessWidget {
                   } catch (e) {
                     SnackBar(content: Text('Failed to sign out: $e'));
                   }
+                  Navigator.pushNamed(context,'/');
                 },
                 child: const Text("Logout")),
           ],

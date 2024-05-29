@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:helping_hand/JobListingsScr.dart';
 import 'package:helping_hand/LoadingScreen.dart';
-import 'package:helping_hand/StartupScr.dart';
+import 'package:helping_hand/gettting_in/StartupScr.dart';
 import 'package:helping_hand/error.dart';
 import 'package:helping_hand/services/auth.dart';
 

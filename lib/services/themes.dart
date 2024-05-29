@@ -15,6 +15,37 @@ final ThemeData lightTheme = ThemeData(
     titleLarge: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
     bodyMedium: TextStyle(fontSize: 14.0, fontFamily: 'Hind'),
   ),
+  inputDecorationTheme: InputDecorationTheme(
+    border: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(10.0),
+    ),
+    floatingLabelStyle: const TextStyle(
+      color: Colors.orange,
+    ),
+    focusedBorder: const OutlineInputBorder(
+      borderSide: BorderSide(
+        color: Colors.orange,
+        width: 1.0,
+      ),
+    ),
+  ),
+  elevatedButtonTheme: ElevatedButtonThemeData(
+    style: ButtonStyle(
+      foregroundColor: WidgetStateProperty.all<Color>(Colors.black),
+      backgroundColor: WidgetStateProperty.all<Color>(Colors.orange),
+      iconColor: WidgetStateProperty.all<Color>(Colors.black),
+      textStyle: WidgetStateProperty.all<TextStyle>(const TextStyle(
+          fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black)),
+      shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+        RoundedRectangleBorder(
+          borderRadius:
+              BorderRadius.circular(30.0), // adjust the value as needed
+        ),
+      ),
+    ),
+  
+  ),
+
   textButtonTheme: TextButtonThemeData(
     style: ButtonStyle(
       foregroundColor: WidgetStateProperty.all<Color>(Colors.white),
@@ -31,6 +62,10 @@ final ThemeData lightTheme = ThemeData(
   ),
 );
 
+
+/*
+* Dark theme
+*/
 final ThemeData darkTheme = ThemeData(
     brightness: Brightness.dark,
     primarySwatch: Colors.orange,
@@ -50,6 +85,35 @@ final ThemeData darkTheme = ThemeData(
       bodyMedium:
           TextStyle(fontSize: 14.0, fontFamily: 'Hind', color: Colors.white),
     ),
+     elevatedButtonTheme: ElevatedButtonThemeData(
+    style: ButtonStyle(
+      foregroundColor: WidgetStateProperty.all<Color>(Colors.white),
+      backgroundColor: WidgetStateProperty.all<Color>(Colors.orange),
+      textStyle: WidgetStateProperty.all<TextStyle>(const TextStyle(
+          fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black)),
+      shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+        RoundedRectangleBorder(
+          borderRadius:
+              BorderRadius.circular(30.0), // adjust the value as needed
+        ),
+      ),
+    ),
+  
+  ),
+    inputDecorationTheme: InputDecorationTheme(
+    border: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(10.0),
+    ),
+    floatingLabelStyle: const TextStyle(
+      color: Colors.orange,
+    ),
+    focusedBorder: const OutlineInputBorder(
+      borderSide: BorderSide(
+        color: Colors.orange,
+        width: 1.0,
+      ),
+    ),
+  ),
     textButtonTheme: TextButtonThemeData(
       style: ButtonStyle(
         foregroundColor: WidgetStateProperty.all<Color>(Colors.white),

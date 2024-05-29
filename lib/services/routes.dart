@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:helping_hand/Chats_screens/ChatsOverviewScr.dart';
 import 'package:helping_hand/Chats_screens/ChatScr.dart';
+import 'package:helping_hand/gettting_in/ForgotPassScr.dart';
 import 'package:helping_hand/home.dart';
 
 //onboarding pipeline
@@ -23,14 +24,15 @@ import 'package:helping_hand/person_listing_pipeline/ReviewPersonListingScr.dart
 import 'package:helping_hand/JobListingFullScr.dart';
 import 'package:helping_hand/JobListingsScr.dart';
 import 'package:helping_hand/PersonReviewsScr.dart';
-import '../StartupScr.dart'; 
+import '../gettting_in/StartupScr.dart'; 
 import 'package:helping_hand/UserPublicProfileScr.dart';
-import 'package:helping_hand/LoginScr.dart';
+import 'package:helping_hand/gettting_in/LoginScr.dart';
 
 
 var appRoutes = {
   "/": (context) => const HomeScreen(),
   "/startup": (context) => const StartupScr(),
+  "/forgotPass": (context) =>  const ForgotPassScreen(),
 
   "/chatScreen": (context) => const ChatScr(),
   "/chatsOverview": (context) => const ChatsOverviewScr(),
@@ -47,6 +49,6 @@ var appRoutes = {
   "/jobListingFull": (context) => const JobListingFullScr(),
   "/personReviews": (context) => const PersonReviewsScr(),
   "/userPublicProfile": (context) => const UserPublicProfileScr(),
-  "/login": (context) => const LoginScr(),
+  "/login": (context) =>  const LoginScr(),
   "/congrats": (context) => const CongratsScr(),
 };
