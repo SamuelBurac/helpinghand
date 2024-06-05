@@ -45,6 +45,13 @@ final ThemeData lightTheme = ThemeData(
     ),
   
   ),
+  cardTheme: CardTheme(
+    color: Colors.grey[200],
+        shadowColor: Colors.black,
+        elevation: 5,
+        margin: const EdgeInsets.all(7),
+        surfaceTintColor: Colors.orangeAccent.shade100,
+  ),
 
   textButtonTheme: TextButtonThemeData(
     style: ButtonStyle(
@@ -100,6 +107,9 @@ final ThemeData darkTheme = ThemeData(
     ),
   
   ),
+
+
+  
     inputDecorationTheme: InputDecorationTheme(
     border: OutlineInputBorder(
       borderRadius: BorderRadius.circular(10.0),
@@ -114,6 +124,16 @@ final ThemeData darkTheme = ThemeData(
       ),
     ),
   ),
+
+cardTheme: CardTheme(
+    color: Colors.grey[400],
+        shadowColor: Colors.black,
+        elevation: 5,
+        margin: const EdgeInsets.all(7),
+        surfaceTintColor: Colors.orange,
+  ),
+
+
     textButtonTheme: TextButtonThemeData(
       style: ButtonStyle(
         foregroundColor: WidgetStateProperty.all<Color>(Colors.white),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
+import 'JobCard.dart';
 //maybe use https://api.flutter.dev/flutter/material/BottomSheet-class.html
 
 // Define a Job model
@@ -35,79 +35,43 @@ final List<Job> jobListings = [
   // Add more job listings here
 ];
 
-class JobListingsScr extends StatelessWidget {
-  const JobListingsScr({super.key});
+
+
+
+class JobListingsScr extends StatefulWidget {
+  
+
+  const JobListingsScr({
+    super.key,
+    
+  });
+
+  @override
+  State<JobListingsScr> createState() => _JobListingsScrState();
+}
+
+class _JobListingsScrState extends State<JobListingsScr> {
+  int _counter = 0;
+
+  void _incrementCounter() {
+    setState(() {
+      _counter++;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Job Listings'),
-        automaticallyImplyLeading: false,
+        title: Text("Jobs available"),
       ),
-      body: ListView.builder(
-        itemCount: jobListings.length,
-        itemBuilder: (context, index) {
-          final job = jobListings[index];
-          return JobCard(job: job);
-        },
+      body: ListView(children: const [JobCard(), JobCard(), JobCard()]),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _incrementCounter,
+        tooltip: 'Increment',
+        child: const Icon(Icons.add),
       ),
     );
   }
 }
 
-class JobCard extends StatelessWidget {
-  final Job job;
-
-  const JobCard({super.key, required this.job});
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      margin: const EdgeInsets.all(10),
-      child: Padding(
-        padding: const EdgeInsets.all(10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              job.title,
-              style: const TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 5),
-            Text(
-              job.company,
-              style: TextStyle(
-                fontSize: 16,
-                color: Colors.grey[700],
-              ),
-            ),
-            const SizedBox(height: 5),
-            Text(
-              job.location,
-              style: TextStyle(
-                fontSize: 14,
-                color: Colors.grey[500],
-              ),
-            ),
-            const SizedBox(height: 10),
-            Text(job.description),
-            ElevatedButton(
-                onPressed: () {
-                  try {
-                    FirebaseAuth.instance.signOut();
-                  } catch (e) {
-                    SnackBar(content: Text('Failed to sign out: $e'));
-                  }
-                  Navigator.pushNamed(context,'/');
-                },
-                child: const Text("Logout")),
-          ],
-        ),
-      ),
-    );
-  }
-}

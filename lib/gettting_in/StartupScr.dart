@@ -40,7 +40,7 @@ class StartupScr extends StatelessWidget {
                           onPressed: () {
                             Navigator.pushNamed(context, '/jobListings');
                           },
-                          child: Text("Skip")),
+                          child: const Text("Skip")),
             ),
             Flexible(
               child: Container(

@@ -403,9 +403,9 @@ bool validateInputs(SignupInputs inputs, BuildContext context) {
   if (inputs.password.isEmpty || inputs.password.length < 8) {
     invalids.add('Password');
   }
-  if (inputs.location.isEmpty) {
-    invalids.add('Location');
-  }
+  // if (inputs.location.isEmpty) {
+  //   invalids.add('Location');
+  // } location can be required if app has a large user base
   if (invalids.isEmpty) {
     if (inputs.lookingForWork == false && inputs.lookingForWorkers == false) {
       ScaffoldMessenger.of(context).showSnackBar(
