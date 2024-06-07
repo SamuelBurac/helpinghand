@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'JobCard.dart';
 //maybe use https://api.flutter.dev/flutter/material/BottomSheet-class.html
 
@@ -63,7 +62,8 @@ class _JobListingsScrState extends State<JobListingsScr> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Jobs available"),
+        title: const Center(child:  Text("Jobs available")),
+        automaticallyImplyLeading: false,
       ),
       body: ListView(children: const [JobCard(), JobCard(), JobCard()]),
       floatingActionButton: FloatingActionButton(
