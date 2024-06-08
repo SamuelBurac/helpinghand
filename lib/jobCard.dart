@@ -2,10 +2,37 @@ import 'package:flutter/material.dart';
 import 'package:animated_rating_stars/animated_rating_stars.dart';
 import 'package:flip_card/flip_card.dart';
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:flutter/widgets.dart';
+import 'package:helping_hand/JobListingFullScr.dart';
 
 class JobCard extends StatelessWidget {
-  const JobCard({super.key});
+  String jobTitle;
+  String jobLocation;
+  String jobDetails;
+  String jobStartTime;
+  String jobEndTime;
+  int jobPay;
+  int jobDuration;
+  double hourlyRate;
+  String jobPosterName;
+  bool canPickup;
+  double rating;
+  String pfpURL;
+
+  JobCard(
+      {this.jobTitle = "Traffic controller",
+      this.jobLocation = "Bethelem, GA",
+      this.jobDetails = "I wanna buy me this racing car my nigga",
+      this.jobStartTime = "9:00 am",
+      this.jobEndTime = "5:00 pm",
+      this.jobPay = 230,
+      this.jobDuration = 10,
+      this.hourlyRate = 23.0,
+      this.jobPosterName = "Billy Bob Joe",
+      this.canPickup = false,
+      this.rating = 3.5,
+      this.pfpURL =
+          "https://firebasestorage.googleapis.com/v0/b/helping-hand-9002c.appspot.com/o/profilePics%2F7UO8OdTqkIS3IRFFHpGnGHZ6yfA3..jpg?alt=media&token=37fb5d76-6f6f-4517-9e8c-ac10387b6a47",
+      super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +40,25 @@ class JobCard extends StatelessWidget {
       aspectRatio: 7 / 3.5,
       child: GestureDetector(
         onTap: () {
-          Navigator.pushNamed(context, "/jobListingFull");
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => JobListingFullScr(
+                jobTitle: jobTitle,
+                jobLocation: jobLocation,
+                jobDetails: jobDetails,
+                jobStartTime: jobStartTime,
+                jobEndTime: jobEndTime,
+                jobPay: jobPay,
+                jobDuration: jobDuration,
+                hourlyRate: hourlyRate,
+                jobPosterName: jobPosterName,
+                canPickup: canPickup,
+                rating: rating,
+                pfpURL: pfpURL,
+              ),
+            ),
+          );
         },
         child: Card(
           child: Padding(
@@ -21,7 +66,6 @@ class JobCard extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
-              
               children: <Widget>[
                 Flexible(
                   flex: 2,
@@ -39,8 +83,10 @@ class JobCard extends StatelessWidget {
                                 radius: 35,
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(50),
-                                  child: Image.asset(
-                                    "assets/emptyProfilePic.png",
+                                  child: FadeInImage.assetNetwork(
+                                    placeholder:
+                                        'assets/emptyProfilePic.png', // Replace with your placeholder asset
+                                    image: pfpURL,
                                     fit: BoxFit.cover,
                                   ),
                                 ),
@@ -49,13 +95,13 @@ class JobCard extends StatelessWidget {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  const Text('Billy Bob Joe',
-                                      style: TextStyle(
+                                  Text(jobPosterName,
+                                      style: const TextStyle(
                                         fontSize: 14,
                                         fontWeight: FontWeight.bold,
                                       )),
                                   AnimatedRatingStars(
-                                    initialRating: 3.5,
+                                    initialRating: rating,
                                     readOnly: true,
                                     onChanged: (value) {
                                       // is static here
@@ -74,11 +120,11 @@ class JobCard extends StatelessWidget {
                         width: 10,
                         endIndent: 10,
                       ),
-                      const Flexible(
+                      Flexible(
                         flex: 2,
                         child: AutoSizeText(
-                          'Traffic controller',
-                          style: TextStyle(
+                          jobTitle,
+                          style: const TextStyle(
                             height: 1,
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
@@ -98,26 +144,27 @@ class JobCard extends StatelessWidget {
                               color: const Color.fromARGB(255, 11, 167, 73),
                               borderRadius: BorderRadius.circular(6),
                             ),
-                            child: const Padding(
-                              padding: EdgeInsets.only(top: 5.0, bottom: 5.0),
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.only(top: 5.0, bottom: 5.0),
                               child: IntrinsicHeight(
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   mainAxisSize: MainAxisSize.max,
                                   children: [
                                     Text(
-                                      "\$230",
-                                      style: TextStyle(
+                                      "\$$jobPay",
+                                      style: const TextStyle(
                                           color: Colors.white,
                                           fontSize: 17,
                                           fontWeight: FontWeight.bold),
                                     ),
-                                    VerticalDivider(
+                                    const VerticalDivider(
                                       width: 10,
                                     ),
                                     Text(
-                                      "10Hrs",
-                                      style: TextStyle(
+                                      "${jobDuration}Hrs",
+                                      style: const TextStyle(
                                           color: Colors.white,
                                           fontSize: 17,
                                           fontWeight: FontWeight.bold),
@@ -132,10 +179,10 @@ class JobCard extends StatelessWidget {
                               color: const Color.fromARGB(255, 11, 167, 73),
                               borderRadius: BorderRadius.circular(6),
                             ),
-                            child: const Center(
+                            child: Center(
                               child: Text(
-                                "\$19/Hr",
-                                style: TextStyle(
+                                "\$$hourlyRate/Hr",
+                                style: const TextStyle(
                                     color: Colors.white,
                                     fontSize: 17,
                                     fontWeight: FontWeight.bold),
@@ -153,38 +200,41 @@ class JobCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      const Flexible(
+                      Flexible(
                         flex: 4,
                         child: Row(
                           children: [
-                            Icon(
+                            const Icon(
                               Icons.location_on,
                               color: Colors.grey,
                             ),
-                            Text('Bethelem, GA'),
+                            Text(jobLocation),
                           ],
                         ),
                       ),
                       Flexible(
                         flex: 3,
-                        child: Container(
-                          margin: const EdgeInsets.only(left: 10, right: 10),
-                          decoration: BoxDecoration(
-                            color:
-                                Colors.greenAccent.shade700.withOpacity(0.6),
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                          child: const Padding(
-                            padding: EdgeInsets.all(4.0),
-                            child: Text(
-                              "Can Pickup",
-                              style: TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ),
+                        child: canPickup
+                            ? Container(
+                                margin:
+                                    const EdgeInsets.only(left: 10, right: 10),
+                                decoration: BoxDecoration(
+                                  color: Colors.greenAccent.shade700
+                                      .withOpacity(0.6),
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                                child: const Padding(
+                                  padding: EdgeInsets.all(4.0),
+                                  child: Text(
+                                    "Can Pickup",
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              )
+                            : Container(),
                       ),
                       Flexible(
                         flex: 5,
@@ -195,10 +245,10 @@ class JobCard extends StatelessWidget {
                               width: 2,
                             ),
                           ),
-                          children: const [
+                          children: [
                             TableRow(
                               children: [
-                                Text(
+                                const Text(
                                   "Start time",
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
@@ -207,8 +257,8 @@ class JobCard extends StatelessWidget {
                                   textAlign: TextAlign.center,
                                 ),
                                 Text(
-                                  "9:00 am",
-                                  style: TextStyle(
+                                  jobStartTime,
+                                  style: const TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 15,
                                   ),
@@ -218,7 +268,7 @@ class JobCard extends StatelessWidget {
                             ),
                             TableRow(
                               children: [
-                                Text(
+                                const Text(
                                   "End time",
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
@@ -227,8 +277,8 @@ class JobCard extends StatelessWidget {
                                   textAlign: TextAlign.center,
                                 ),
                                 Text(
-                                  "5:00 pm",
-                                  style: TextStyle(
+                                  jobEndTime,
+                                  style: const TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 15,
                                   ),
@@ -248,7 +298,7 @@ class JobCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                       Column(
+                      Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -269,11 +319,11 @@ class JobCard extends StatelessWidget {
                               ),
                               borderRadius: BorderRadius.circular(5),
                             ),
-                            child: const Padding(
+                            child: Padding(
                               padding: const EdgeInsets.all(5.0),
-                              child: const Text(
-                                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec purus feugiat, vestibulum mi nec.",
-                                style: TextStyle(
+                              child: Text(
+                                jobDetails,
+                                style: const TextStyle(
                                   height: 1,
                                   fontSize: 13,
                                 ),
@@ -281,7 +331,6 @@ class JobCard extends StatelessWidget {
                             ),
                           )
                         ],
-                      
                       ),
                       ElevatedButton(
                         style: Theme.of(context)

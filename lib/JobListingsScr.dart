@@ -65,11 +65,28 @@ class _JobListingsScrState extends State<JobListingsScr> {
         title: const Center(child:  Text("Jobs available")),
         automaticallyImplyLeading: false,
       ),
-      body: ListView(children: const [JobCard(), JobCard(), JobCard()]),
+      body: ListView(children:  [JobCard(jobPosterName: "Mihai mare", jobTitle: "Ball Crusher",), JobCard(), JobCard()]),
       floatingActionButton: FloatingActionButton(
         onPressed: _incrementCounter,
         tooltip: 'Increment',
         child: const Icon(Icons.add),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.work_outlined),
+            label: 'Jobs',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.message),
+            label: 'Messages',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.menu),
+            label: 'menu',
+          ),
+        ],
+        
       ),
     );
   }

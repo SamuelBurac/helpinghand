@@ -1,11 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:animated_rating_stars/animated_rating_stars.dart';
-import 'package:flip_card/flip_card.dart';
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:flutter/widgets.dart';
 
 class JobListingFullScr extends StatelessWidget {
-  const JobListingFullScr({super.key});
+  String jobTitle;
+  String jobLocation;
+  String jobDetails;
+  String jobStartTime;
+  String jobEndTime;
+  int jobPay;
+  int jobDuration;
+  double hourlyRate;
+  String jobPosterName;
+  bool canPickup;
+  double rating;
+  String pfpURL;
+  JobListingFullScr(
+      {required this.jobTitle,
+      required this.jobLocation,
+      required this.jobDetails,
+      required this.jobStartTime,
+      required this.jobEndTime,
+      required this.jobPay,
+      required this.jobDuration,
+      required this.hourlyRate,
+      required this.jobPosterName,
+      required this.canPickup,
+      required this.rating,
+      required this.pfpURL,
+      super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -24,8 +47,10 @@ class JobListingFullScr extends StatelessWidget {
                   radius: 40,
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(50),
-                    child: Image.asset(
-                      "assets/emptyProfilePic.png",
+                    child: FadeInImage.assetNetwork(
+                      placeholder:
+                          'assets/emptyProfilePic.png', // Replace with your placeholder asset
+                      image: pfpURL,
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -36,13 +61,13 @@ class JobListingFullScr extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text('Billy Bob Joe',
-                          style: TextStyle(
+                      Text(jobPosterName,
+                          style: const TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
                           )),
                       AnimatedRatingStars(
-                        initialRating: 3.5,
+                        initialRating: rating,
                         readOnly: true,
                         onChanged: (value) {
                           // is static here
@@ -57,9 +82,9 @@ class JobListingFullScr extends StatelessWidget {
                 ),
               ],
             ),
-            const Row(
+            Row(
               children: [
-                Text(
+                const Text(
                   "Position: ",
                   style: TextStyle(
                     fontSize: 20,
@@ -67,8 +92,8 @@ class JobListingFullScr extends StatelessWidget {
                   ),
                 ),
                 AutoSizeText(
-                  'Traffic controller',
-                  style: TextStyle(
+                  jobTitle,
+                  style: const TextStyle(
                     height: 1,
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
@@ -79,24 +104,24 @@ class JobListingFullScr extends StatelessWidget {
                 ),
               ],
             ),
-            const Row(
+            Row(
               children: [
-                Icon(
+                const Icon(
                   Icons.location_on,
                   color: Colors.grey,
                 ),
                 Text(
-                  'Bethelem, GA',
-                  style: TextStyle(
+                  jobLocation,
+                  style: const TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
               ],
             ),
-            const Row(
+            Row(
               children: [
-                Text(
+                const Text(
                   "Start time: ",
                   style: TextStyle(
                     fontSize: 20,
@@ -105,8 +130,8 @@ class JobListingFullScr extends StatelessWidget {
                   textAlign: TextAlign.center,
                 ),
                 Text(
-                  "9:00 am",
-                  style: TextStyle(
+                  jobStartTime,
+                  style: const TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
                   ),
@@ -114,9 +139,9 @@ class JobListingFullScr extends StatelessWidget {
                 ),
               ],
             ),
-            const Row(
+            Row(
               children: [
-                Text(
+                const Text(
                   "End time: ",
                   style: TextStyle(
                     fontSize: 20,
@@ -125,8 +150,8 @@ class JobListingFullScr extends StatelessWidget {
                   textAlign: TextAlign.center,
                 ),
                 Text(
-                  "5:00 pm",
-                  style: TextStyle(
+                  jobEndTime,
+                  style: const TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
                   ),
@@ -146,23 +171,26 @@ class JobListingFullScr extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    Container(
-                      margin: const EdgeInsets.only(left: 20),
-                      decoration: BoxDecoration(
-                        color: Colors.greenAccent.shade700.withOpacity(0.6),
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      child: const Padding(
-                        padding: EdgeInsets.all(4.0),
-                        child: Text(
-                          "Can Pickup",
-                          style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ),
+                    canPickup
+                        ? Container(
+                            margin: const EdgeInsets.only(left: 20),
+                            decoration: BoxDecoration(
+                              color:
+                                  Colors.greenAccent.shade700.withOpacity(0.6),
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                            child: const Padding(
+                              padding: EdgeInsets.all(4.0),
+                              child: Text(
+                                "Can Pickup",
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          )
+                        : Container(),
                   ],
                 ),
                 const Divider(),
@@ -176,11 +204,11 @@ class JobListingFullScr extends StatelessWidget {
                     ),
                     borderRadius: BorderRadius.circular(5),
                   ),
-                  child: const Padding(
+                  child: Padding(
                     padding: const EdgeInsets.all(5.0),
-                    child: const Text(
-                      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec purus feugiat, vestibulum mi nec.",
-                      style: TextStyle(
+                    child: Text(
+                      jobDetails,
+                      style: const TextStyle(
                         height: 1,
                         fontSize: 18,
                       ),
@@ -208,6 +236,7 @@ class JobListingFullScr extends StatelessWidget {
         ),
         onPressed: () {},
       ),
+      
     );
   }
 }

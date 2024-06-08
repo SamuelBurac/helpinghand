@@ -17,16 +17,16 @@ import 'package:helping_hand/job_listing_pipeline/InputJobScr.dart';
 import 'package:helping_hand/job_listing_pipeline/ReviewListingScr.dart';
 
 //person listing pipeline
-import '../person_listing_pipeline/InputAvailabilityScr.dart';
+import 'person_listing_pipeline/InputAvailabilityScr.dart';
 import 'package:helping_hand/person_listing_pipeline/ReviewPersonListingScr.dart';
 
 //miscellaneous
-import 'package:helping_hand/JobListingFullScr.dart';
 import 'package:helping_hand/JobListingsScr.dart';
 import 'package:helping_hand/PersonReviewsScr.dart';
-import '../gettting_in/StartupScr.dart'; 
+import 'gettting_in/StartupScr.dart'; 
 import 'package:helping_hand/UserPublicProfileScr.dart';
 import 'package:helping_hand/gettting_in/LoginScr.dart';
+import 'package:helping_hand/MenuScr.dart';
 
 
 var appRoutes = {
@@ -46,9 +46,9 @@ var appRoutes = {
   "/inputAvailability": (context) => const InputAvailabilityScr(),
   "/reviewPerson": (context) => const ReviewPersonListingScr(),
   "/jobListings": (context) => const JobListingsScr(),
-  "/jobListingFull": (context) => const JobListingFullScr(),
   "/personReviews": (context) => const PersonReviewsScr(),
   "/userPublicProfile": (context) => const UserPublicProfileScr(),
   "/login": (context) =>  const LoginScr(),
   "/congrats": (context) => const CongratsScr(),
+  "/menu": (context) => const MenuScr(),
 };
