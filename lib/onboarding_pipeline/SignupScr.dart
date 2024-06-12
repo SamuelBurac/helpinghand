@@ -448,13 +448,13 @@ Future<DocumentReference> storeInputs(
     var docRef = firestoreInstance.collection('users').doc();
 
     await docRef.set({
-      'first_name': inputs.firstName,
-      'last_name': inputs.lastName,
+      'firstName': inputs.firstName,
+      'lastName': inputs.lastName,
       'email': inputs.email,
-      'phone_number': inputs.phoneNumber,
-      'UID': userCredential.user!.uid,
-      "looking_for_work": inputs.lookingForWork,
-      'looking_for_workers': inputs.lookingForWorkers,
+      'phoneNumber': inputs.phoneNumber,
+      'uid': userCredential.user!.uid,
+      "lookingForWork": inputs.lookingForWork,
+      'lookingForWorkers': inputs.lookingForWorkers,
       'location': inputs.location,
     });
 

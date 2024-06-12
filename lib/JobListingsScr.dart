@@ -1,48 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:helping_hand/LoadingScreen.dart';
+import 'package:helping_hand/error.dart';
+import 'package:helping_hand/services/models.dart';
 import 'JobCard.dart';
-//maybe use https://api.flutter.dev/flutter/material/BottomSheet-class.html
-
-// Define a Job model
-class Job {
-  final String title;
-  final String company;
-  final String location;
-  final String description;
-
-  Job({
-    required this.title,
-    required this.company,
-    required this.location,
-    required this.description,
-  });
-}
-
-// Sample job listings
-final List<Job> jobListings = [
-  Job(
-    title: 'Software Engineer',
-    company: 'Tech Co.',
-    location: 'San Francisco, CA',
-    description: 'Develop and maintain software applications.',
-  ),
-  Job(
-    title: 'Product Manager',
-    company: 'Business Inc.',
-    location: 'New York, NY',
-    description: 'Oversee product development from conception to launch.',
-  ),
-  // Add more job listings here
-];
-
-
-
+import 'services/firestore.dart';
 
 class JobListingsScr extends StatefulWidget {
-  
-
   const JobListingsScr({
     super.key,
-    
   });
 
   @override
@@ -60,35 +25,51 @@ class _JobListingsScrState extends State<JobListingsScr> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Center(child:  Text("Jobs available")),
-        automaticallyImplyLeading: false,
-      ),
-      body: ListView(children:  [JobCard(jobPosterName: "Mihai mare", jobTitle: "Ball Crusher",), JobCard(), JobCard()]),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.work_outlined),
-            label: 'Jobs',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.message),
-            label: 'Messages',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.menu),
-            label: 'menu',
-          ),
-        ],
-        
-      ),
+    return FutureBuilder(
+      future: FirestoreService().getJobs(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const LoadingScreen();
+        } else if (snapshot.hasError) {
+          return ErrorMessage(message: snapshot.error.toString());
+        } else if (snapshot.hasData) {
+          var jobPostings = snapshot.data!;
+
+          return Scaffold(
+            appBar: AppBar(
+              title: const Center(child: Text("Jobs available")),
+              automaticallyImplyLeading: false,
+            ),
+            body: ListView(
+              children:
+                  jobPostings.map((job) => JobCard(jobPosting: job)).toList(),
+            ),
+            floatingActionButton: FloatingActionButton(
+              onPressed: _incrementCounter,
+              tooltip: 'Increment',
+              child: const Icon(Icons.add),
+            ),
+            bottomNavigationBar: BottomNavigationBar(
+              items: const [
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.work_outlined),
+                  label: 'Jobs',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.message),
+                  label: 'Messages',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.menu),
+                  label: 'menu',
+                ),
+              ],
+            ),
+          );
+        } else {
+          return const Text("no jobs found");
+        }
+      },
     );
   }
 }
-

@@ -1,33 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:animated_rating_stars/animated_rating_stars.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:helping_hand/services/models.dart';
 
 class JobListingFullScr extends StatelessWidget {
-  String jobTitle;
-  String jobLocation;
-  String jobDetails;
-  String jobStartTime;
-  String jobEndTime;
-  int jobPay;
-  int jobDuration;
-  double hourlyRate;
-  String jobPosterName;
-  bool canPickup;
-  double rating;
-  String pfpURL;
+  JobPosting jobPosting;
+  
   JobListingFullScr(
-      {required this.jobTitle,
-      required this.jobLocation,
-      required this.jobDetails,
-      required this.jobStartTime,
-      required this.jobEndTime,
-      required this.jobPay,
-      required this.jobDuration,
-      required this.hourlyRate,
-      required this.jobPosterName,
-      required this.canPickup,
-      required this.rating,
-      required this.pfpURL,
+      {required this.jobPosting,
       super.key});
 
   @override
@@ -50,7 +30,7 @@ class JobListingFullScr extends StatelessWidget {
                     child: FadeInImage.assetNetwork(
                       placeholder:
                           'assets/emptyProfilePic.png', // Replace with your placeholder asset
-                      image: pfpURL,
+                      image: jobPosting.pfpURL,
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -61,13 +41,13 @@ class JobListingFullScr extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(jobPosterName,
+                      Text( jobPosting.jobPosterName,
                           style: const TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
                           )),
                       AnimatedRatingStars(
-                        initialRating: rating,
+                        initialRating: jobPosting.rating,
                         readOnly: true,
                         onChanged: (value) {
                           // is static here
@@ -92,7 +72,7 @@ class JobListingFullScr extends StatelessWidget {
                   ),
                 ),
                 AutoSizeText(
-                  jobTitle,
+                  jobPosting.jobTitle,
                   style: const TextStyle(
                     height: 1,
                     fontSize: 20,
@@ -111,7 +91,7 @@ class JobListingFullScr extends StatelessWidget {
                   color: Colors.grey,
                 ),
                 Text(
-                  jobLocation,
+                  jobPosting.jobLocation,
                   style: const TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
@@ -130,7 +110,7 @@ class JobListingFullScr extends StatelessWidget {
                   textAlign: TextAlign.center,
                 ),
                 Text(
-                  jobStartTime,
+                  jobPosting.jobStartTime,
                   style: const TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
@@ -150,7 +130,7 @@ class JobListingFullScr extends StatelessWidget {
                   textAlign: TextAlign.center,
                 ),
                 Text(
-                  jobEndTime,
+                  jobPosting.jobEndTime,
                   style: const TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
@@ -171,7 +151,7 @@ class JobListingFullScr extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    canPickup
+                    jobPosting.canPickup
                         ? Container(
                             margin: const EdgeInsets.only(left: 20),
                             decoration: BoxDecoration(
@@ -207,7 +187,7 @@ class JobListingFullScr extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.all(5.0),
                     child: Text(
-                      jobDetails,
+                      jobPosting.jobDetails,
                       style: const TextStyle(
                         height: 1,
                         fontSize: 18,

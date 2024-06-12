@@ -3,36 +3,14 @@ import 'package:animated_rating_stars/animated_rating_stars.dart';
 import 'package:flip_card/flip_card.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:helping_hand/JobListingFullScr.dart';
+import 'package:helping_hand/services/models.dart';
 
 class JobCard extends StatelessWidget {
-  String jobTitle;
-  String jobLocation;
-  String jobDetails;
-  String jobStartTime;
-  String jobEndTime;
-  int jobPay;
-  int jobDuration;
-  double hourlyRate;
-  String jobPosterName;
-  bool canPickup;
-  double rating;
-  String pfpURL;
+  JobPosting jobPosting;
 
   JobCard(
-      {this.jobTitle = "Traffic controller",
-      this.jobLocation = "Bethelem, GA",
-      this.jobDetails = "I wanna buy me this racing car my nigga",
-      this.jobStartTime = "9:00 am",
-      this.jobEndTime = "5:00 pm",
-      this.jobPay = 230,
-      this.jobDuration = 10,
-      this.hourlyRate = 23.0,
-      this.jobPosterName = "Billy Bob Joe",
-      this.canPickup = false,
-      this.rating = 3.5,
-      this.pfpURL =
-          "https://firebasestorage.googleapis.com/v0/b/helping-hand-9002c.appspot.com/o/profilePics%2F7UO8OdTqkIS3IRFFHpGnGHZ6yfA3..jpg?alt=media&token=37fb5d76-6f6f-4517-9e8c-ac10387b6a47",
-      super.key});
+        {required this.jobPosting,         
+        super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -44,18 +22,7 @@ class JobCard extends StatelessWidget {
             context,
             MaterialPageRoute(
               builder: (context) => JobListingFullScr(
-                jobTitle: jobTitle,
-                jobLocation: jobLocation,
-                jobDetails: jobDetails,
-                jobStartTime: jobStartTime,
-                jobEndTime: jobEndTime,
-                jobPay: jobPay,
-                jobDuration: jobDuration,
-                hourlyRate: hourlyRate,
-                jobPosterName: jobPosterName,
-                canPickup: canPickup,
-                rating: rating,
-                pfpURL: pfpURL,
+                jobPosting: jobPosting,
               ),
             ),
           );
@@ -86,7 +53,7 @@ class JobCard extends StatelessWidget {
                                   child: FadeInImage.assetNetwork(
                                     placeholder:
                                         'assets/emptyProfilePic.png', // Replace with your placeholder asset
-                                    image: pfpURL,
+                                    image: jobPosting.pfpURL,
                                     fit: BoxFit.cover,
                                   ),
                                 ),
@@ -95,13 +62,13 @@ class JobCard extends StatelessWidget {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(jobPosterName,
+                                  Text(jobPosting.jobPosterName,
                                       style: const TextStyle(
                                         fontSize: 14,
                                         fontWeight: FontWeight.bold,
                                       )),
                                   AnimatedRatingStars(
-                                    initialRating: rating,
+                                    initialRating: jobPosting.rating,
                                     readOnly: true,
                                     onChanged: (value) {
                                       // is static here
@@ -123,7 +90,7 @@ class JobCard extends StatelessWidget {
                       Flexible(
                         flex: 2,
                         child: AutoSizeText(
-                          jobTitle,
+                          jobPosting.jobTitle,
                           style: const TextStyle(
                             height: 1,
                             fontSize: 20,
@@ -153,7 +120,7 @@ class JobCard extends StatelessWidget {
                                   mainAxisSize: MainAxisSize.max,
                                   children: [
                                     Text(
-                                      "\$$jobPay",
+                                      "\$${jobPosting.jobPay}",
                                       style: const TextStyle(
                                           color: Colors.white,
                                           fontSize: 17,
@@ -163,7 +130,7 @@ class JobCard extends StatelessWidget {
                                       width: 10,
                                     ),
                                     Text(
-                                      "${jobDuration}Hrs",
+                                      "${jobPosting.jobDuration}Hrs",
                                       style: const TextStyle(
                                           color: Colors.white,
                                           fontSize: 17,
@@ -181,7 +148,7 @@ class JobCard extends StatelessWidget {
                             ),
                             child: Center(
                               child: Text(
-                                "\$$hourlyRate/Hr",
+                                "\$${jobPosting.hourlyRate}/Hr",
                                 style: const TextStyle(
                                     color: Colors.white,
                                     fontSize: 17,
@@ -208,13 +175,13 @@ class JobCard extends StatelessWidget {
                               Icons.location_on,
                               color: Colors.grey,
                             ),
-                            Text(jobLocation),
+                            Text(jobPosting.jobLocation),
                           ],
                         ),
                       ),
                       Flexible(
                         flex: 3,
-                        child: canPickup
+                        child: jobPosting.canPickup
                             ? Container(
                                 margin:
                                     const EdgeInsets.only(left: 10, right: 10),
@@ -257,7 +224,7 @@ class JobCard extends StatelessWidget {
                                   textAlign: TextAlign.center,
                                 ),
                                 Text(
-                                  jobStartTime,
+                                  jobPosting.jobStartTime,
                                   style: const TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 15,
@@ -277,7 +244,7 @@ class JobCard extends StatelessWidget {
                                   textAlign: TextAlign.center,
                                 ),
                                 Text(
-                                  jobEndTime,
+                                  jobPosting.jobEndTime,
                                   style: const TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 15,
@@ -322,7 +289,7 @@ class JobCard extends StatelessWidget {
                             child: Padding(
                               padding: const EdgeInsets.all(5.0),
                               child: Text(
-                                jobDetails,
+                                jobPosting.jobDetails,
                                 style: const TextStyle(
                                   height: 1,
                                   fontSize: 13,

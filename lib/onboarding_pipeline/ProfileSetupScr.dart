@@ -189,7 +189,7 @@ class _ProfileSetupScrState extends State<ProfileSetupScr> {
                           docRef.update({
                             "description": descriptionController.text,
                             "displayPhoneNumber": _displayPhoneNumber,
-                            "profilePicURL": storageURL,
+                            "pfpURL": storageURL,
                           });
 
                           Navigator.pushNamed(context, '/congrats');
