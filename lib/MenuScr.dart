@@ -7,7 +7,7 @@ class MenuScr extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: ElevatedButton(child: Text("log out"),
+      child: ElevatedButton(child: const Text("log out"),
       onPressed: () {
         FirebaseAuth.instance.signOut();
         Navigator.pushNamed(context, "/startup");

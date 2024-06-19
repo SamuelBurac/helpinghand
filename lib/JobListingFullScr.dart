@@ -5,10 +5,8 @@ import 'package:helping_hand/services/models.dart';
 
 class JobListingFullScr extends StatelessWidget {
   JobPosting jobPosting;
-  
-  JobListingFullScr(
-      {required this.jobPosting,
-      super.key});
+
+  JobListingFullScr({required this.jobPosting, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +39,7 @@ class JobListingFullScr extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text( jobPosting.jobPosterName,
+                      Text(jobPosting.jobPosterName,
                           style: const TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
@@ -216,7 +214,6 @@ class JobListingFullScr extends StatelessWidget {
         ),
         onPressed: () {},
       ),
-      
     );
   }
 }

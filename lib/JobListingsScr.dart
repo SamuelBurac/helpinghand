@@ -17,33 +17,40 @@ class JobListingsScr extends StatefulWidget {
 }
 
 class _JobListingsScrState extends State<JobListingsScr> {
-  int _tabSelectedIndexSelected = 0;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Center(
           child: Provider.of<UserState>(context).user.lookingForWorkers
-              ? FlutterToggleTab(
-                  width: 90,
-                  borderRadius: 15,
-                  selectedIndex: _tabSelectedIndexSelected,
-                  selectedTextStyle: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600),
-                  unSelectedTextStyle: const TextStyle(
-                      color: Colors.grey,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400),
-                  labels: const ["Jobs", "Availabile Workers"],
-                  selectedLabelIndex: (index) {
-                    setState(() {
-                      _tabSelectedIndexSelected = index;
-                    });
-                    Navigator.pushNamed(context, "/availabilityListings");
-                  },
+              ? Theme(
+                  data: ThemeData(
+                    buttonTheme: const ButtonThemeData(),
+                  ),
+                  child: FlutterToggleTab(
+                    width: 70, // width in percent
+                    borderRadius: 20,
+                    height: 40,
+                    selectedIndex: 0,
+                    selectedBackgroundColors: const [Colors.deepOrangeAccent],
+                    unSelectedBackgroundColors: [Colors.orangeAccent.shade100], 
+                    selectedTextStyle: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 25,
+                        fontWeight: FontWeight.w700),
+                    unSelectedTextStyle: const TextStyle(
+                        color: Color.fromARGB(202, 69, 90, 100),
+                        fontSize: 25,
+                        fontWeight: FontWeight.w700
+                        ),
+                    labels: const ["Jobs", "Workers"],
+                    selectedLabelIndex: (index) {
+                      if (index == 1) {
+                        Navigator.pushNamed(context, "/availabilityListings");
+                      }
+                    },
+                    isScroll: false,
+                  ),
                 )
               : const Text("Jobs"),
         ),

@@ -1,4 +1,3 @@
-import 'package:awesome_place_search/awesome_place_search.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -8,8 +7,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
 // import 'package:google_places_flutter/google_places_flutter.dart';
 // import 'package:google_places_flutter/model/prediction.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:google_places_autocomplete_text_field/google_places_autocomplete_text_field.dart';
 
 class SignupInputs {
   SignupInputs(
