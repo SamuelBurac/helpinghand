@@ -2,6 +2,7 @@
 //chats screens
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:helping_hand/AvailabilityListingsScr.dart';
 import 'package:helping_hand/Chats_screens/ChatsOverviewScr.dart';
 import 'package:helping_hand/Chats_screens/ChatScr.dart';
 import 'package:helping_hand/gettting_in/ForgotPassScr.dart';
@@ -46,6 +47,7 @@ var appRoutes = {
   "/inputAvailability": (context) => const InputAvailabilityScr(),
   "/reviewPerson": (context) => const ReviewPersonListingScr(),
   "/jobListings": (context) => const JobListingsScr(),
+  "/availabilityListings": (context) => const AvailabilityListingsScr(),
   "/personReviews": (context) => const PersonReviewsScr(),
   "/userPublicProfile": (context) => const UserPublicProfileScr(),
   "/login": (context) =>  const LoginScr(),

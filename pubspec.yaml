@@ -32,6 +32,9 @@ dependencies:
   auto_size_text: ^3.0.0
   rxdart: ^0.27.7
   json_annotation: ^4.9.0
+  flutter_toggle_tab: ^1.4.1
+  awesome_place_search: ^2.0.0
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -47,6 +47,7 @@ class JobPosting {
   final int jobDuration;
   final double hourlyRate;
   final String jobPosterName;
+  final String jobPosterID;
   final bool canPickup;
   final double rating;
   final String pfpURL;
@@ -62,6 +63,7 @@ class JobPosting {
     this.jobDuration = 18,
     this.hourlyRate = 15,
     this.jobPosterName = "Mihai Mare",
+    this.jobPosterID = "fajhskdhgfapdsi",
     this.canPickup = false,
     this.rating = 3.5,
     this.pfpURL =
@@ -84,6 +86,7 @@ class AvailabilityPosting {
   final double rating;
   final String pfpURL;
   final String avaPostID;
+  final String posterID;
 
   AvailabilityPosting({
     this.generalLocation = " ",
@@ -93,7 +96,8 @@ class AvailabilityPosting {
     this.rating = 0.0,
     this.pfpURL =
         "https://firebasestorage.googleapis.com/v0/b/helping-hand-9002c.appspot.com/o/profilePics%2F7UO8OdTqkIS3IRFFHpGnGHZ6yfA3..jpg?alt=media&token=37fb5d76-6f6f-4517-9e8c-ac10387b6a47",
-        this.avaPostID="ABC"
+        this.avaPostID="ABC",
+        this.posterID="ABC"
   });
 
   factory AvailabilityPosting.fromJson(Map<String, dynamic> json) => _$AvailabilityPostingFromJson(json);

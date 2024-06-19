@@ -1,8 +1,6 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'auth.dart';
 import 'models.dart';
-import 'package:rxdart/rxdart.dart';
 
 class FirestoreService {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
@@ -10,7 +8,7 @@ class FirestoreService {
   final String _availabilityPostingsCollection = "availabilityPostings";
   final String _usersCollection = "users";
 
- //get a users document from the users collection using the user id
+  //get a users document from the users collection using the user id
   Future<List<JobPosting>> getJobs() async {
     var ref = _db.collection(_jobPostingsCollection);
     var snapshot = await ref.get();
@@ -19,5 +17,10 @@ class FirestoreService {
     return jobPostings.toList();
   }
 
-  
+  Future<User?> getUser(uid) async {
+    var doc = await _db.collection(_usersCollection).doc(uid).get();
+    var data = doc.data();
+    var user = User.fromJson(data!);
+    return user;
+  }
 }

@@ -45,6 +45,7 @@ JobPosting _$JobPostingFromJson(Map<String, dynamic> json) => JobPosting(
       jobDuration: (json['jobDuration'] as num?)?.toInt() ?? 18,
       hourlyRate: (json['hourlyRate'] as num?)?.toDouble() ?? 15,
       jobPosterName: json['jobPosterName'] as String? ?? "Mihai Mare",
+      jobPosterID: json['jobPosterID'] as String? ?? "fajhskdhgfapdsi",
       canPickup: json['canPickup'] as bool? ?? false,
       rating: (json['rating'] as num?)?.toDouble() ?? 3.5,
       pfpURL: json['pfpURL'] as String? ??
@@ -63,6 +64,7 @@ Map<String, dynamic> _$JobPostingToJson(JobPosting instance) =>
       'jobDuration': instance.jobDuration,
       'hourlyRate': instance.hourlyRate,
       'jobPosterName': instance.jobPosterName,
+      'jobPosterID': instance.jobPosterID,
       'canPickup': instance.canPickup,
       'rating': instance.rating,
       'pfpURL': instance.pfpURL,

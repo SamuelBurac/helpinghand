@@ -57,6 +57,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.0"
+  awesome_place_search:
+    dependency: "direct main"
+    description:
+      name: awesome_place_search
+      sha256: "1025dfa2c88b42d2e30c9d7011343a27edd4a8c2698a078598467451b8927096"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.0"
   base58check:
     dependency: transitive
     description:
@@ -241,6 +249,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.3.6"
+  dartz:
+    dependency: transitive
+    description:
+      name: dartz
+      sha256: e6acf34ad2e31b1eb00948692468c30ab48ac8250e0f0df661e29f12dd252168
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.10.1"
   desktop_webview_auth:
     dependency: transitive
     description:
@@ -544,6 +560,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_toggle_tab:
+    dependency: "direct main"
+    description:
+      name: flutter_toggle_tab
+      sha256: "90ad0d050f656df677998825f985637d010117a1793828cd7e6dadada4ecd2c5"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.4.1"
   flutter_web_plugins:
     dependency: transitive
     description: flutter
