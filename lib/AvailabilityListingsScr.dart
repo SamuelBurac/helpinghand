@@ -8,7 +8,7 @@ class AvailabilityListingsScr extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+    return Scaffold(
       appBar: AppBar(
         title: Center(
           child: Provider.of<UserState>(context).user.lookingForWork
@@ -22,7 +22,7 @@ class AvailabilityListingsScr extends StatelessWidget {
                     height: 40,
                     selectedIndex: 1,
                     selectedBackgroundColors: const [Colors.deepOrangeAccent],
-                    unSelectedBackgroundColors: [Colors.orangeAccent.shade100], 
+                    unSelectedBackgroundColors: [Colors.orangeAccent.shade100],
                     selectedTextStyle: const TextStyle(
                         color: Colors.white,
                         fontSize: 25,
@@ -30,8 +30,7 @@ class AvailabilityListingsScr extends StatelessWidget {
                     unSelectedTextStyle: const TextStyle(
                         color: Color.fromARGB(202, 69, 90, 100),
                         fontSize: 25,
-                        fontWeight: FontWeight.w700
-                        ),
+                        fontWeight: FontWeight.w700),
                     labels: const ["Jobs", "Workers"],
                     selectedLabelIndex: (index) {
                       if (index == 0) {
@@ -69,9 +68,7 @@ class AvailabilityListingsScr extends StatelessWidget {
           ),
         ],
         onTap: (value) {
-          if (value == 0) {
-            Navigator.pushNamed(context, "/jobListings");
-          } else if (value == 1) {
+          if (value == 1) {
             Navigator.pushNamed(context, "/chatsOverview");
           } else if (value == 2) {
             Navigator.pushNamed(context, "/menu");

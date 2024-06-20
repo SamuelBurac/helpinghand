@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:helping_hand/LoadingScreen.dart';
 import 'package:helping_hand/error.dart';
 import 'package:helping_hand/services/UserState.dart';
@@ -7,16 +8,11 @@ import 'JobCard.dart';
 import 'services/firestore.dart';
 import 'package:flutter_toggle_tab/flutter_toggle_tab.dart';
 
-class JobListingsScr extends StatefulWidget {
+class JobListingsScr extends StatelessWidget {
   const JobListingsScr({
     super.key,
   });
 
-  @override
-  State<JobListingsScr> createState() => _JobListingsScrState();
-}
-
-class _JobListingsScrState extends State<JobListingsScr> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,7 +29,7 @@ class _JobListingsScrState extends State<JobListingsScr> {
                     height: 40,
                     selectedIndex: 0,
                     selectedBackgroundColors: const [Colors.deepOrangeAccent],
-                    unSelectedBackgroundColors: [Colors.orangeAccent.shade100], 
+                    unSelectedBackgroundColors: [Colors.orangeAccent.shade100],
                     selectedTextStyle: const TextStyle(
                         color: Colors.white,
                         fontSize: 25,
@@ -41,8 +37,7 @@ class _JobListingsScrState extends State<JobListingsScr> {
                     unSelectedTextStyle: const TextStyle(
                         color: Color.fromARGB(202, 69, 90, 100),
                         fontSize: 25,
-                        fontWeight: FontWeight.w700
-                        ),
+                        fontWeight: FontWeight.w700),
                     labels: const ["Jobs", "Workers"],
                     selectedLabelIndex: (index) {
                       if (index == 1) {
@@ -74,32 +69,56 @@ class _JobListingsScrState extends State<JobListingsScr> {
               return const Text("no jobs found");
             }
           }),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.pushNamed(context, "/inputJob");
-        },
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
+      floatingActionButton: SpeedDial(
+        icon: Icons.add,
+        activeIcon: Icons.close,
+        backgroundColor: Colors.orange,
+        children: [
+          SpeedDialChild(
+            child: const Icon(Icons.add),
+            backgroundColor: Colors.orange,
+            label: 'Add Job',
+            labelStyle: const TextStyle(fontSize: 18.0),
+            onTap: () {
+              Navigator.pushNamed(context, "/inputJob");
+            },
+          ),
+          SpeedDialChild(
+            child: const Icon(Icons.calendar_month),
+            backgroundColor: Colors.orange,
+            label: 'Add Availability',
+            labelStyle: const TextStyle(fontSize: 18.0),
+            onTap: () {
+              Navigator.pushNamed(context, "/inputAvailability");
+            },
+          ),
+        ],
       ),
       bottomNavigationBar: BottomNavigationBar(
+        selectedItemColor: Colors.orange, // Set the color for selected item (icon + text)
+        unselectedItemColor: const Color.fromARGB(149, 255, 172, 64), // Set the color for unselected items (icon + text)
         items: const [
           BottomNavigationBarItem(
-            icon: Icon(Icons.work_outlined),
+            icon: Icon(
+              Icons.work_outlined,
+            ),
             label: 'Jobs',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.message),
+            icon: Icon(
+              Icons.message,
+            ),
             label: 'Messages',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.menu),
+            icon: Icon(
+              Icons.menu,
+            ),
             label: 'menu',
           ),
         ],
         onTap: (value) {
-          if (value == 0) {
-            Navigator.pushNamed(context, "/jobListings");
-          } else if (value == 1) {
+          if (value == 1) {
             Navigator.pushNamed(context, "/chatsOverview");
           } else if (value == 2) {
             Navigator.pushNamed(context, "/menu");

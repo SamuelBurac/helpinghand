@@ -367,6 +367,7 @@ Future<DocumentReference> storeInputs(
       'uid': userCredential.user!.uid,
       "lookingForWork": inputs.lookingForWork,
       'lookingForWorkers': inputs.lookingForWorkers,
+      'rating': 0,
       
     });
 

@@ -34,6 +34,8 @@ dependencies:
   json_annotation: ^4.9.0
   flutter_toggle_tab: ^1.4.1
   awesome_place_search: ^2.0.0
+  flutter_speed_dial: ^7.0.0
+  progressive_time_picker: ^1.0.1
   
 dev_dependencies:
   flutter_test:
