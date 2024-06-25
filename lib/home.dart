@@ -34,11 +34,12 @@ class HomeScreen extends StatelessWidget {
                   return ErrorMessage(message: snapshot.error.toString());
                 } else if (snapshot.hasData) {
                   var user = snapshot.data as User;
-                  Provider.of<UserState>(context, listen: false).user = user;
+                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                    Provider.of<UserState>(context, listen: false).user = user;
+                  });
                   return user.lookingForWork
                       ? const JobListingsScr()
                       : const AvailabilityListingsScr();
-
                 } else {
                   return const ErrorMessage(
                       message: "You are not logged in. What the nuts?");

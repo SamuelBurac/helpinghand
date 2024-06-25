@@ -36,6 +36,7 @@ dependencies:
   awesome_place_search: ^2.0.0
   flutter_speed_dial: ^7.0.0
   progressive_time_picker: ^1.0.1
+  time_picker_spinner_pop_up: ^2.0.0
   
 dev_dependencies:
   flutter_test:
