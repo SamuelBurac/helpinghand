@@ -34,7 +34,7 @@ class AvailabilityListingsScr extends StatelessWidget {
                     labels: const ["Jobs", "Workers"],
                     selectedLabelIndex: (index) {
                       if (index == 0) {
-                        Navigator.pushNamed(context, "/jobListings");
+                        Navigator.popAndPushNamed(context, "/jobListings");
                       }
                     },
                     isScroll: false,

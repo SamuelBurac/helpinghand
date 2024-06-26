@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'services/firebase_options.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
+
 ThemeMode thema = ThemeMode.system;
 //todo change later use provider to add button when time comes
 
@@ -14,6 +15,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform,);
   await dotenv.load(fileName: "bruh.env");
+  
   runApp(
     ChangeNotifierProvider(
       create: (context) => UserState(),

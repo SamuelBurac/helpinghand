@@ -28,7 +28,7 @@ class JobListingsScr extends StatelessWidget {
                     borderRadius: 20,
                     height: 40,
                     selectedIndex: 0,
-                    selectedBackgroundColors: const [Colors.deepOrangeAccent],
+                    selectedBackgroundColors:  [Colors.orange.shade600],
                     unSelectedBackgroundColors: [Colors.orangeAccent.shade100],
                     selectedTextStyle: const TextStyle(
                         color: Colors.white,
@@ -41,7 +41,7 @@ class JobListingsScr extends StatelessWidget {
                     labels: const ["Jobs", "Workers"],
                     selectedLabelIndex: (index) {
                       if (index == 1) {
-                        Navigator.pushNamed(context, "/availabilityListings");
+                        Navigator.popAndPushNamed(context, "/availabilityListings");
                       }
                     },
                     isScroll: false,

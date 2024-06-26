@@ -4,6 +4,12 @@ final ThemeData lightTheme = ThemeData(
   brightness: Brightness.light,
   primarySwatch: Colors.orange,
   primaryColor: Colors.orange,
+  primaryColorDark: Colors.orange,
+  primaryColorLight: Colors.orange,
+  colorScheme: const ColorScheme.light(
+    primary: Colors.orange,
+    secondary: Colors.orange,
+  ),
   visualDensity: VisualDensity.adaptivePlatformDensity,
   textSelectionTheme: const TextSelectionThemeData(
     cursorColor: Colors.orange,
@@ -13,7 +19,7 @@ final ThemeData lightTheme = ThemeData(
     displayLarge: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
     displayMedium: TextStyle(fontSize: 35.0, fontWeight: FontWeight.bold),
     titleLarge: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
-    bodyMedium: TextStyle(fontSize: 14.0, fontFamily: 'Hind'),
+    bodyMedium: TextStyle(fontSize: 14.0, fontFamily: 'Hind', color: Colors.black),
   ),
   inputDecorationTheme: InputDecorationTheme(
     border: OutlineInputBorder(
@@ -74,6 +80,8 @@ final ThemeData darkTheme = ThemeData(
     brightness: Brightness.dark,
     primarySwatch: Colors.orange,
     primaryColor: Colors.orange,
+    primaryColorDark: Colors.orange,
+    primaryColorLight: Colors.orange,
     textSelectionTheme: const TextSelectionThemeData(
       cursorColor: Colors.orange,
       selectionHandleColor: Colors.orange,
@@ -88,6 +96,7 @@ final ThemeData darkTheme = ThemeData(
           fontSize: 36.0, fontStyle: FontStyle.italic, color: Colors.white),
       bodyMedium:
           TextStyle(fontSize: 14.0, fontFamily: 'Hind', color: Colors.white),
+          
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ButtonStyle(
