@@ -119,7 +119,7 @@ class InputJobScr extends StatelessWidget {
                                         selectedBackgroundColors: [
                                           Colors.green.shade600
                                         ],
-                                        unSelectedBackgroundColors: const[
+                                        unSelectedBackgroundColors: const [
                                           Color.fromARGB(255, 154, 238, 198)
                                         ],
                                         selectedTextStyle: const TextStyle(
@@ -163,27 +163,26 @@ class InputJobScr extends StatelessWidget {
                               padding: const EdgeInsets.only(top: 18.0),
                               child: Theme(
                                 data: Theme.of(context).copyWith(
-                                  colorScheme: MediaQuery.of(context)
-                                              .platformBrightness ==
-                                          Brightness.dark
-                                      ? ColorScheme.dark().copyWith(
-                                          primary: Colors
-                                              .white, // Color for dark mode
-                                          secondary: Colors
-                                              .orange, // Color for dark mode
-                                        )
-                                      : ColorScheme.light().copyWith(
-                                          primary: Colors
-                                              .black, // Color for light mode
-                                          secondary: Colors
-                                              .blue, // Color for light mode
-                                        ),
-                                        textButtonTheme: TextButtonThemeData(
-                                          style: ButtonStyle(
-                                            backgroundColor: WidgetStateProperty.all<Color?>(Colors.green.shade800)
+                                    colorScheme: MediaQuery.of(context)
+                                                .platformBrightness ==
+                                            Brightness.dark
+                                        ? const ColorScheme.dark().copyWith(
+                                            primary: Colors
+                                                .white, // Color for dark mode
+                                            secondary: Colors
+                                                .orange, // Color for dark mode
                                           )
-                                        )
-                                ),
+                                        : const ColorScheme.light().copyWith(
+                                            primary: Colors
+                                                .black, // Color for light mode
+                                            secondary: Colors
+                                                .blue, // Color for light mode
+                                          ),
+                                    textButtonTheme: TextButtonThemeData(
+                                        style: ButtonStyle(
+                                            backgroundColor:
+                                                WidgetStateProperty.all<Color?>(
+                                                    Colors.green.shade800)))),
                                 child: SfDateRangePicker(
                                   enablePastDates: false,
                                   showActionButtons: true,
@@ -194,7 +193,8 @@ class InputJobScr extends StatelessWidget {
                                     todayCellDecoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(20),
                                       border: Border.all(
-                                        color: Color.fromARGB(103, 86, 255, 64),
+                                        color: const Color.fromARGB(
+                                            103, 86, 255, 64),
                                       ),
                                     ),
                                     todayTextStyle: TextStyle(
@@ -230,65 +230,78 @@ class InputJobScr extends StatelessWidget {
                             Padding(
                               padding: const EdgeInsets.only(top: 18.0),
                               child: Row(
-                                mainAxisSize: MainAxisSize.max,
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  const Text("Start Time:"),
-                                  const SizedBox(
-                                    width: 30,
+                                  Column(
+                                    mainAxisSize: MainAxisSize.max,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      const Text("Start Time:"),
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+                                      TimePickerSpinnerPopUp(
+                                        mode: CupertinoDatePickerMode.time,
+                                        initTime: DateTime.parse(
+                                            "2011-07-06 09:00:00"),
+                                        use24hFormat: false,
+                                        timeFormat: "hh:mm a",
+                                        minuteInterval: 5,
+                                        onChange: (dateTime) {
+                                          // Implement your logic with select dateTime
+                                        },
+                                      ),
+                                    ],
                                   ),
-                                  TimePickerSpinnerPopUp(
-                                    mode: CupertinoDatePickerMode.time,
-                                    initTime:
-                                        DateTime.parse("2011-07-06 08:00:00"),
-                                    use24hFormat: false,
-                                    timeFormat: "hh:mm a",
-                                    minuteInterval: 5,
-                                    onChange: (dateTime) {
-                                      // Implement your logic with select dateTime
-                                    },
+                                  const VerticalDivider(),
+                                  Column(
+                                    mainAxisSize: MainAxisSize.max,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      const Text("End Time:"),
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+                                      TimePickerSpinnerPopUp(
+                                        mode: CupertinoDatePickerMode.time,
+                                        initTime: DateTime.parse(
+                                            "2011-07-06 17:00:00"),
+                                        use24hFormat: false,
+                                        timeFormat: "hh:mm a",
+                                        minuteInterval: 5,
+                                        onChange: (dateTime) {
+                                          // Implement your logic with select dateTime
+                                        },
+                                      ),
+                                    ],
                                   ),
                                 ],
                               ),
                             ),
                             Padding(
-                              padding: const EdgeInsets.only(top: 18.0),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.max,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  const Text("End Time:"),
-                                  const SizedBox(
-                                    width: 30,
+                              padding: const EdgeInsets.only(top:18.0),
+                              child: Container(
+                                decoration: const BoxDecoration(
+                                  border: Border(
+                                    top: BorderSide(
+                                        width: 1.0, color: Colors.grey),
+                                    bottom: BorderSide(
+                                        width: 1.0, color: Colors.grey),
                                   ),
-                                  TimePickerSpinnerPopUp(
-                                    mode: CupertinoDatePickerMode.time,
-                                    initTime:
-                                        DateTime.parse("2011-07-06 08:00:00"),
-                                    use24hFormat: false,
-                                    timeFormat: "hh:mm a",
-                                    minuteInterval: 5,
-                                    onChange: (dateTime) {
-                                      // Implement your logic with select dateTime
-                                    },
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 18.0),
-                              child: CheckboxListTile(
-                                title: const Text(
-                                  "Willing to pick up workers?",
-                                  style: TextStyle(fontSize: 20),
                                 ),
-                                activeColor: Colors.orange,
-                                controlAffinity:
-                                    ListTileControlAffinity.trailing,
-                                value: canPickup,
-                                onChanged: (bool? value) {
-                                  state.canPickup = value!;
-                                },
+                                child: CheckboxListTile(
+                                  title: const Text(
+                                    "Willing to pick up workers?",
+                                    style: TextStyle(fontSize: 20),
+                                  ),
+                                  activeColor: Colors.orange,
+                                  controlAffinity:
+                                      ListTileControlAffinity.trailing,
+                                  value: canPickup,
+                                  onChanged: (bool? value) {
+                                    state.canPickup = value!;
+                                  },
+                                ),
                               ),
                             ),
                             const Padding(
@@ -314,9 +327,12 @@ class InputJobScr extends StatelessWidget {
                         ),
                       ),
                       ElevatedButton.icon(
-                        style: Theme.of(context).elevatedButtonTheme.style!.copyWith(
-                          backgroundColor: WidgetStateProperty.all(Colors.green.shade700)
-                        ),
+                        style: Theme.of(context)
+                            .elevatedButtonTheme
+                            .style!
+                            .copyWith(
+                                backgroundColor: WidgetStateProperty.all(
+                                    Colors.green.shade700)),
                         onPressed: () {
                           if (state.validateJob()) {
                             state.submitJob();
