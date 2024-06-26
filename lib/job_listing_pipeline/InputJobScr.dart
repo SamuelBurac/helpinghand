@@ -5,6 +5,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_toggle_tab/flutter_toggle_tab.dart';
 import 'package:google_places_autocomplete_text_field/google_places_autocomplete_text_field.dart';
 import 'package:helping_hand/services/models.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:time_picker_spinner_pop_up/time_picker_spinner_pop_up.dart';
@@ -41,8 +42,9 @@ class InputJobScr extends StatelessWidget {
                         child: ListView(
                           padding: const EdgeInsets.only(top: 18.0),
                           children: [
-                            const TextField(
-                              decoration: InputDecoration(
+                            TextField(
+                              controller: state.jobTitle,
+                              decoration: const InputDecoration(
                                 labelText: "Job Title",
                                 hintText: "Enter the title of the job",
                               ),
@@ -151,7 +153,7 @@ class InputJobScr extends StatelessWidget {
                                   Padding(
                                     padding: const EdgeInsets.only(top: 10.0),
                                     child: Text(
-                                      "Selected ${state.oneDayJob ? "day: " : "range of days: "}",
+                                      "Selected ${state.oneDayJob ? "day: ${DateFormat('MM/dd/yy').format(state.onlyDay)}" : "range of days: ${DateFormat('MM/dd/yy').format(state.startDate)} - ${DateFormat('MM/dd/yy').format(state.endDate)} "}",
                                       style:
                                           Theme.of(context).textTheme.bodyLarge,
                                     ),
@@ -185,7 +187,6 @@ class InputJobScr extends StatelessWidget {
                                                     Colors.green.shade800)))),
                                 child: SfDateRangePicker(
                                   enablePastDates: false,
-                                  showActionButtons: true,
                                   showTodayButton: true,
                                   startRangeSelectionColor: Colors.lightGreen,
                                   endRangeSelectionColor: Colors.lightGreen,
@@ -248,7 +249,7 @@ class InputJobScr extends StatelessWidget {
                                         timeFormat: "hh:mm a",
                                         minuteInterval: 5,
                                         onChange: (dateTime) {
-                                          // Implement your logic with select dateTime
+                                          state.startTime = dateTime;
                                         },
                                       ),
                                     ],
@@ -270,7 +271,7 @@ class InputJobScr extends StatelessWidget {
                                         timeFormat: "hh:mm a",
                                         minuteInterval: 5,
                                         onChange: (dateTime) {
-                                          // Implement your logic with select dateTime
+                                          state.endTime = dateTime;
                                         },
                                       ),
                                     ],
@@ -279,7 +280,7 @@ class InputJobScr extends StatelessWidget {
                               ),
                             ),
                             Padding(
-                              padding: const EdgeInsets.only(top:18.0),
+                              padding: const EdgeInsets.only(top: 18.0),
                               child: Container(
                                 decoration: const BoxDecoration(
                                   border: Border(
@@ -304,43 +305,52 @@ class InputJobScr extends StatelessWidget {
                                 ),
                               ),
                             ),
-                            const Padding(
-                              padding: EdgeInsets.only(top: 18.0),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 18.0),
                               child: TextField(
+                                controller: state.pay,
                                 keyboardType: TextInputType.number,
-                                decoration: InputDecoration(
+                                decoration: const InputDecoration(
                                   labelText: "Job Pay",
                                   hintText: "\$150",
                                 ),
                               ),
                             ),
-                            const Padding(
-                              padding: EdgeInsets.only(top: 18.0),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 18.0),
                               child: TextField(
-                                decoration: InputDecoration(
+                                controller: state.jobDescription,
+                                decoration: const InputDecoration(
                                   labelText: "Job Description",
                                   hintText: "Enter the description of the job",
                                 ),
                               ),
                             ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                ElevatedButton.icon(
+                                  style: Theme.of(context)
+                                      .elevatedButtonTheme
+                                      .style!
+                                      .copyWith(
+                                          backgroundColor:
+                                              WidgetStateProperty.all(
+                                                  Colors.green.shade700)),
+                                  onPressed: () {
+                                    if (state.validateJob()) {
+                                      state.submitJob();
+                                      Navigator.pushNamed(
+                                          context, "/reviewJob");
+                                    }
+                                  },
+                                  label: const Text("Submit"),
+                                  icon: const Icon(Icons.send),
+                                ),
+                              ],
+                            ),
                           ],
                         ),
-                      ),
-                      ElevatedButton.icon(
-                        style: Theme.of(context)
-                            .elevatedButtonTheme
-                            .style!
-                            .copyWith(
-                                backgroundColor: WidgetStateProperty.all(
-                                    Colors.green.shade700)),
-                        onPressed: () {
-                          if (state.validateJob()) {
-                            state.submitJob();
-                            Navigator.pushNamed(context, "/reviewJob");
-                          }
-                        },
-                        label: const Text("Submit"),
-                        icon: const Icon(Icons.send),
                       ),
                     ]),
               );

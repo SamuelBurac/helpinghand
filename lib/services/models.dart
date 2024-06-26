@@ -56,7 +56,7 @@ class JobPosting {
   JobPosting({
     this.jobTitle = "Ball Crusher",
     this.jobLocation = "Alpharetta, GA",
-    this.jobDetails = "I wanna buy me this god damn ball crusher my nigga",
+    this.jobDetails = "I wanna buy me this damn ball crusher",
     this.jobStartTime = "6:00 AM",
     this.jobEndTime = "12:00 AM",
     this.jobPay = 360,
