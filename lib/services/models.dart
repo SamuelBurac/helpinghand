@@ -55,7 +55,7 @@ class JobPosting {
   final bool canPickup;
   final double rating;
   final String pfpURL;
-  final String jobID;
+  String jobID;
 
   JobPosting({
     this.jobTitle = "Ball Crusher",

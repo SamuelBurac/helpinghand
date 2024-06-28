@@ -127,7 +127,7 @@ class InputJobState with ChangeNotifier {
       isMissing.add("Description");
       isValid = false;
     }
-    if (payController.text.isEmpty) {
+    if (payController.text.isEmpty || !RegExp(r'^\d+$').hasMatch(payController.text)) {
       isMissing.add("Pay");
       isValid = false;
     }

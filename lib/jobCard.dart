@@ -90,6 +90,7 @@ class JobCard extends StatelessWidget {
                           )),
                       Flexible(
                         flex: 3,
+                        fit: FlexFit.tight,
                         child: AutoSizeText(
                           jobPosting.jobTitle,
                           style: const TextStyle(
@@ -104,59 +105,57 @@ class JobCard extends StatelessWidget {
                       ),
                       Flexible(
                         flex: 4,
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 8.0),
-                          child: FlipCard(
-                            fill: Fill.fillBack,
-                            direction: FlipDirection.HORIZONTAL,
-                            front: Container(
-                              decoration: BoxDecoration(
-                                color: const Color.fromARGB(255, 11, 167, 73),
-                                borderRadius: BorderRadius.circular(6),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.only(
-                                    top: 5.0, bottom: 5.0),
-                                child: IntrinsicHeight(
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    mainAxisSize: MainAxisSize.max,
-                                    children: [
-                                      Text(
-                                        "\$${jobPosting.jobPay}",
-                                        style: const TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 17,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      const VerticalDivider(
-                                        width: 10,
-                                      ),
-                                      Text(
-                                        "${jobPosting.jobDuration}Hrs",
-                                        style: const TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 17,
-                                            fontWeight: FontWeight.bold),
-                                      )
-                                    ],
-                                  ),
+                        fit: FlexFit.tight,
+                        child: FlipCard(
+                          fill: Fill.fillBack,
+                          direction: FlipDirection.HORIZONTAL,
+                          front: Container(
+                            decoration: BoxDecoration(
+                              color: const Color.fromARGB(255, 11, 167, 73),
+                              borderRadius: BorderRadius.circular(6),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                  top: 5.0, bottom: 5.0),
+                              child: IntrinsicHeight(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  mainAxisSize: MainAxisSize.max,
+                                  children: [
+                                    Text(
+                                      "\$${jobPosting.jobPay}",
+                                      style: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 17,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    const VerticalDivider(
+                                      width: 10,
+                                    ),
+                                    Text(
+                                      "${jobPosting.jobDuration}Hrs",
+                                      style: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 17,
+                                          fontWeight: FontWeight.bold),
+                                    )
+                                  ],
                                 ),
                               ),
                             ),
-                            back: Container(
-                              decoration: BoxDecoration(
-                                color: const Color.fromARGB(255, 11, 167, 73),
-                                borderRadius: BorderRadius.circular(6),
-                              ),
-                              child: Center(
-                                child: Text(
-                                  "\$${jobPosting.hourlyRate}/Hr",
-                                  style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 17,
-                                      fontWeight: FontWeight.bold),
-                                ),
+                          ),
+                          back: Container(
+                            decoration: BoxDecoration(
+                              color: const Color.fromARGB(255, 11, 167, 73),
+                              borderRadius: BorderRadius.circular(6),
+                            ),
+                            child: Center(
+                              child: Text(
+                                "\$${jobPosting.hourlyRate}/Hr",
+                                style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 17,
+                                    fontWeight: FontWeight.bold),
                               ),
                             ),
                           ),

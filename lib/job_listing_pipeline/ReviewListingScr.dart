@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:helping_hand/JobCard.dart';
+import 'package:helping_hand/services/firestore.dart';
 import 'package:helping_hand/services/models.dart';
 
-part 'review_listing_controller.dart';
 
 class ReviewListingScr extends StatelessWidget {
   final JobPosting jobPosting;
@@ -29,8 +29,9 @@ class ReviewListingScr extends StatelessWidget {
                 child: const Text("Go back"),
               ),
               ElevatedButton(
-                onPressed: () {
-                  // send to firestore
+                onPressed: () async {
+                  await FirestoreService().addJob(jobPosting);
+                  Navigator.popAndPushNamed(context, "/jobListings");
                 },
                 child: const Text("Submit Job Listing"),
               ),
