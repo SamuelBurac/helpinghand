@@ -39,7 +39,6 @@ var appRoutes = {
   "/chatsOverview": (context) => const ChatsOverviewScr(),
   
   "/inputJob": (context) => const InputJobScr(),
-  "/reviewJob": (context) => const ReviewListingScr(),
   
   "/signup": (context) => const SignupScr(),
   "/profileSetup": (context) => ProfileSetupScr(docRef: ModalRoute.of(context)!.settings.arguments as DocumentReference),

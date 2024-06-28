@@ -38,9 +38,13 @@ JobPosting _$JobPostingFromJson(Map<String, dynamic> json) => JobPosting(
       jobTitle: json['jobTitle'] as String? ?? "Ball Crusher",
       jobLocation: json['jobLocation'] as String? ?? "Alpharetta, GA",
       jobDetails: json['jobDetails'] as String? ??
-          "I wanna buy me this god damn ball crusher my nigga",
+          "I wanna buy me this damn ball crusher",
       jobStartTime: json['jobStartTime'] as String? ?? "6:00 AM",
       jobEndTime: json['jobEndTime'] as String? ?? "12:00 AM",
+      oneDay: json['oneDay'] as bool? ?? true,
+      onlyDay: json['onlyDay'] as String? ?? "07/04/2024",
+      startDate: json['startDate'] as String?,
+      endDate: json['endDate'] as String?,
       jobPay: (json['jobPay'] as num?)?.toInt() ?? 360,
       jobDuration: (json['jobDuration'] as num?)?.toInt() ?? 18,
       hourlyRate: (json['hourlyRate'] as num?)?.toDouble() ?? 15,
@@ -60,6 +64,10 @@ Map<String, dynamic> _$JobPostingToJson(JobPosting instance) =>
       'jobDetails': instance.jobDetails,
       'jobStartTime': instance.jobStartTime,
       'jobEndTime': instance.jobEndTime,
+      'oneDay': instance.oneDay,
+      'onlyDay': instance.onlyDay,
+      'startDate': instance.startDate,
+      'endDate': instance.endDate,
       'jobPay': instance.jobPay,
       'jobDuration': instance.jobDuration,
       'hourlyRate': instance.hourlyRate,
@@ -81,6 +89,7 @@ AvailabilityPosting _$AvailabilityPostingFromJson(Map<String, dynamic> json) =>
       pfpURL: json['pfpURL'] as String? ??
           "https://firebasestorage.googleapis.com/v0/b/helping-hand-9002c.appspot.com/o/profilePics%2F7UO8OdTqkIS3IRFFHpGnGHZ6yfA3..jpg?alt=media&token=37fb5d76-6f6f-4517-9e8c-ac10387b6a47",
       avaPostID: json['avaPostID'] as String? ?? "ABC",
+      posterID: json['posterID'] as String? ?? "ABC",
     );
 
 Map<String, dynamic> _$AvailabilityPostingToJson(
@@ -93,4 +102,5 @@ Map<String, dynamic> _$AvailabilityPostingToJson(
       'rating': instance.rating,
       'pfpURL': instance.pfpURL,
       'avaPostID': instance.avaPostID,
+      'posterID': instance.posterID,
     };

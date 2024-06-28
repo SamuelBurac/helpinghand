@@ -8,9 +8,7 @@ import 'package:helping_hand/services/models.dart';
 class JobCard extends StatelessWidget {
   JobPosting jobPosting;
 
-  JobCard(
-        {required this.jobPosting,         
-        super.key});
+  JobCard({required this.jobPosting, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -37,12 +35,12 @@ class JobCard extends StatelessWidget {
                 Flexible(
                   flex: 2,
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.end,
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Flexible(
-                          flex: 3,
+                          flex: 5,
                           child: Row(
                             children: [
                               CircleAvatar(
@@ -58,37 +56,40 @@ class JobCard extends StatelessWidget {
                                   ),
                                 ),
                               ),
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(jobPosting.jobPosterName,
-                                      style: const TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.bold,
-                                      )),
-                                  AnimatedRatingStars(
-                                    initialRating: jobPosting.rating,
-                                    readOnly: true,
-                                    onChanged: (value) {
-                                      // is static here
-                                    },
-                                    customFilledIcon: Icons.star,
-                                    customHalfFilledIcon: Icons.star_half,
-                                    customEmptyIcon: Icons.star_border,
-                                    starSize: 10,
-                                  )
-                                ],
+                              Padding(
+                                padding: const EdgeInsets.only(left: 3.0),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(jobPosting.jobPosterName.split(" ")[0],
+                                        style: const TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold,
+                                            height: 1)),
+                                    Text(jobPosting.jobPosterName.split(" ")[1],
+                                        style: const TextStyle(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.bold,
+                                            height: 1)),
+                                    AnimatedRatingStars(
+                                      initialRating: jobPosting.rating,
+                                      readOnly: true,
+                                      onChanged: (value) {
+                                        // is static here
+                                      },
+                                      customFilledIcon: Icons.star,
+                                      customHalfFilledIcon: Icons.star_half,
+                                      customEmptyIcon: Icons.star_border,
+                                      starSize: 10,
+                                    )
+                                  ],
+                                ),
                               ),
                             ],
                           )),
-                      VerticalDivider(
-                        color: Colors.grey.shade300,
-                        width: 10,
-                        endIndent: 10,
-                      ),
                       Flexible(
-                        flex: 2,
+                        flex: 3,
                         child: AutoSizeText(
                           jobPosting.jobTitle,
                           style: const TextStyle(
@@ -102,57 +103,60 @@ class JobCard extends StatelessWidget {
                         ),
                       ),
                       Flexible(
-                        flex: 2,
-                        child: FlipCard(
-                          fill: Fill.fillBack,
-                          direction: FlipDirection.HORIZONTAL,
-                          front: Container(
-                            decoration: BoxDecoration(
-                              color: const Color.fromARGB(255, 11, 167, 73),
-                              borderRadius: BorderRadius.circular(6),
-                            ),
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.only(top: 5.0, bottom: 5.0),
-                              child: IntrinsicHeight(
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  mainAxisSize: MainAxisSize.max,
-                                  children: [
-                                    Text(
-                                      "\$${jobPosting.jobPay}",
-                                      style: const TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 17,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    const VerticalDivider(
-                                      width: 10,
-                                    ),
-                                    Text(
-                                      "${jobPosting.jobDuration}Hrs",
-                                      style: const TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 17,
-                                          fontWeight: FontWeight.bold),
-                                    )
-                                  ],
+                        flex: 4,
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 8.0),
+                          child: FlipCard(
+                            fill: Fill.fillBack,
+                            direction: FlipDirection.HORIZONTAL,
+                            front: Container(
+                              decoration: BoxDecoration(
+                                color: const Color.fromARGB(255, 11, 167, 73),
+                                borderRadius: BorderRadius.circular(6),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                    top: 5.0, bottom: 5.0),
+                                child: IntrinsicHeight(
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    mainAxisSize: MainAxisSize.max,
+                                    children: [
+                                      Text(
+                                        "\$${jobPosting.jobPay}",
+                                        style: const TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 17,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      const VerticalDivider(
+                                        width: 10,
+                                      ),
+                                      Text(
+                                        "${jobPosting.jobDuration}Hrs",
+                                        style: const TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 17,
+                                            fontWeight: FontWeight.bold),
+                                      )
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                          back: Container(
-                            decoration: BoxDecoration(
-                              color: const Color.fromARGB(255, 11, 167, 73),
-                              borderRadius: BorderRadius.circular(6),
-                            ),
-                            child: Center(
-                              child: Text(
-                                "\$${jobPosting.hourlyRate}/Hr",
-                                style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 17,
-                                    fontWeight: FontWeight.bold),
+                            back: Container(
+                              decoration: BoxDecoration(
+                                color: const Color.fromARGB(255, 11, 167, 73),
+                                borderRadius: BorderRadius.circular(6),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  "\$${jobPosting.hourlyRate}/Hr",
+                                  style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 17,
+                                      fontWeight: FontWeight.bold),
+                                ),
                               ),
                             ),
                           ),
@@ -168,43 +172,91 @@ class JobCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Flexible(
-                        flex: 4,
+                        flex: 1,
                         child: Row(
                           children: [
                             const Icon(
                               Icons.location_on,
                               color: Colors.grey,
                             ),
-                            Text(jobPosting.jobLocation),
+                            Expanded(
+                              child: AutoSizeText(
+                                jobPosting.jobLocation,
+                                style: const TextStyle(
+                                    height: 1, fontWeight: FontWeight.bold),
+                                maxLines: 2,
+                                minFontSize:
+                                    12, // the minimum font size you want
+                                maxFontSize: 20, // the initial font size
+                              ),
+                            ),
                           ],
                         ),
                       ),
+                      // put date(s)
                       Flexible(
-                        flex: 3,
-                        child: jobPosting.canPickup
-                            ? Container(
-                                margin:
-                                    const EdgeInsets.only(left: 10, right: 10),
-                                decoration: BoxDecoration(
-                                  color: Colors.greenAccent.shade700
-                                      .withOpacity(0.6),
-                                  borderRadius: BorderRadius.circular(5),
-                                ),
-                                child: const Padding(
-                                  padding: EdgeInsets.all(4.0),
-                                  child: Text(
-                                    "Can Pickup",
-                                    style: TextStyle(
-                                      fontSize: 12,
+                        flex: 1,
+                        child: jobPosting.oneDay
+                            ? Row(
+                                children: [
+                                  const Icon(
+                                    Icons.calendar_today,
+                                    color: Colors.grey,
+                                  ),
+                                  Text(
+                                    jobPosting.onlyDay!,
+                                    style: const TextStyle(
+                                      fontSize: 15,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
-                                ),
+                                ],
                               )
-                            : Container(),
+                            : Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  const Column(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      Text(
+                                        "From: ",
+                                        style: TextStyle(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      Text(
+                                        'To: ',
+                                        style: TextStyle(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Column(
+                                    children: [
+                                      Text(
+                                        jobPosting.endDate!,
+                                        style: const TextStyle(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      Text(
+                                        jobPosting.startDate!,
+                                        style: const TextStyle(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
                       ),
                       Flexible(
-                        flex: 5,
+                        flex: 1,
                         child: Table(
                           border: TableBorder.symmetric(
                             inside: BorderSide(
@@ -212,22 +264,29 @@ class JobCard extends StatelessWidget {
                               width: 2,
                             ),
                           ),
+                          columnWidths: const {
+                            0: IntrinsicColumnWidth(), // Adjusts the first column width to fit its content
+                            1: FlexColumnWidth(), // Allows the second column to take up the remaining space
+                          },
                           children: [
                             TableRow(
                               children: [
-                                const Text(
-                                  "Start time",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 15,
+                                const Padding(
+                                  padding: const EdgeInsets.only(right: 5.0),
+                                  child: const Text(
+                                    "Start",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16,
+                                    ),
+                                    textAlign: TextAlign.center,
                                   ),
-                                  textAlign: TextAlign.center,
                                 ),
                                 Text(
                                   jobPosting.jobStartTime,
                                   style: const TextStyle(
                                     fontWeight: FontWeight.bold,
-                                    fontSize: 15,
+                                    fontSize: 16,
                                   ),
                                   textAlign: TextAlign.center,
                                 ),
@@ -236,10 +295,10 @@ class JobCard extends StatelessWidget {
                             TableRow(
                               children: [
                                 const Text(
-                                  "End time",
+                                  "End",
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
-                                    fontSize: 15,
+                                    fontSize: 16,
                                   ),
                                   textAlign: TextAlign.center,
                                 ),
@@ -247,7 +306,7 @@ class JobCard extends StatelessWidget {
                                   jobPosting.jobEndTime,
                                   style: const TextStyle(
                                     fontWeight: FontWeight.bold,
-                                    fontSize: 15,
+                                    fontSize: 16,
                                   ),
                                   textAlign: TextAlign.center,
                                 ),
@@ -269,16 +328,42 @@ class JobCard extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
-                            "Details:",
-                            style: TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold,
-                            ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              const Text(
+                                "Details:",
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              jobPosting.canPickup
+                                  ? Container(
+                                      margin: const EdgeInsets.only(
+                                          left: 10, right: 10, bottom: 2),
+                                      decoration: BoxDecoration(
+                                        color: Colors.greenAccent.shade700
+                                            .withOpacity(0.6),
+                                        borderRadius: BorderRadius.circular(5),
+                                      ),
+                                      child: const Padding(
+                                        padding: EdgeInsets.all(2.0),
+                                        child: Text(
+                                          "Can Pickup",
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                                  : Container(),
+                            ],
                           ),
                           Container(
                             width: 250,
-                            height: 54,
+                            height: 50,
                             decoration: BoxDecoration(
                               color: Colors.blueGrey.shade300,
                               border: Border.all(

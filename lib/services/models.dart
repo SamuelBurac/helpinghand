@@ -34,7 +34,7 @@ class User{
   Map<String, dynamic> toJson() => _$UserToJson(this);
 }
 
-
+DateTime dummyDate = DateTime.parse("2024-07-04");
 
 @JsonSerializable()
 class JobPosting {
@@ -43,6 +43,10 @@ class JobPosting {
   final String jobDetails;
   final String jobStartTime;
   final String jobEndTime;
+  final bool oneDay;
+  String? onlyDay;
+  String? startDate;
+  String? endDate;
   final int jobPay;
   final int jobDuration;
   final double hourlyRate;
@@ -59,6 +63,10 @@ class JobPosting {
     this.jobDetails = "I wanna buy me this damn ball crusher",
     this.jobStartTime = "6:00 AM",
     this.jobEndTime = "12:00 AM",
+    this.oneDay = true,
+    this.onlyDay = "07/04/2024",
+    this.startDate,
+    this.endDate,
     this.jobPay = 360,
     this.jobDuration = 18,
     this.hourlyRate = 15,
