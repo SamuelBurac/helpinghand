@@ -13,6 +13,7 @@ User _$UserFromJson(Map<String, dynamic> json) => User(
       email: json['email'] as String? ?? " ",
       phoneNumber: json['phoneNumber'] as String? ?? " ",
       pfpURL: json['pfpURL'] as String? ?? " ",
+      location: json['location'] as String? ?? " ",
       rating: (json['rating'] as num?)?.toDouble() ?? 0.0,
       description: json['description'] as String? ?? "",
       displayPhoneNumber: json['displayPhoneNumber'] as bool? ?? false,
@@ -27,6 +28,7 @@ Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'email': instance.email,
       'phoneNumber': instance.phoneNumber,
       'pfpURL': instance.pfpURL,
+      'location': instance.location,
       'rating': instance.rating,
       'description': instance.description,
       'displayPhoneNumber': instance.displayPhoneNumber,
@@ -43,8 +45,8 @@ JobPosting _$JobPostingFromJson(Map<String, dynamic> json) => JobPosting(
       jobEndTime: json['jobEndTime'] as String? ?? "12:00 AM",
       oneDay: json['oneDay'] as bool? ?? true,
       onlyDay: json['onlyDay'] as String? ?? "07/04/2024",
-      startDate: json['startDate'] as String?,
-      endDate: json['endDate'] as String?,
+      startDate: json['startDate'] as String? ?? "07/04/2024",
+      endDate: json['endDate'] as String? ?? "07/04/2024",
       jobPay: (json['jobPay'] as num?)?.toInt() ?? 360,
       jobDuration: (json['jobDuration'] as num?)?.toInt() ?? 18,
       hourlyRate: (json['hourlyRate'] as num?)?.toDouble() ?? 15,
@@ -81,9 +83,17 @@ Map<String, dynamic> _$JobPostingToJson(JobPosting instance) =>
 
 AvailabilityPosting _$AvailabilityPostingFromJson(Map<String, dynamic> json) =>
     AvailabilityPosting(
-      generalLocation: json['generalLocation'] as String? ?? " ",
-      availabilityDetails: json['availabilityDetails'] as String? ?? " ",
-      jobPosterName: json['jobPosterName'] as String? ?? " ",
+      generalLocation: json['generalLocation'] as String? ?? "Atlanta, GA",
+      availabilityDetails: json['availabilityDetails'] as String? ??
+          "I'm available to work on the 4th of July!",
+      jobPosterName: json['jobPosterName'] as String? ?? "Mihai Mare",
+      availabilityDates: (json['availabilityDates'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          const ["07/04/2024"],
+      startDate: json['startDate'] as String? ?? "07/04/2024",
+      endDate: json['endDate'] as String? ?? "07/04/2024",
+      rangeOfDates: json['rangeOfDates'] as bool? ?? false,
       needsPickup: json['needsPickup'] as bool? ?? false,
       rating: (json['rating'] as num?)?.toDouble() ?? 0.0,
       pfpURL: json['pfpURL'] as String? ??
@@ -99,6 +109,10 @@ Map<String, dynamic> _$AvailabilityPostingToJson(
       'availabilityDetails': instance.availabilityDetails,
       'jobPosterName': instance.jobPosterName,
       'needsPickup': instance.needsPickup,
+      'availabilityDates': instance.availabilityDates,
+      'startDate': instance.startDate,
+      'endDate': instance.endDate,
+      'rangeOfDates': instance.rangeOfDates,
       'rating': instance.rating,
       'pfpURL': instance.pfpURL,
       'avaPostID': instance.avaPostID,

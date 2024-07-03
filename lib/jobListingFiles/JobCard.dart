@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:animated_rating_stars/animated_rating_stars.dart';
 import 'package:flip_card/flip_card.dart';
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:helping_hand/JobListingFullScr.dart';
+import 'package:helping_hand/jobListingFiles/JobListingFullScr.dart';
 import 'package:helping_hand/services/models.dart';
 
 class JobCard extends StatelessWidget {
@@ -78,10 +78,11 @@ class JobCard extends StatelessWidget {
                                       onChanged: (value) {
                                         // is static here
                                       },
+                                      emptyColor: Colors.grey.shade900,
                                       customFilledIcon: Icons.star,
                                       customHalfFilledIcon: Icons.star_half,
                                       customEmptyIcon: Icons.star_border,
-                                      starSize: 10,
+                                      starSize: 7,
                                     )
                                   ],
                                 ),

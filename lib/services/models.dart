@@ -10,6 +10,7 @@ class User{
   final String email;
   final String phoneNumber;
   final String pfpURL;
+  final String location;
   final double rating;
   final String description;
   final bool displayPhoneNumber;
@@ -23,6 +24,7 @@ class User{
      this.email = " ",
      this.phoneNumber = " ",
      this.pfpURL = " ",
+     this.location = " ",
      this.rating = 0.0,
      this.description = "",
      this.displayPhoneNumber = false,
@@ -65,8 +67,8 @@ class JobPosting {
     this.jobEndTime = "12:00 AM",
     this.oneDay = true,
     this.onlyDay = "07/04/2024",
-    this.startDate,
-    this.endDate,
+    this.startDate = "07/04/2024",
+    this.endDate = "07/04/2024",
     this.jobPay = 360,
     this.jobDuration = 18,
     this.hourlyRate = 15,
@@ -91,15 +93,24 @@ class AvailabilityPosting {
   final String availabilityDetails;
   final String jobPosterName;
   final bool needsPickup;
+  List<String>? availabilityDates;
+  String? startDate;
+  String? endDate;
+  final bool rangeOfDates;
   final double rating;
   final String pfpURL;
-  final String avaPostID;
+  String avaPostID;
   final String posterID;
 
+//rangeOfDates is true if the availability is for a range between two dates, false if it's for one or more dates
   AvailabilityPosting({
-    this.generalLocation = " ",
-    this.availabilityDetails = " ",
-    this.jobPosterName = " ",
+    this.generalLocation = "Atlanta, GA",
+    this.availabilityDetails = "I'm available to work on the 4th of July!",
+    this.jobPosterName = "Mihai Mare",
+    this.availabilityDates = const ["07/04/2024"],
+    this.startDate = "07/04/2024",
+    this.endDate = "07/04/2024",
+    this.rangeOfDates = false,
     this.needsPickup = false,
     this.rating = 0.0,
     this.pfpURL =

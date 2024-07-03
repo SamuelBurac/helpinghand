@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:helping_hand/AvailabilityListingsScr.dart';
-import 'package:helping_hand/JobListingsScr.dart';
+import 'package:helping_hand/AvailabilityListingFiles/AvailabilityListingsScr.dart';
+import 'package:helping_hand/jobListingFiles/JobListingsScr.dart';
 import 'package:helping_hand/LoadingScreen.dart';
 import 'package:helping_hand/gettting_in/StartupScr.dart';
 import 'package:helping_hand/error.dart';

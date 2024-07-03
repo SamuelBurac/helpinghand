@@ -1,24 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:helping_hand/JobCard.dart';
+import 'package:helping_hand/AvailabilityListingFiles/AvailabilityCard.dart';
 import 'package:helping_hand/services/firestore.dart';
 import 'package:helping_hand/services/models.dart';
 
+class ReviewPersonListingScr extends StatelessWidget {
+  final AvailabilityPosting avaPosting;
+  const ReviewPersonListingScr({required this.avaPosting, super.key});
 
-class ReviewListingScr extends StatelessWidget {
-  final JobPosting jobPosting;
-  const ReviewListingScr({required this.jobPosting, super.key});
-
-//submit job listing give jobID
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: const Center(child: Text("Review Job Listing")),
+        title: const Center(child: Text("Review Availability")),
       ),
       body: Column(
         children: [
-          JobCard(jobPosting: jobPosting),
+          AvailabilityCard(availabilityPosting: avaPosting),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
@@ -30,10 +28,10 @@ class ReviewListingScr extends StatelessWidget {
               ),
               ElevatedButton(
                 onPressed: () async {
-                  await FirestoreService().addJob(jobPosting);
-                  Navigator.popAndPushNamed(context, "/jobListings");
+                  await FirestoreService().addAvailability(avaPosting);
+                  Navigator.popAndPushNamed(context, "/");
                 },
-                child: const Text("Submit Job Listing"),
+                child: const Text("Submit Availability"),
               ),
               
             ],
