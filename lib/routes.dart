@@ -46,7 +46,6 @@ var appRoutes = {
   "/jobListings": (context) => const JobListingsScr(),
   "/availabilityListings": (context) => const AvailabilityListingsScr(),
   "/personReviews": (context) => const PersonReviewsScr(),
-  "/userPublicProfile": (context) => const UserPublicProfileScr(),
   "/login": (context) =>  const LoginScr(),
   "/congrats": (context) => const CongratsScr(),
   "/menu": (context) => const MenuScr(),

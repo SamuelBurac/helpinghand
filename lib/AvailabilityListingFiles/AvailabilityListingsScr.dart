@@ -6,7 +6,6 @@ import 'package:helping_hand/LoadingScreen.dart';
 import 'package:helping_hand/error.dart';
 import 'package:helping_hand/services/UserState.dart';
 import 'package:helping_hand/services/firestore.dart';
-import 'package:helping_hand/services/models.dart';
 import 'package:provider/provider.dart';
 
 class AvailabilityListingsScr extends StatelessWidget {

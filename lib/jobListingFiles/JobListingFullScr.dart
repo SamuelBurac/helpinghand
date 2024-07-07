@@ -4,9 +4,9 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:helping_hand/services/models.dart';
 
 class JobListingFullScr extends StatelessWidget {
-  JobPosting jobPosting;
+  final JobPosting jobPosting;
 
-  JobListingFullScr({required this.jobPosting, super.key});
+  const JobListingFullScr({required this.jobPosting, super.key});
 
   @override
   Widget build(BuildContext context) {

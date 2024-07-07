@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:animated_rating_stars/animated_rating_stars.dart';
 import 'package:flip_card/flip_card.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:helping_hand/UserPublicProfileScr.dart';
 import 'package:helping_hand/jobListingFiles/JobListingFullScr.dart';
 import 'package:helping_hand/services/models.dart';
 
 class JobCard extends StatelessWidget {
-  JobPosting jobPosting;
+  final JobPosting jobPosting;
 
-  JobCard({required this.jobPosting, super.key});
+  const JobCard({required this.jobPosting, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -43,16 +44,28 @@ class JobCard extends StatelessWidget {
                           flex: 5,
                           child: Row(
                             children: [
-                              CircleAvatar(
-                                backgroundColor: Colors.transparent,
-                                radius: 35,
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(50),
-                                  child: FadeInImage.assetNetwork(
-                                    placeholder:
-                                        'assets/emptyProfilePic.png', // Replace with your placeholder asset
-                                    image: jobPosting.pfpURL,
-                                    fit: BoxFit.cover,
+                              InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          UserPublicProfileScr(
+                                              userID: jobPosting.jobPosterID),
+                                    ),
+                                  );
+                                },
+                                child: CircleAvatar(
+                                  backgroundColor: Colors.transparent,
+                                  radius: 35,
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(50),
+                                    child: FadeInImage.assetNetwork(
+                                      placeholder:
+                                          'assets/emptyProfilePic.png', // Replace with your placeholder asset
+                                      image: jobPosting.pfpURL,
+                                      fit: BoxFit.cover,
+                                    ),
                                   ),
                                 ),
                               ),
@@ -116,8 +129,8 @@ class JobCard extends StatelessWidget {
                               borderRadius: BorderRadius.circular(6),
                             ),
                             child: Padding(
-                              padding: const EdgeInsets.only(
-                                  top: 5.0, bottom: 5.0),
+                              padding:
+                                  const EdgeInsets.only(top: 5.0, bottom: 5.0),
                               child: IntrinsicHeight(
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -172,7 +185,7 @@ class JobCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Flexible(
-                        flex: 1,
+                        flex: 4,
                         child: Row(
                           children: [
                             const Icon(
@@ -195,9 +208,10 @@ class JobCard extends StatelessWidget {
                       ),
                       // put date(s)
                       Flexible(
-                        flex: 1,
+                        flex: 5,
                         child: jobPosting.oneDay
                             ? Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   const Icon(
                                     Icons.calendar_today,
@@ -213,10 +227,11 @@ class JobCard extends StatelessWidget {
                                 ],
                               )
                             : Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   const Column(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         "From: ",
@@ -235,6 +250,8 @@ class JobCard extends StatelessWidget {
                                     ],
                                   ),
                                   Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         jobPosting.endDate!,
@@ -256,7 +273,7 @@ class JobCard extends StatelessWidget {
                               ),
                       ),
                       Flexible(
-                        flex: 1,
+                        flex: 4,
                         child: Table(
                           border: TableBorder.symmetric(
                             inside: BorderSide(

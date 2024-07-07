@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:animated_rating_stars/animated_rating_stars.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:helping_hand/AvailabilityListingFiles/AvailabilityListingFScr.dart';
+import 'package:helping_hand/UserPublicProfileScr.dart';
 import 'package:helping_hand/services/models.dart';
 import 'package:intl/intl.dart';
 
 class AvailabilityCard extends StatelessWidget {
-  AvailabilityPosting availabilityPosting;
+  final AvailabilityPosting availabilityPosting;
 
-  AvailabilityCard({required this.availabilityPosting, super.key});
+  const AvailabilityCard({required this.availabilityPosting, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -45,16 +46,28 @@ class AvailabilityCard extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        CircleAvatar(
-                          backgroundColor: Colors.transparent,
-                          radius: 35,
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(50),
-                            child: FadeInImage.assetNetwork(
-                              placeholder:
-                                  'assets/emptyProfilePic.png', // Replace with your placeholder asset
-                              image: availabilityPosting.pfpURL,
-                              fit: BoxFit.cover,
+                        InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => UserPublicProfileScr(
+                                  userID: availabilityPosting.posterID,
+                                ),
+                              ),
+                            );
+                          },
+                          child: CircleAvatar(
+                            backgroundColor: Colors.transparent,
+                            radius: 35,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(50),
+                              child: FadeInImage.assetNetwork(
+                                placeholder:
+                                    'assets/emptyProfilePic.png', // Replace with your placeholder asset
+                                image: availabilityPosting.pfpURL,
+                                fit: BoxFit.cover,
+                              ),
                             ),
                           ),
                         ),
@@ -153,7 +166,8 @@ class AvailabilityCard extends StatelessWidget {
                                   fontSize: 20,
                                   fontWeight: FontWeight.bold,
                                 ),
-                              ),Container(
+                              ),
+                              Container(
                                 margin: const EdgeInsets.only(
                                     left: 2.5, right: 2.5),
                                 decoration: BoxDecoration(
@@ -192,8 +206,11 @@ class AvailabilityCard extends StatelessWidget {
                                   ),
                                   availabilityPosting.needsPickup
                                       ? Container(
-                                          margin: const EdgeInsets.only(top:5,
-                                              left: 2, right: 5, bottom: 2),
+                                          margin: const EdgeInsets.only(
+                                              top: 5,
+                                              left: 2,
+                                              right: 5,
+                                              bottom: 2),
                                           decoration: BoxDecoration(
                                             color: Colors
                                                 .deepOrangeAccent.shade700
@@ -306,7 +323,7 @@ class AvailabilityCard extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                             Row(
+                            Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 const Text(
@@ -316,7 +333,8 @@ class AvailabilityCard extends StatelessWidget {
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
-                                (availabilityPosting.needsPickup && availabilityPosting.rangeOfDates)
+                                (availabilityPosting.needsPickup &&
+                                        availabilityPosting.rangeOfDates)
                                     ? Container(
                                         margin: const EdgeInsets.only(
                                             left: 10, right: 10),

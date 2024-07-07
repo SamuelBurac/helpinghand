@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:animated_rating_stars/animated_rating_stars.dart';
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:helping_hand/services/models.dart';
 import 'AvailabilityCard.dart';
 
 class AvailabilityListingFScr extends StatelessWidget {
-  AvailabilityPosting avaPosting;
+  final AvailabilityPosting avaPosting;
 
-  AvailabilityListingFScr({required this.avaPosting, super.key});
+  const AvailabilityListingFScr({required this.avaPosting, super.key});
 
   @override
   Widget build(BuildContext context) {
