@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:animated_rating_stars/animated_rating_stars.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:helping_hand/UserPublicProfileScr.dart';
 import 'package:helping_hand/services/models.dart';
 
 class JobListingFullScr extends StatelessWidget {
@@ -18,47 +19,59 @@ class JobListingFullScr extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Row(
-              children: [
-                CircleAvatar(
-                  backgroundColor: Colors.transparent,
-                  radius: 40,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(50),
-                    child: FadeInImage.assetNetwork(
-                      placeholder:
-                          'assets/emptyProfilePic.png', // Replace with your placeholder asset
-                      image: jobPosting.pfpURL,
-                      fit: BoxFit.cover,
+            InkWell(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => UserPublicProfileScr(
+                      userID: jobPosting.jobPosterID,
                     ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 8.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(jobPosting.jobPosterName,
-                          style: const TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          )),
-                      AnimatedRatingStars(
-                        initialRating: jobPosting.rating,
-                        readOnly: true,
-                        onChanged: (value) {
-                          // is static here
-                        },
-                        customFilledIcon: Icons.star,
-                        customHalfFilledIcon: Icons.star_half,
-                        customEmptyIcon: Icons.star_border,
-                        starSize: 20,
-                      )
-                    ],
+                );
+              },
+              child: Row(
+                children: [
+                  CircleAvatar(
+                    backgroundColor: Colors.transparent,
+                    radius: 40,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(50),
+                      child: FadeInImage.assetNetwork(
+                        placeholder:
+                            'assets/emptyProfilePic.png', // Replace with your placeholder asset
+                        image: jobPosting.pfpURL,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
                   ),
-                ),
-              ],
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(jobPosting.jobPosterName,
+                            style: const TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            )),
+                        AnimatedRatingStars(
+                          initialRating: jobPosting.rating,
+                          readOnly: true,
+                          onChanged: (value) {
+                            // is static here
+                          },
+                          customFilledIcon: Icons.star,
+                          customHalfFilledIcon: Icons.star_half,
+                          customEmptyIcon: Icons.star_border,
+                          starSize: 20,
+                        )
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
             Row(
               children: [

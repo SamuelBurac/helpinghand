@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:animated_rating_stars/animated_rating_stars.dart';
+import 'package:helping_hand/UserPublicProfileScr.dart';
 import 'package:helping_hand/services/models.dart';
 import 'AvailabilityCard.dart';
 
@@ -18,47 +19,58 @@ class AvailabilityListingFScr extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Row(
-              children: [
-                CircleAvatar(
-                  backgroundColor: Colors.transparent,
-                  radius: 40,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(50),
-                    child: FadeInImage.assetNetwork(
-                      placeholder:
-                          'assets/emptyProfilePic.png', // Replace with your placeholder asset
-                      image: avaPosting.pfpURL,
-                      fit: BoxFit.cover,
+            InkWell(
+              onTap:() {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => UserPublicProfileScr(userID: avaPosting.posterID),
+                  ),
+                );
+              
+              },
+              child: Row(
+                children: [
+                  CircleAvatar(
+                    backgroundColor: Colors.transparent,
+                    radius: 40,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(50),
+                      child: FadeInImage.assetNetwork(
+                        placeholder:
+                            'assets/emptyProfilePic.png', // Replace with your placeholder asset
+                        image: avaPosting.pfpURL,
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 8.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(avaPosting.jobPosterName,
-                          style: const TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          )),
-                      AnimatedRatingStars(
-                        initialRating: avaPosting.rating,
-                        readOnly: true,
-                        onChanged: (value) {
-                          // is static here
-                        },
-                        customFilledIcon: Icons.star,
-                        customHalfFilledIcon: Icons.star_half,
-                        customEmptyIcon: Icons.star_border,
-                        starSize: 20,
-                      )
-                    ],
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(avaPosting.jobPosterName,
+                            style: const TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            )),
+                        AnimatedRatingStars(
+                          initialRating: avaPosting.rating,
+                          readOnly: true,
+                          onChanged: (value) {
+                            // is static here
+                          },
+                          customFilledIcon: Icons.star,
+                          customHalfFilledIcon: Icons.star_half,
+                          customEmptyIcon: Icons.star_border,
+                          starSize: 20,
+                        )
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
             Row(
               children: [
