@@ -151,7 +151,7 @@ class AvailabilityListingFScr extends StatelessWidget {
                     children: [
                       const Text(
                         "Available on: ",
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 15,
                           fontWeight: FontWeight.bold,
                         ),

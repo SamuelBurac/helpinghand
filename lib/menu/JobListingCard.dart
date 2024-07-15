@@ -6,10 +6,10 @@ import 'package:helping_hand/UserPublicProfileScr.dart';
 import 'package:helping_hand/jobListingFiles/JobListingFullScr.dart';
 import 'package:helping_hand/services/models.dart';
 
-class JobCard extends StatelessWidget {
+class JobListingCard extends StatelessWidget {
   final JobPosting jobPosting;
 
-  const JobCard({required this.jobPosting, super.key});
+  const JobListingCard({required this.jobPosting, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -342,7 +342,6 @@ class JobCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Row(
@@ -379,8 +378,8 @@ class JobCard extends StatelessWidget {
                             ],
                           ),
                           Container(
-                            width: 250,
-                            height: 50,
+                            width: 150,
+                            height: 48,
                             decoration: BoxDecoration(
                               color: Colors.blueGrey.shade300,
                               border: Border.all(
@@ -406,6 +405,8 @@ class JobCard extends StatelessWidget {
                             .elevatedButtonTheme
                             .style!
                             .copyWith(
+                              backgroundColor: WidgetStateProperty.all<Color?>(
+                                  Colors.greenAccent.shade700),
                               shape: WidgetStateProperty.all<
                                   RoundedRectangleBorder>(
                                 RoundedRectangleBorder(
@@ -415,8 +416,36 @@ class JobCard extends StatelessWidget {
                               ),
                             ),
                         child: const Text(
-                          'Connect',
+                          'Edit',
                           style: TextStyle(color: Colors.black),
+                        ),
+                        onPressed: () {},
+                      ),
+                      ElevatedButton.icon(
+                        style: Theme.of(context)
+                            .elevatedButtonTheme
+                            .style!
+                            .copyWith(
+                              backgroundColor:
+                                  WidgetStateProperty.all<Color?>(Colors.red),
+                              shape: WidgetStateProperty.all<
+                                  RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(
+                                      10.0), // adjust the value as needed
+                                ),
+                              ),
+                            ),
+                        label: const Text(
+                          'Remove',
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        icon: const Icon(
+                          Icons.delete,
+                          color: Colors.black,
                         ),
                         onPressed: () {},
                       ),

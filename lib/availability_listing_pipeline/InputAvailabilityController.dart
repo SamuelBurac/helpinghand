@@ -1,7 +1,7 @@
 part of 'InputAvailabilityScr.dart';
 
 class InputAvaState with ChangeNotifier {
-  TextEditingController _locationController;
+  final TextEditingController _locationController;
   InputAvaState(String location)
       : _locationController = TextEditingController(text: location.length >= 15 ? location.substring(0, 15) : location);
 
@@ -93,10 +93,10 @@ class InputAvaState with ChangeNotifier {
       if (_avaDates.isEmpty) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+            backgroundColor: Color.fromARGB(255, 255, 255, 255),
             content: Text(
               'Please select at least one date.',
-              style: const TextStyle(color: Color.fromARGB(255, 255, 0, 0)),
+              style: TextStyle(color: Color.fromARGB(255, 255, 0, 0)),
             ),
           ),
         );

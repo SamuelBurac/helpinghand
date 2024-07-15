@@ -148,7 +148,7 @@ class InputAvailabilityScr extends StatelessWidget {
                                     Padding(
                                       padding: const EdgeInsets.only(top: 10.0),
                                       child: Text(
-                                        "Selected ${state._datesOrRange == 0 ? "dates" : "range"}: ${state._datesOrRange == 0 ? state.avaDates.map((e) => DateFormat.yMMMd().format(e)).join(", ") : DateFormat.yMMMd().format(state.startDate) + " - " + DateFormat.yMMMd().format(state.endDate)}",
+                                        "Selected ${state._datesOrRange == 0 ? "dates" : "range"}: ${state._datesOrRange == 0 ? state.avaDates.map((e) => DateFormat.yMMMd().format(e)).join(", ") : "${DateFormat.yMMMd().format(state.startDate)} - ${DateFormat.yMMMd().format(state.endDate)}"}",
                                         style: Theme.of(context)
                                             .textTheme
                                             .bodyLarge,

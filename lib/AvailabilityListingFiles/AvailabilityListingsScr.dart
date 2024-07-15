@@ -119,14 +119,14 @@ class AvailabilityListingsScr extends StatelessWidget {
             icon: Icon(
               Icons.menu,
             ),
-            label: 'menu',
+            label: 'Menu',
           ),
         ],
         onTap: (value) {
           if (value == 1) {
-            Navigator.pushNamed(context, "/chatsOverview");
+            Navigator.popAndPushNamed(context, "/chatsOverview");
           } else if (value == 2) {
-            Navigator.pushNamed(context, "/menu");
+            Navigator.popAndPushNamed(context, "/menu");
           }
         },
       ),

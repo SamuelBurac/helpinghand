@@ -6,10 +6,10 @@ import 'package:helping_hand/UserPublicProfileScr.dart';
 import 'package:helping_hand/services/models.dart';
 import 'package:intl/intl.dart';
 
-class AvailabilityCard extends StatelessWidget {
+class AvailabilityListingCard extends StatelessWidget {
   final AvailabilityPosting availabilityPosting;
 
-  const AvailabilityCard({required this.availabilityPosting, super.key});
+  const AvailabilityListingCard({required this.availabilityPosting, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -79,7 +79,7 @@ class AvailabilityCard extends StatelessWidget {
                             children: [
                               Text(availabilityPosting.jobPosterName,
                                   style: const TextStyle(
-                                      fontSize: 20,
+                                      fontSize: 16,
                                       fontWeight: FontWeight.bold,
                                       height: 1)),
                               AnimatedRatingStars(
@@ -261,7 +261,7 @@ class AvailabilityCard extends StatelessWidget {
                                                 child: Text(
                                                   " $date ${getDayName(date)}",
                                                   style: const TextStyle(
-                                                    fontSize: 12,
+                                                    fontSize: 10,
                                                     fontWeight: FontWeight.bold,
                                                   ),
                                                 ),
@@ -299,7 +299,7 @@ class AvailabilityCard extends StatelessWidget {
                                                   child: Text(
                                                     " $date ${getDayName(date)}",
                                                     style: const TextStyle(
-                                                      fontSize: 12,
+                                                      fontSize: 10,
                                                       fontWeight:
                                                           FontWeight.bold,
                                                     ),
@@ -360,8 +360,8 @@ class AvailabilityCard extends StatelessWidget {
                               ],
                             ),
                             Container(
-                              width: 250,
-                              height: 50,
+                              width: 150,
+                              height: 48,
                               decoration: BoxDecoration(
                                 color: Colors.blueGrey.shade300,
                                 border: Border.all(
@@ -382,25 +382,56 @@ class AvailabilityCard extends StatelessWidget {
                             )
                           ],
                         ),
-                        ElevatedButton(
-                          style: Theme.of(context)
-                              .elevatedButtonTheme
-                              .style!
-                              .copyWith(
-                                shape: WidgetStateProperty.all<
-                                    RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(
-                                        10.0), // adjust the value as needed
-                                  ),
+                       
+                      ElevatedButton(
+                        style: Theme.of(context)
+                            .elevatedButtonTheme
+                            .style!
+                            .copyWith(
+                              backgroundColor: WidgetStateProperty.all<Color?>(
+                                  Colors.greenAccent.shade700),
+                              shape: WidgetStateProperty.all<
+                                  RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(
+                                      10.0), // adjust the value as needed
                                 ),
                               ),
-                          child: const Text(
-                            'Connect',
-                            style: TextStyle(color: Colors.black),
-                          ),
-                          onPressed: () {},
+                            ),
+                        child: const Text(
+                          'Edit',
+                          style: TextStyle(color: Colors.black),
                         ),
+                        onPressed: () {},
+                      ),
+                      ElevatedButton.icon(
+                        style: Theme.of(context)
+                            .elevatedButtonTheme
+                            .style!
+                            .copyWith(
+                              backgroundColor:
+                                  WidgetStateProperty.all<Color?>(Colors.red),
+                              shape: WidgetStateProperty.all<
+                                  RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(
+                                      10.0), // adjust the value as needed
+                                ),
+                              ),
+                            ),
+                        label: const Text(
+                          'Remove',
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        icon: const Icon(
+                          Icons.delete,
+                          color: Colors.black,
+                        ),
+                        onPressed: () {},
+                      ),
                       ],
                     ),
                   ),

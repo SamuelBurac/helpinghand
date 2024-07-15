@@ -54,7 +54,7 @@ class UserPublicProfileScr extends StatelessWidget {
                           : const Placeholder(),
                       const Divider(),
                       const Text("Description",
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
                           )),
@@ -121,7 +121,7 @@ class UserPublicProfileScr extends StatelessWidget {
                                 child: Container(
                                   height: 100,
                                   decoration: BoxDecoration(
-                                    color: Color.fromARGB(255, 150, 160, 156),
+                                    color: const Color.fromARGB(255, 150, 160, 156),
                                     border: Border.all(
                                       color: Colors.grey,
                                     ),
@@ -141,7 +141,7 @@ class UserPublicProfileScr extends StatelessWidget {
                                               // is static here
                                             },
                                             emptyColor:
-                                                Color.fromARGB(255, 255, 255, 255),
+                                                const Color.fromARGB(255, 255, 255, 255),
                                             customFilledIcon: Icons.star,
                                             customHalfFilledIcon: Icons.star_half,
                                             customEmptyIcon: Icons.star_border,
