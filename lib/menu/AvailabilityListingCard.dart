@@ -3,6 +3,8 @@ import 'package:animated_rating_stars/animated_rating_stars.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:helping_hand/AvailabilityListingFiles/AvailabilityListingFScr.dart';
 import 'package:helping_hand/UserPublicProfileScr.dart';
+import 'package:helping_hand/availability_listing_pipeline/InputAvailabilityScr.dart';
+import 'package:helping_hand/services/firestore.dart';
 import 'package:helping_hand/services/models.dart';
 import 'package:intl/intl.dart';
 
@@ -382,56 +384,67 @@ class AvailabilityListingCard extends StatelessWidget {
                             )
                           ],
                         ),
-                       
-                      ElevatedButton(
-                        style: Theme.of(context)
-                            .elevatedButtonTheme
-                            .style!
-                            .copyWith(
-                              backgroundColor: WidgetStateProperty.all<Color?>(
-                                  Colors.greenAccent.shade700),
-                              shape: WidgetStateProperty.all<
-                                  RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(
-                                      10.0), // adjust the value as needed
+                        ElevatedButton(
+                          style: Theme.of(context)
+                              .elevatedButtonTheme
+                              .style!
+                              .copyWith(
+                                backgroundColor:
+                                    WidgetStateProperty.all<Color?>(
+                                        Colors.greenAccent.shade700),
+                                shape: WidgetStateProperty.all<
+                                    RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(
+                                        10.0), // adjust the value as needed
+                                  ),
                                 ),
                               ),
-                            ),
-                        child: const Text(
-                          'Edit',
-                          style: TextStyle(color: Colors.black),
-                        ),
-                        onPressed: () {},
-                      ),
-                      ElevatedButton.icon(
-                        style: Theme.of(context)
-                            .elevatedButtonTheme
-                            .style!
-                            .copyWith(
-                              backgroundColor:
-                                  WidgetStateProperty.all<Color?>(Colors.red),
-                              shape: WidgetStateProperty.all<
-                                  RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(
-                                      10.0), // adjust the value as needed
+                          child: const Text(
+                            'Edit',
+                            style: TextStyle(color: Colors.black),
+                          ),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => InputAvailabilityScr(
+                                  editingAvailability: true,
+                                  avaEditPosting: availabilityPosting,
                                 ),
                               ),
-                            ),
-                        label: const Text(
-                          'Remove',
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold),
+                            );
+                          },
                         ),
-                        icon: const Icon(
-                          Icons.delete,
-                          color: Colors.black,
+                        ElevatedButton.icon(
+                          style: Theme.of(context)
+                              .elevatedButtonTheme
+                              .style!
+                              .copyWith(
+                                backgroundColor:
+                                    WidgetStateProperty.all<Color?>(Colors.red),
+                                shape: WidgetStateProperty.all<
+                                    RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(
+                                        10.0), // adjust the value as needed
+                                  ),
+                                ),
+                              ),
+                          label: const Text(
+                            'Remove',
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          icon: const Icon(
+                            Icons.delete,
+                            color: Colors.black,
+                          ),
+                          onPressed: () => FirestoreService()
+                              .deleteAvailability(availabilityPosting),
                         ),
-                        onPressed: () {},
-                      ),
                       ],
                     ),
                   ),

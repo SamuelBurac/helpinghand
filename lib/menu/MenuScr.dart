@@ -1,13 +1,13 @@
 import 'package:animated_rating_stars/animated_rating_stars.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_toggle_tab/flutter_toggle_tab.dart';
 import 'package:helping_hand/LoadingScreen.dart';
 import 'package:helping_hand/error.dart';
 import 'package:helping_hand/menu/AvailabilityListingCard.dart';
 import 'package:helping_hand/menu/JobListingCard.dart';
 import 'package:helping_hand/services/UserState.dart';
+import 'package:helping_hand/services/auth.dart';
 import 'package:helping_hand/services/firestore.dart';
 import 'package:provider/provider.dart';
 
@@ -84,7 +84,6 @@ class MenuScr extends StatelessWidget {
                           ),
                         ),
                     onPressed: () {
-                      FirebaseAuth.instance.signOut();
                       Navigator.pushNamed(context, "/accountDetails");
                     },
                     label: const Text("Account Details"),
@@ -204,8 +203,8 @@ class MenuScr extends StatelessWidget {
                               child: Provider.of<PostingsState>(context,
                                     listen: false)
                                 .showJobListings
-                                  ? FutureBuilder(
-                                      future: FirestoreService().getJobs(),
+                                  ? StreamBuilder(
+                                      stream: FirestoreService().streamJobs(AuthService().user!.uid),
                                       builder: (context, snapshot) {
                                         if (snapshot.connectionState ==
                                             ConnectionState.waiting) {
@@ -227,9 +226,9 @@ class MenuScr extends StatelessWidget {
                                           return const Text("no jobs found");
                                         }
                                       })
-                                  : FutureBuilder(
-                                      future: FirestoreService()
-                                          .getAvailabilities(),
+                                  : StreamBuilder(
+                                      stream: FirestoreService()
+                                          .streamAvailabilitiesFiltered(AuthService().user!.uid),
                                       builder: (context, snapshot) {
                                         if (snapshot.connectionState ==
                                             ConnectionState.waiting) {

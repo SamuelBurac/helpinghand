@@ -16,12 +16,26 @@ class FirestoreService {
     return jobPostings.toList();
   }
 
+  Stream<List<JobPosting>> streamJobs(String currUID) {
+    var ref = _db.collection(_jobPostingsCollection).where('jobPosterID', isEqualTo: currUID);
+    var snapshot = ref.snapshots();
+    return snapshot.map((list) =>
+        list.docs.map((doc) => JobPosting.fromJson(doc.data())).toList());
+  }
+
   Future<List<AvailabilityPosting>> getAvailabilities() async {
     var ref = _db.collection(_availabilityPostingsCollection);
     var snapshot = await ref.get();
     var data = snapshot.docs.map((s) => s.data());
     var avaPostings = data.map((d) => AvailabilityPosting.fromJson(d));
     return avaPostings.toList();
+  }
+
+  Stream<List<AvailabilityPosting>> streamAvailabilitiesFiltered(String currUID) {
+    var ref = _db.collection(_availabilityPostingsCollection).where('posterID', isEqualTo: currUID);
+    var snapshot = ref.snapshots();
+    return snapshot.map((list) =>
+        list.docs.map((doc) => AvailabilityPosting.fromJson(doc.data())).toList());
   }
 
   //get a users document from the users collection using the user id
@@ -53,6 +67,35 @@ class FirestoreService {
     avaPosting.avaPostID = docRef.id;
 
     // Optionally, update the document with the generated ID if needed
-    await docRef.update({'jobID': avaPosting.avaPostID});
+    await docRef.update({'avaPostID': avaPosting.avaPostID});
   }
+
+  Future<void> updateJob(JobPosting jobPosting) async {
+    // Update the job posting in the collection
+    await _db
+        .collection(_jobPostingsCollection)
+        .doc(jobPosting.jobID)
+        .update(jobPosting.toJson());
+  }
+
+  Future<void> updateAvailability(AvailabilityPosting avaPosting) async {
+    // Update the job posting in the collection
+    await _db
+        .collection(_availabilityPostingsCollection)
+        .doc(avaPosting.avaPostID)
+        .update(avaPosting.toJson());
+  }
+
+  Future<void> deleteJob(JobPosting jobPosting) async {
+    // Delete the job posting from the collection
+    await _db.collection(_jobPostingsCollection).doc(jobPosting.jobID).delete();
+  }
+
+  Future<void> deleteAvailability(AvailabilityPosting avaPosting) async {
+    // Delete the job posting from the collection
+    await _db.collection(_availabilityPostingsCollection).doc(avaPosting.avaPostID).delete();
+  }
+
+
+
 }

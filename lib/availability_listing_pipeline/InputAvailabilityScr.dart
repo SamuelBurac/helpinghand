@@ -4,6 +4,7 @@ import 'package:flutter_toggle_tab/flutter_toggle_tab.dart';
 import 'package:google_places_autocomplete_text_field/google_places_autocomplete_text_field.dart';
 import 'package:helping_hand/availability_listing_pipeline/ReviewPersonListingScr.dart';
 import 'package:helping_hand/services/UserState.dart';
+import 'package:helping_hand/services/firestore.dart';
 import 'package:helping_hand/services/models.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -12,7 +13,9 @@ import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 part 'InputAvailabilityController.dart';
 
 class InputAvailabilityScr extends StatelessWidget {
-  const InputAvailabilityScr({super.key});
+  final bool? editingAvailability;
+  final AvailabilityPosting? avaEditPosting;
+  const InputAvailabilityScr({super.key, this.editingAvailability, this.avaEditPosting});
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +25,8 @@ class InputAvailabilityScr extends StatelessWidget {
       },
       child: Scaffold(
           appBar: AppBar(
-            title: Text("Fill out the form to post a job",
+            title: Text(
+              (editingAvailability != null && editingAvailability!)? "Edit availability ":"Fill out the form to post an availability",
                 style: Theme.of(context)
                     .textTheme
                     .headlineMedium!
@@ -30,7 +34,7 @@ class InputAvailabilityScr extends StatelessWidget {
           ),
           body: ChangeNotifierProvider(
             create: (context) => InputAvaState(
-                Provider.of<UserState>(context, listen: false).user.location),
+                Provider.of<UserState>(context, listen: false).user.location, isEdit: editingAvailability, ava: avaEditPosting),
             child: Consumer<InputAvaState>(
               builder: (context, state, child) {
                 return Padding(
@@ -270,7 +274,23 @@ class InputAvailabilityScr extends StatelessWidget {
                             ],
                           ),
                         ),
-                        ElevatedButton.icon(
+                        (editingAvailability != null && editingAvailability!) ?ElevatedButton.icon(
+                          style: Theme.of(context)
+                              .elevatedButtonTheme
+                              .style!
+                              .copyWith(
+                                  backgroundColor: WidgetStateProperty.all(
+                                      Colors.green.shade700)),
+                          onPressed: () {
+                            if (state.validateAva(context)) {
+                              state.assembleAva(context);
+                              state.updateDatabase();
+                              Navigator.pop(context);
+                            }
+                          },
+                          label: const Text("Update"),
+                          icon: const Icon(Icons.send),
+                        ) : ElevatedButton.icon(
                           style: Theme.of(context)
                               .elevatedButtonTheme
                               .style!

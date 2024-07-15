@@ -1,7 +1,9 @@
 part of 'InputJobScr.dart';
 
 class InputJobState with ChangeNotifier {
-  JobPosting jobPosting = JobPosting();
+  bool? isEditing = false;
+  JobPosting? jobPosting = JobPosting();
+  String _jobID = "";
   final _locationController = TextEditingController();
   var jobTitleController = TextEditingController();
   var jobDescriptionController = TextEditingController();
@@ -16,11 +18,34 @@ class InputJobState with ChangeNotifier {
   DateTime _endDate = DateTime.now().add(const Duration(days: 3));
   DateTime _onlyDay = DateTime.now();
   Duration _duration = const Duration(hours: 8);
+  final DateRangePickerController _datePickerController =
+      DateRangePickerController();
 
   TextEditingController get jobTitle => jobTitleController;
   TextEditingController get location => _locationController;
   TextEditingController get jobDescription => jobDescriptionController;
   TextEditingController get pay => payController;
+
+  InputJobState({this.isEditing = false, this.jobPosting}) {
+    if (isEditing != null && isEditing! && jobPosting != null) {
+      _jobID = jobPosting!.jobID;
+      jobTitleController.text = jobPosting!.jobTitle;
+      _locationController.text = jobPosting!.jobLocation;
+      jobDescriptionController.text = jobPosting!.jobDetails;
+      payController.text = jobPosting!.jobPay.toString();
+      _startTime = DateFormat('h:mm a').parse(jobPosting!.jobStartTime);
+      _endTime = DateFormat('h:mm a').parse(jobPosting!.jobEndTime);
+      _oneDayJob = jobPosting!.oneDay;
+      _onlyDay = DateFormat('MM/dd/yyyy').parse(jobPosting!.onlyDay!);
+      _startDate = DateFormat('MM/dd/yyyy').parse(jobPosting!.startDate!);
+      _endDate = DateFormat('MM/dd/yyyy').parse(jobPosting!.endDate!);
+      _duration = Duration(hours: jobPosting!.jobDuration);
+      _datePickerController.selectedDate = _onlyDay;
+      _datePickerController.selectedRange =
+          PickerDateRange(_startDate, _endDate);
+      canPickup = jobPosting!.canPickup;
+    }
+  }
 
   bool get oneDayJob => _oneDayJob;
   int get dOrR => _dOrR;
@@ -31,8 +56,8 @@ class InputJobState with ChangeNotifier {
   DateTime get onlyDay => _onlyDay;
   DateTime get startDate => _startDate;
   DateTime get endDate => _endDate;
-
-  JobPosting get job => jobPosting;
+  DateRangePickerController get datePickerController => _datePickerController;
+  JobPosting? get job => jobPosting;
 
   set startDate(DateTime value) {
     _startDate = value;
@@ -108,7 +133,7 @@ class InputJobState with ChangeNotifier {
       canPickup: canPickup,
       rating: Provider.of<UserState>(context, listen: false).user.rating,
       pfpURL: Provider.of<UserState>(context, listen: false).user.pfpURL,
-      jobID: " ",
+      jobID: _jobID,
     );
   }
 
@@ -127,7 +152,8 @@ class InputJobState with ChangeNotifier {
       isMissing.add("Description");
       isValid = false;
     }
-    if (payController.text.isEmpty || !RegExp(r'^\d+$').hasMatch(payController.text)) {
+    if (payController.text.isEmpty ||
+        !RegExp(r'^\d+$').hasMatch(payController.text)) {
       isMissing.add("Pay");
       isValid = false;
     }
@@ -145,5 +171,9 @@ class InputJobState with ChangeNotifier {
     }
 
     return isValid;
+  }
+
+  void updateDatabase() {
+    FirestoreService().updateJob(jobPosting!);
   }
 }

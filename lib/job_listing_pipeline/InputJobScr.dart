@@ -5,6 +5,7 @@ import 'package:flutter_toggle_tab/flutter_toggle_tab.dart';
 import 'package:google_places_autocomplete_text_field/google_places_autocomplete_text_field.dart';
 import 'package:helping_hand/job_listing_pipeline/ReviewJobListingScr.dart';
 import 'package:helping_hand/services/UserState.dart';
+import 'package:helping_hand/services/firestore.dart';
 import 'package:helping_hand/services/models.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -14,7 +15,9 @@ import 'package:time_picker_spinner_pop_up/time_picker_spinner_pop_up.dart';
 part 'InputJobController.dart';
 
 class InputJobScr extends StatelessWidget {
-  const InputJobScr({super.key});
+  final bool? isEditing;
+  final JobPosting? jobPosting;
+  const InputJobScr({super.key, this.isEditing, this.jobPosting});
 
   @override
   Widget build(BuildContext context) {
@@ -24,14 +27,14 @@ class InputJobScr extends StatelessWidget {
       },
       child: Scaffold(
           appBar: AppBar(
-            title: Text("Fill out the form to post a job",
+            title: Text((isEditing != null && isEditing!) ? "Edit Job Posting" : "Fill out the form to post a job",
                 style: Theme.of(context)
                     .textTheme
                     .headlineMedium!
                     .copyWith(fontSize: 23, fontWeight: FontWeight.bold)),
           ),
           body: ChangeNotifierProvider(
-            create: (context) => InputJobState(),
+            create: (context) => InputJobState(isEditing: isEditing, jobPosting: jobPosting),
             child: Consumer<InputJobState>(
               builder: (context, state, child) {
                 return Padding(
@@ -191,6 +194,7 @@ class InputJobScr extends StatelessWidget {
                                                   WidgetStateProperty.all<Color?>(
                                                       Colors.green.shade800)))),
                                   child: SfDateRangePicker(
+                                    controller: state.datePickerController,
                                     enablePastDates: false,
                                     showTodayButton: true,
                                     startRangeSelectionColor: Colors.lightGreen,
@@ -321,6 +325,8 @@ class InputJobScr extends StatelessWidget {
                               Padding(
                                 padding: const EdgeInsets.only(top: 18.0),
                                 child: TextField(
+                                  minLines: 2,
+                                  maxLines: 5,
                                   controller: state.jobDescription,
                                   decoration: const InputDecoration(
                                     labelText: "Job Description",
@@ -331,7 +337,24 @@ class InputJobScr extends StatelessWidget {
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
-                                  ElevatedButton.icon(
+                                  (isEditing != null && isEditing!) ? ElevatedButton.icon(
+                                    style: Theme.of(context)
+                                        .elevatedButtonTheme
+                                        .style!
+                                        .copyWith(
+                                            backgroundColor:
+                                                WidgetStateProperty.all(
+                                                    Colors.green.shade700)),
+                                    onPressed: () {
+                                      if (state.validateJob(context)) {
+                                        state.assembleJob(context);
+                                        state.updateDatabase();
+                                        Navigator.pop(context);
+                                      }
+                                    },
+                                    label: const Text("Update"),
+                                    icon: const Icon(Icons.send),
+                                  ) : ElevatedButton.icon(
                                     style: Theme.of(context)
                                         .elevatedButtonTheme
                                         .style!
@@ -347,7 +370,7 @@ class InputJobScr extends StatelessWidget {
                                           MaterialPageRoute(
                                             builder: (context) =>
                                                 ReviewListingScr(
-                                                    jobPosting: state.job),
+                                                    jobPosting: state.job!),
                                           ),
                                         );
                                       }

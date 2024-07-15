@@ -4,6 +4,8 @@ import 'package:flip_card/flip_card.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:helping_hand/UserPublicProfileScr.dart';
 import 'package:helping_hand/jobListingFiles/JobListingFullScr.dart';
+import 'package:helping_hand/job_listing_pipeline/InputJobScr.dart';
+import 'package:helping_hand/services/firestore.dart';
 import 'package:helping_hand/services/models.dart';
 
 class JobListingCard extends StatelessWidget {
@@ -419,7 +421,17 @@ class JobListingCard extends StatelessWidget {
                           'Edit',
                           style: TextStyle(color: Colors.black),
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => InputJobScr(
+                                isEditing: true,
+                                jobPosting: jobPosting,
+                              ),
+                            ),
+                          );
+                        },
                       ),
                       ElevatedButton.icon(
                         style: Theme.of(context)
@@ -447,7 +459,7 @@ class JobListingCard extends StatelessWidget {
                           Icons.delete,
                           color: Colors.black,
                         ),
-                        onPressed: () {},
+                        onPressed: () => FirestoreService().deleteJob(jobPosting),
                       ),
                     ],
                   ),
