@@ -70,6 +70,11 @@ class FirestoreService {
     await docRef.update({'avaPostID': avaPosting.avaPostID});
   }
 
+  Future<void> updateUser(User user) async {
+    // Update the user in the collection
+    await _db.collection(_usersCollection).doc(user.uid).update(user.toJson());
+  }
+
   Future<void> updateJob(JobPosting jobPosting) async {
     // Update the job posting in the collection
     await _db

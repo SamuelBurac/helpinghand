@@ -29,29 +29,26 @@ class UserPublicProfileScr extends StatelessWidget {
                     mainAxisSize: MainAxisSize.max,
                     children: [
                       CircleAvatar(
-                                  backgroundColor: Colors.transparent,
-                                  radius: 70,
-                                  child: user.pfpURL != ""
-                                      ? ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(50),
-                                          child: Image.network(
-                                            user.pfpURL,
-                                            fit: BoxFit.cover,
-                                          ),
-                                        )
-                                      : Image.asset(
-                                          "assets/emptyProfilePic.png"),
+                        backgroundColor: Colors.transparent,
+                        radius: 70,
+                        child: user.pfpURL != ""
+                            ? ClipRRect(
+                                borderRadius: BorderRadius.circular(50),
+                                child: Image.network(
+                                  user.pfpURL,
+                                  fit: BoxFit.cover,
                                 ),
-                      user.displayPhoneNumber
-                          ? Text(
-                              'Phone number: (${user.phoneNumber.substring(0, 3)})-${user.phoneNumber.substring(3, 6)}-${user.phoneNumber.substring(6, 10)}',
-                              style: const TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            )
-                          : const Placeholder(),
+                              )
+                            : Image.asset("assets/emptyProfilePic.png"),
+                      ),
+                      if (user.displayPhoneNumber)
+                        Text(
+                          'Phone number: (${user.phoneNumber.substring(0, 3)})-${user.phoneNumber.substring(3, 6)}-${user.phoneNumber.substring(6, 10)}',
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       const Divider(),
                       const Text("Description",
                           style: TextStyle(
@@ -117,18 +114,21 @@ class UserPublicProfileScr extends StatelessWidget {
                             itemCount: 3, //user.reviews.length,
                             itemBuilder: (context, index) {
                               return Padding(
-                                padding: const EdgeInsets.only(top: 2.5, bottom: 2.5),
+                                padding: const EdgeInsets.only(
+                                    top: 2.5, bottom: 2.5),
                                 child: Container(
                                   height: 100,
                                   decoration: BoxDecoration(
-                                    color: const Color.fromARGB(255, 150, 160, 156),
+                                    color: const Color.fromARGB(
+                                        255, 150, 160, 156),
                                     border: Border.all(
                                       color: Colors.grey,
                                     ),
                                     borderRadius: BorderRadius.circular(5),
                                   ),
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Row(
                                         mainAxisAlignment:
@@ -140,10 +140,11 @@ class UserPublicProfileScr extends StatelessWidget {
                                             onChanged: (value) {
                                               // is static here
                                             },
-                                            emptyColor:
-                                                const Color.fromARGB(255, 255, 255, 255),
+                                            emptyColor: const Color.fromARGB(
+                                                255, 255, 255, 255),
                                             customFilledIcon: Icons.star,
-                                            customHalfFilledIcon: Icons.star_half,
+                                            customHalfFilledIcon:
+                                                Icons.star_half,
                                             customEmptyIcon: Icons.star_border,
                                             starSize: 17,
                                           ),

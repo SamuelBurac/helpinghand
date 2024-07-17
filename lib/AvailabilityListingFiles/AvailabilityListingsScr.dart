@@ -16,7 +16,7 @@ class AvailabilityListingsScr extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Center(
-          child: Provider.of<UserState>(context).user.lookingForWorkers
+          child: Provider.of<UserState>(context).user.lookingForWork
               ? Theme(
                   data: ThemeData(
                     buttonTheme: const ButtonThemeData(),
@@ -46,7 +46,7 @@ class AvailabilityListingsScr extends StatelessWidget {
                     isScroll: false,
                   ),
                 )
-              : const Text("Jobs"),
+              : const Text("Available Employees"),
         ),
         automaticallyImplyLeading: false,
       ),
