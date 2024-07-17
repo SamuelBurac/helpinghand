@@ -14,7 +14,6 @@ class AccountDetails extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        
         title: const Text('Account Details'),
       ),
       body: SingleChildScrollView(
@@ -97,38 +96,103 @@ class AccountDetails extends StatelessWidget {
                     const Divider(),
                     Padding(
                       padding: const EdgeInsets.only(top: 18.0),
-                      child: ElevatedButton(
-                        style: Theme.of(context).elevatedButtonTheme.style!.copyWith(
-                          backgroundColor: WidgetStateProperty.all<Color>(Colors.green),
-                        ),
-                        onPressed: () {
-                          if(controller.verifyInputs()){
-                            controller.updateProfile();
-                            Navigator.push(context, 
-                              MaterialPageRoute(builder: (context) => const MenuScr()));
-                          
-                          } else{
-                            showDialog(
-                              context: context,
-                              builder: (context) {
-                                return AlertDialog(
-                                  title: const Text("Error"),
-                                  content: const Text("Please fill out all fields"),
-                                  actions: [
-                                    TextButton(
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                      },
-                                      child: const Text("OK"),
-                                    ),
-                                  ],
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          ElevatedButton.icon(
+                            icon: const Icon(Icons.delete_forever_rounded),
+                            style: Theme.of(context)
+                                .elevatedButtonTheme
+                                .style!
+                                .copyWith(
+                                  backgroundColor:
+                                      WidgetStateProperty.all<Color>(
+                                          Colors.red),
+                                ),
+                            onPressed: () {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: const Text("Delete Account"),
+                                    content: const Text(
+                                        "Are you sure you want to delete your account?"),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                        child: const Text("Cancel"),
+                                      ),
+                                      TextButton(
+                                        style: Theme.of(context)
+                                            .textButtonTheme
+                                            .style!
+                                            .copyWith(
+                                              backgroundColor:
+                                                  WidgetStateProperty.all<
+                                                      Color>(Colors.red),
+                                            ),
+                                        onPressed: () {
+                                          FirestoreService().deleteUser(
+                                              Provider.of<UserState>(context,
+                                                      listen: false)
+                                                  .user);
+                                          Provider.of<UserState>(context,
+                                                  listen: false)
+                                              .user = User();
+                                          Navigator.popAndPushNamed(
+                                              context, "/");
+                                        },
+                                        child: const Text("Delete"),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            },
+                            label: const Text("Delete Account"),
+                          ),
+                          ElevatedButton(
+                            style: Theme.of(context)
+                                .elevatedButtonTheme
+                                .style!
+                                .copyWith(
+                                  backgroundColor:
+                                      WidgetStateProperty.all<Color>(
+                                          Colors.green),
+                                ),
+                            onPressed: () {
+                              if (controller.verifyInputs()) {
+                                controller.updateProfile();
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => const MenuScr()));
+                              } else {
+                                showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return AlertDialog(
+                                      title: const Text("Error"),
+                                      content: const Text(
+                                          "Please fill out all fields"),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                          child: const Text("OK"),
+                                        ),
+                                      ],
+                                    );
+                                  },
                                 );
-                              },
-                            );
-                          }
-                          
-                        },
-                        child: const Text("Update"),
+                              }
+                            },
+                            child: const Text("Update"),
+                          ),
+                        ],
                       ),
                     ),
                   ],

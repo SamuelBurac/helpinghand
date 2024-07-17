@@ -1,5 +1,8 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:helping_hand/services/auth.dart';
 import 'models.dart';
 
 class FirestoreService {
@@ -17,7 +20,9 @@ class FirestoreService {
   }
 
   Stream<List<JobPosting>> streamJobs(String currUID) {
-    var ref = _db.collection(_jobPostingsCollection).where('jobPosterID', isEqualTo: currUID);
+    var ref = _db
+        .collection(_jobPostingsCollection)
+        .where('jobPosterID', isEqualTo: currUID);
     var snapshot = ref.snapshots();
     return snapshot.map((list) =>
         list.docs.map((doc) => JobPosting.fromJson(doc.data())).toList());
@@ -31,11 +36,15 @@ class FirestoreService {
     return avaPostings.toList();
   }
 
-  Stream<List<AvailabilityPosting>> streamAvailabilitiesFiltered(String currUID) {
-    var ref = _db.collection(_availabilityPostingsCollection).where('posterID', isEqualTo: currUID);
+  Stream<List<AvailabilityPosting>> streamAvailabilitiesFiltered(
+      String currUID) {
+    var ref = _db
+        .collection(_availabilityPostingsCollection)
+        .where('posterID', isEqualTo: currUID);
     var snapshot = ref.snapshots();
-    return snapshot.map((list) =>
-        list.docs.map((doc) => AvailabilityPosting.fromJson(doc.data())).toList());
+    return snapshot.map((list) => list.docs
+        .map((doc) => AvailabilityPosting.fromJson(doc.data()))
+        .toList());
   }
 
   //get a users document from the users collection using the user id
@@ -60,8 +69,9 @@ class FirestoreService {
 
   Future<void> addAvailability(AvailabilityPosting avaPosting) async {
     // Add the job posting to the collection and wait for the operation to complete
-    DocumentReference docRef =
-        await _db.collection(_availabilityPostingsCollection).add(avaPosting.toJson());
+    DocumentReference docRef = await _db
+        .collection(_availabilityPostingsCollection)
+        .add(avaPosting.toJson());
 
     // Once the document is added, Firestore generates a unique ID, which can be accessed through the DocumentReference
     avaPosting.avaPostID = docRef.id;
@@ -98,9 +108,49 @@ class FirestoreService {
 
   Future<void> deleteAvailability(AvailabilityPosting avaPosting) async {
     // Delete the job posting from the collection
-    await _db.collection(_availabilityPostingsCollection).doc(avaPosting.avaPostID).delete();
+    await _db
+        .collection(_availabilityPostingsCollection)
+        .doc(avaPosting.avaPostID)
+        .delete();
   }
 
+  Future<void> deleteUser(User user) async {
+    // Delete the user from the collection
+    await _db.collection(_usersCollection).doc(user.uid).delete();
+    // Delete all users job postings from the collection
+    await _db
+        .collection(_jobPostingsCollection)
+        .where('jobPosterID', isEqualTo: user.uid)
+        .get()
+        .then((snapshot) {
+      for (DocumentSnapshot doc in snapshot.docs) {
+        doc.reference.delete();
+      }
+    });
 
+    // Delete all users availability postings from the collection
+    await _db
+        .collection(_availabilityPostingsCollection)
+        .where('posterID', isEqualTo: user.uid)
+        .get()
+        .then((snapshot) {
+      for (DocumentSnapshot doc in snapshot.docs) {
+        doc.reference.delete();
+      }
+    });
 
+    // Delete the users profile picture from Firebase Storage
+    FirebaseStorage.instance.refFromURL(user.pfpURL).delete();
+
+    // Delete the user from Firebase Authentication
+    try {
+      await AuthService().user!.delete();
+    } on firebase_auth.FirebaseAuthException catch (e) {
+      if (e.code == "requires-recent-login") {
+        firebase_auth.FirebaseAuth.instance.signOut();
+      }
+    } catch (e) {
+      print("Were cooked $e");
+    }
+  }
 }

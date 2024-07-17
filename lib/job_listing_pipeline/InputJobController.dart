@@ -113,6 +113,8 @@ class InputJobState with ChangeNotifier {
   void assembleJob(context) {
     int duration = _duration.inHours;
     int pay = int.parse(payController.text);
+    double rawHourlyRate = pay / duration;
+    double hourlyRate = double.parse(rawHourlyRate.toStringAsFixed(2));
 
     jobPosting = JobPosting(
       jobTitle: jobTitleController.text,
@@ -126,7 +128,7 @@ class InputJobState with ChangeNotifier {
       endDate: DateFormat('MM/dd/yyyy').format(_endDate),
       jobPay: pay,
       jobDuration: duration,
-      hourlyRate: pay / duration,
+      hourlyRate: hourlyRate,
       jobPosterName:
           "${Provider.of<UserState>(context, listen: false).user.firstName} ${Provider.of<UserState>(context, listen: false).user.lastName}",
       jobPosterID: Provider.of<UserState>(context, listen: false).user.uid,
