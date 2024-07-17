@@ -1,23 +1,21 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_toggle_tab/flutter_toggle_tab.dart';
 import 'package:google_places_autocomplete_text_field/google_places_autocomplete_text_field.dart';
-import 'package:helping_hand/job_listing_pipeline/ReviewJobListingScr.dart';
+import 'package:helping_hand/availability_listing_pipeline/ReviewPersonListingScr.dart';
 import 'package:helping_hand/services/UserState.dart';
 import 'package:helping_hand/services/firestore.dart';
 import 'package:helping_hand/services/models.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
-import 'package:time_picker_spinner_pop_up/time_picker_spinner_pop_up.dart';
 
-part 'InputJobController.dart';
+part 'InputAvailabilityController.dart';
 
-class InputJobScr extends StatelessWidget {
-  final bool? isEditing;
-  final JobPosting? jobPosting;
-  const InputJobScr({super.key, this.isEditing, this.jobPosting});
+class InputAvailabilityScr extends StatelessWidget {
+  final bool? editingAvailability;
+  final AvailabilityPosting? avaEditPosting;
+  const InputAvailabilityScr({super.key, this.editingAvailability, this.avaEditPosting});
 
   @override
   Widget build(BuildContext context) {
@@ -27,40 +25,33 @@ class InputJobScr extends StatelessWidget {
       },
       child: Scaffold(
           appBar: AppBar(
-            title: Text((isEditing != null && isEditing!) ? "Edit Job Posting" : "Fill out the form to post a job",
+            title: Text(
+              (editingAvailability != null && editingAvailability!)? "Edit availability ":"Fill out the form to post an availability",
                 style: Theme.of(context)
                     .textTheme
                     .headlineMedium!
                     .copyWith(fontSize: 23, fontWeight: FontWeight.bold)),
           ),
           body: ChangeNotifierProvider(
-            create: (context) => InputJobState(isEditing: isEditing, jobPosting: jobPosting),
-            child: Consumer<InputJobState>(
+            create: (context) => InputAvaState(
+                Provider.of<UserState>(context, listen: false).user.location, isEdit: editingAvailability, ava: avaEditPosting),
+            child: Consumer<InputAvaState>(
               builder: (context, state, child) {
                 return Padding(
                   padding: const EdgeInsets.all(15.0),
                   child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.end,
                       mainAxisSize: MainAxisSize.max,
                       children: [
                         Expanded(
                           child: ListView(
-                            padding: const EdgeInsets.only(top: 18.0),
                             children: [
-                              TextField(
-                                controller: state.jobTitle,
-                                maxLength: 30,
-                                decoration: const InputDecoration(
-                                  labelText: "Job Title",
-                                  hintText: "Enter the title of the job",
-                                  
-                                ),
-                              ),
                               //location
                               Padding(
                                 padding: const EdgeInsets.only(top: 18.0),
                                 child: GooglePlacesAutoCompleteTextFormField(
+                                  maxLength: 15,
                                   cursorColor: Colors.orange,
                                   textEditingController: state.location,
                                   countries: const ['US'],
@@ -79,6 +70,7 @@ class InputJobScr extends StatelessWidget {
                                       ),
                                     ),
                                     labelText: "Location",
+                                    hintText: "Enter your general location",
                                   ),
                                   validator: (value) {
                                     if (value!.isEmpty) {
@@ -101,7 +93,8 @@ class InputJobScr extends StatelessWidget {
                                     );
                                   },
                                   itmClick: (prediction) => {
-                                    state.location.text = prediction.description!,
+                                    state.location.text =
+                                        prediction.description!,
                                   },
                                 ),
                               ),
@@ -111,7 +104,7 @@ class InputJobScr extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      "Choose a date or range of dates:",
+                                      "Choose up to 6 dates or range of dates:",
                                       style:
                                           Theme.of(context).textTheme.bodyLarge,
                                     ),
@@ -125,7 +118,7 @@ class InputJobScr extends StatelessWidget {
                                           width: 60,
                                           borderRadius: 20,
                                           height: 30,
-                                          selectedIndex: state.dOrR,
+                                          selectedIndex: state.datesOrRange,
                                           selectedBackgroundColors: [
                                             Colors.green.shade600
                                           ],
@@ -142,16 +135,14 @@ class InputJobScr extends StatelessWidget {
                                               fontSize: 18,
                                               fontWeight: FontWeight.w700),
                                           labels: const [
-                                            "one day",
+                                            "Date(s)",
                                             "Range of days"
                                           ],
                                           selectedLabelIndex: (index) {
                                             if (index == 1) {
-                                              state.oneDayJob = false;
-                                              state.dOrR = 1;
+                                              state.datesOrRange = 1;
                                             } else {
-                                              state.oneDayJob = true;
-                                              state.dOrR = 0;
+                                              state.datesOrRange = 0;
                                             }
                                           },
                                           isScroll: false,
@@ -161,9 +152,10 @@ class InputJobScr extends StatelessWidget {
                                     Padding(
                                       padding: const EdgeInsets.only(top: 10.0),
                                       child: Text(
-                                        "Selected ${state.oneDayJob ? "day: ${DateFormat('MM/dd/yy').format(state.onlyDay)}" : "range of days: ${DateFormat('MM/dd/yy').format(state.startDate)} - ${DateFormat('MM/dd/yy').format(state.endDate)} "}",
-                                        style:
-                                            Theme.of(context).textTheme.bodyLarge,
+                                        "Selected ${state._datesOrRange == 0 ? "dates" : "range"}: ${state._datesOrRange == 0 ? state.avaDates.map((e) => DateFormat.yMMMd().format(e)).join(", ") : "${DateFormat.yMMMd().format(state.startDate)} - ${DateFormat.yMMMd().format(state.endDate)}"}",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyLarge,
                                       ),
                                     ),
                                   ],
@@ -191,15 +183,17 @@ class InputJobScr extends StatelessWidget {
                                       textButtonTheme: TextButtonThemeData(
                                           style: ButtonStyle(
                                               backgroundColor:
-                                                  WidgetStateProperty.all<Color?>(
+                                                  WidgetStateProperty.all<
+                                                          Color?>(
                                                       Colors.green.shade800)))),
                                   child: SfDateRangePicker(
-                                    controller: state.datePickerController,
                                     enablePastDates: false,
                                     showTodayButton: true,
                                     startRangeSelectionColor: Colors.lightGreen,
                                     endRangeSelectionColor: Colors.lightGreen,
-                                    monthCellStyle: DateRangePickerMonthCellStyle(
+                                    controller: state.dateRangePickerController,
+                                    monthCellStyle:
+                                        DateRangePickerMonthCellStyle(
                                       todayCellDecoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(20),
                                         border: Border.all(
@@ -227,64 +221,16 @@ class InputJobScr extends StatelessWidget {
                                         Colors.green.shade800.withOpacity(0.5),
                                     initialSelectedDate: state.startDate,
                                     initialSelectedRange: PickerDateRange(
-                                        state.startDate, state.endDate
-                                        ),
-                                    onSelectionChanged: state._onSelectionChanged,
-                                    selectionMode: state.oneDayJob
-                                        ? DateRangePickerSelectionMode.single
+                                        state.startDate, state.endDate),
+                                    onSelectionChanged:
+                                        state._onSelectionChanged,
+                                    selectionMode: state.datesOrRange == 0
+                                        ? DateRangePickerSelectionMode.multiple
                                         : DateRangePickerSelectionMode.range,
                                   ),
                                 ),
                               ),
-                              Padding(
-                                padding: const EdgeInsets.only(top: 18.0),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Column(
-                                      mainAxisSize: MainAxisSize.max,
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        const Text("Start Time:"),
-                                        const SizedBox(
-                                          height: 10,
-                                        ),
-                                        TimePickerSpinnerPopUp(
-                                          mode: CupertinoDatePickerMode.time,
-                                          initTime: state.startTime,
-                                          use24hFormat: false,
-                                          timeFormat: "hh:mm a",
-                                          minuteInterval: 5,
-                                          onChange: (dateTime) {
-                                            state.startTime = dateTime;
-                                          },
-                                        ),
-                                      ],
-                                    ),
-                                    const VerticalDivider(),
-                                    Column(
-                                      mainAxisSize: MainAxisSize.max,
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        const Text("End Time:"),
-                                        const SizedBox(
-                                          height: 10,
-                                        ),
-                                        TimePickerSpinnerPopUp(
-                                          mode: CupertinoDatePickerMode.time,
-                                          initTime: state.endTime,
-                                          use24hFormat: false,
-                                          timeFormat: "hh:mm a",
-                                          minuteInterval: 5,
-                                          onChange: (dateTime) {
-                                            state.endTime = dateTime;
-                                          },
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
+
                               Padding(
                                 padding: const EdgeInsets.only(top: 18.0),
                                 child: Container(
@@ -298,90 +244,74 @@ class InputJobScr extends StatelessWidget {
                                   ),
                                   child: CheckboxListTile(
                                     title: const Text(
-                                      "Willing to pick up workers?",
+                                      "Need to be picked up?",
                                       style: TextStyle(fontSize: 20),
                                     ),
                                     activeColor: Colors.orange,
                                     controlAffinity:
                                         ListTileControlAffinity.trailing,
-                                    value: state.pickup,
+                                    value: state.needPickup,
                                     onChanged: (bool? value) {
-                                      state.pickup = value!;
+                                      state.needPickup = value!;
                                     },
                                   ),
                                 ),
                               ),
+
                               Padding(
                                 padding: const EdgeInsets.only(top: 18.0),
                                 child: TextField(
-                                  controller: state.pay,
-                                  keyboardType: TextInputType.number,
+                                  minLines: 3,
+                                  maxLines: 3,
+                                  controller: state.avaDetails,
                                   decoration: const InputDecoration(
-                                    labelText: "Job Pay",
-                                    hintText: "Per diem",
+                                    labelText: "Availability Description",
+                                    hintText:
+                                        "Enter additional details about your availability \nYour profile description will be availble to employers",
                                   ),
                                 ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(top: 18.0),
-                                child: TextField(
-                                  minLines: 2,
-                                  maxLines: 5,
-                                  controller: state.jobDescription,
-                                  decoration: const InputDecoration(
-                                    labelText: "Job Description",
-                                    hintText: "Enter the description of the job",
-                                  ),
-                                ),
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  (isEditing != null && isEditing!) ? ElevatedButton.icon(
-                                    style: Theme.of(context)
-                                        .elevatedButtonTheme
-                                        .style!
-                                        .copyWith(
-                                            backgroundColor:
-                                                WidgetStateProperty.all(
-                                                    Colors.green.shade700)),
-                                    onPressed: () {
-                                      if (state.validateJob(context)) {
-                                        state.assembleJob(context);
-                                        state.updateDatabase();
-                                        Navigator.pop(context);
-                                      }
-                                    },
-                                    label: const Text("Update"),
-                                    icon: const Icon(Icons.send),
-                                  ) : ElevatedButton.icon(
-                                    style: Theme.of(context)
-                                        .elevatedButtonTheme
-                                        .style!
-                                        .copyWith(
-                                            backgroundColor:
-                                                WidgetStateProperty.all(
-                                                    Colors.green.shade700)),
-                                    onPressed: () {
-                                      if (state.validateJob(context)) {
-                                        state.assembleJob(context);
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                ReviewListingScr(
-                                                    jobPosting: state.job!),
-                                          ),
-                                        );
-                                      }
-                                    },
-                                    label: const Text("Submit"),
-                                    icon: const Icon(Icons.send),
-                                  ),
-                                ],
                               ),
                             ],
                           ),
+                        ),
+                        (editingAvailability != null && editingAvailability!) ?ElevatedButton.icon(
+                          style: Theme.of(context)
+                              .elevatedButtonTheme
+                              .style!
+                              .copyWith(
+                                  backgroundColor: WidgetStateProperty.all(
+                                      Colors.green.shade700)),
+                          onPressed: () {
+                            if (state.validateAva(context)) {
+                              state.assembleAva(context);
+                              state.updateDatabase();
+                              Navigator.pop(context);
+                            }
+                          },
+                          label: const Text("Update"),
+                          icon: const Icon(Icons.send),
+                        ) : ElevatedButton.icon(
+                          style: Theme.of(context)
+                              .elevatedButtonTheme
+                              .style!
+                              .copyWith(
+                                  backgroundColor: WidgetStateProperty.all(
+                                      Colors.green.shade700)),
+                          onPressed: () {
+                            if (state.validateAva(context)) {
+                              state.assembleAva(context);
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => ReviewPersonListingScr(
+                                    avaPosting: state.avaP,
+                                  ),
+                                ),
+                              );
+                            }
+                          },
+                          label: const Text("Submit"),
+                          icon: const Icon(Icons.send),
                         ),
                       ]),
                 );

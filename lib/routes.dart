@@ -2,10 +2,12 @@
 //chats screens
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:helping_hand/AvailabilityListingFiles/AvailabilityListingsScr.dart';
 import 'package:helping_hand/Chats_screens/ChatsOverviewScr.dart';
 import 'package:helping_hand/Chats_screens/ChatScr.dart';
 import 'package:helping_hand/gettting_in/ForgotPassScr.dart';
 import 'package:helping_hand/home.dart';
+import 'package:helping_hand/menu/accountDetails.dart';
 
 //onboarding pipeline
 import 'package:helping_hand/onboarding_pipeline/SignupScr.dart';
@@ -14,19 +16,16 @@ import 'package:helping_hand/onboarding_pipeline/CongratsScr.dart';
 
 //job listing pipeline
 import 'package:helping_hand/job_listing_pipeline/InputJobScr.dart';
-import 'package:helping_hand/job_listing_pipeline/ReviewListingScr.dart';
 
 //person listing pipeline
-import '../person_listing_pipeline/InputAvailabilityScr.dart';
-import 'package:helping_hand/person_listing_pipeline/ReviewPersonListingScr.dart';
+import 'availability_listing_pipeline/InputAvailabilityScr.dart';
 
 //miscellaneous
-import 'package:helping_hand/JobListingFullScr.dart';
-import 'package:helping_hand/JobListingsScr.dart';
+import 'package:helping_hand/jobListingFiles/JobListingsScr.dart';
 import 'package:helping_hand/PersonReviewsScr.dart';
-import '../gettting_in/StartupScr.dart'; 
-import 'package:helping_hand/UserPublicProfileScr.dart';
+import 'gettting_in/StartupScr.dart'; 
 import 'package:helping_hand/gettting_in/LoginScr.dart';
+import 'package:helping_hand/menu/MenuScr.dart';
 
 
 var appRoutes = {
@@ -38,17 +37,18 @@ var appRoutes = {
   "/chatsOverview": (context) => const ChatsOverviewScr(),
   
   "/inputJob": (context) => const InputJobScr(),
-  "/reviewJob": (context) => const ReviewListingScr(),
   
   "/signup": (context) => const SignupScr(),
   "/profileSetup": (context) => ProfileSetupScr(docRef: ModalRoute.of(context)!.settings.arguments as DocumentReference),
 
   "/inputAvailability": (context) => const InputAvailabilityScr(),
-  "/reviewPerson": (context) => const ReviewPersonListingScr(),
+
+  "/accountDetails": (context) => const AccountDetails(),
+
   "/jobListings": (context) => const JobListingsScr(),
-  "/jobListingFull": (context) => const JobListingFullScr(),
+  "/availabilityListings": (context) => const AvailabilityListingsScr(),
   "/personReviews": (context) => const PersonReviewsScr(),
-  "/userPublicProfile": (context) => const UserPublicProfileScr(),
   "/login": (context) =>  const LoginScr(),
   "/congrats": (context) => const CongratsScr(),
+  "/menu": (context) => const MenuScr(),
 };

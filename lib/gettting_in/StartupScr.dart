@@ -34,14 +34,7 @@ class StartupScr extends StatelessWidget {
                 child: Image.asset('assets/logoHH.png'),
               ),
             ),
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.3,
-              child: ElevatedButton(
-                          onPressed: () {
-                            Navigator.pushNamed(context, '/jobListings');
-                          },
-                          child: Text("Skip")),
-            ),
+            
             Flexible(
               child: Container(
                 padding: const EdgeInsets.all(10.0).copyWith(bottom: 25.0),

@@ -7,8 +7,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
 // import 'package:google_places_flutter/google_places_flutter.dart';
 // import 'package:google_places_flutter/model/prediction.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:google_places_autocomplete_text_field/google_places_autocomplete_text_field.dart';
 
 class SignupInputs {
   SignupInputs(
@@ -18,8 +16,7 @@ class SignupInputs {
       this.phoneNumber,
       this.password,
       this.lookingForWork,
-      this.lookingForWorkers,
-      this.location);
+      this.lookingForWorkers);
   String firstName = '';
   String lastName = '';
   String email = '';
@@ -27,7 +24,7 @@ class SignupInputs {
   String password = '';
   bool lookingForWork = false;
   bool lookingForWorkers = false;
-  String location = '';
+  
 }
 
 class SignupScr extends StatefulWidget {
@@ -48,7 +45,7 @@ class _SignupScrState extends State<SignupScr> {
   final emailController = TextEditingController();
   final phoneNumberController = TextEditingController();
   final passwordController = TextEditingController();
-  final locationController = TextEditingController();
+  
   var docRef;
 
   @override
@@ -69,7 +66,7 @@ class _SignupScrState extends State<SignupScr> {
     emailController.dispose();
     phoneNumberController.dispose();
     passwordController.dispose();
-    locationController.dispose();
+    
     super.dispose();
   }
 
@@ -82,7 +79,7 @@ class _SignupScrState extends State<SignupScr> {
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         body: Padding(
-          padding: const EdgeInsets.only(top:15.0),
+          padding: const EdgeInsets.only(top: 15.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             mainAxisSize: MainAxisSize.max,
@@ -166,93 +163,7 @@ class _SignupScrState extends State<SignupScr> {
                         const Padding(
                           padding: EdgeInsets.only(top: 10.0),
                         ),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            const Flexible(
-                              flex: 1,
-                              child: SizedBox(
-                                width: 15,
-                              ),
-                            ),
-                            const Flexible(
-                              flex: 4,
-                              child: Text(
-                                "Where are you located?",
-                                style: TextStyle(fontSize: 20),
-                              ),
-                            ),
-                            const Flexible(
-                              flex: 1,
-                              child: SizedBox(
-                                width: 5,
-                              ),
-                            ),
-                            Flexible(
-                              flex: 7,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  GooglePlacesAutoCompleteTextFormField(
-                                    cursorColor: Colors.orange,
-                                    textEditingController: locationController,
-                                    countries: const ['US'],
-                                    googleAPIKey: dotenv.env['GOOGLE_API_KEY']!,
-                                    decoration: InputDecoration(
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(10.0),
-                                      ),
-                                      floatingLabelStyle: const TextStyle(
-                                        color: Colors.orange,
-                                      ),
-                                      focusedBorder: const OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                          color: Colors.orange,
-                                          width: 1.0,
-                                        ),
-                                      ),
-                                      labelText: "ZIP code / City, State",
-                                    ),
-                                    validator: (value) {
-                                      if (value!.isEmpty) {
-                                        return 'Please enter some text';
-                                      }
-                                      return null;
-                                    },
-                                    // proxyURL: _yourProxyURL,
-                                    maxLines: 1,
-                                    overlayContainer: (child) => Material(
-                                      elevation: 1.0,
-                                      color: Colors.grey.shade500,
-                                      borderRadius: BorderRadius.circular(12),
-                                      child: child,
-                                    ),
-                                    getPlaceDetailWithLatLng: (prediction) {
-                                      SnackBar(
-                                        content:
-                                            Text('placeDetails${prediction.lat}'),
-                                      );
-                                    },
-                                    itmClick: (prediction) => {
-                                      locationController.text =
-                                          prediction.description!,
-                                    },
-                                  ),
-                                  const Padding(
-                                    padding: EdgeInsets.only(top: 5.0),
-                                    child: Text(
-                                      "This is used to sort jobs based on distance",
-                                      style: TextStyle(color: Colors.grey),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
+                        
                         Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           mainAxisSize: MainAxisSize.min,
@@ -314,8 +225,9 @@ class _SignupScrState extends State<SignupScr> {
                                 .textButtonTheme
                                 .style
                                 ?.copyWith(
-                                  backgroundColor: WidgetStateProperty.all<Color>(
-                                      Colors.grey.shade600),
+                                  backgroundColor:
+                                      WidgetStateProperty.all<Color>(
+                                          Colors.grey.shade600),
                                   textStyle: WidgetStateProperty.all<TextStyle>(
                                     const TextStyle(
                                       fontSize: 20,
@@ -345,9 +257,8 @@ class _SignupScrState extends State<SignupScr> {
                                       .replaceAll(RegExp(r'\D'), ''),
                                   passwordController.text,
                                   lookingForWork,
-                                  lookingForWorkers,
-                                  locationController.text);
-          
+                                  lookingForWorkers);
+
                               if (validateInputs(inputs, context)) {
                                 docRef = await storeInputs(inputs, context);
                                 Navigator.pushNamed(context, '/profileSetup',
@@ -403,9 +314,9 @@ bool validateInputs(SignupInputs inputs, BuildContext context) {
   if (inputs.password.isEmpty || inputs.password.length < 8) {
     invalids.add('Password');
   }
-  if (inputs.location.isEmpty) {
-    invalids.add('Location');
-  }
+  // if (inputs.location.isEmpty) {
+  //   invalids.add('Location');
+  // } location can be required if app has a large user base
   if (invalids.isEmpty) {
     if (inputs.lookingForWork == false && inputs.lookingForWorkers == false) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -445,17 +356,19 @@ Future<DocumentReference> storeInputs(
       password: inputs.password,
     );
 
-    var docRef = firestoreInstance.collection('users').doc();
+    var docRef =
+        firestoreInstance.collection('users').doc(userCredential.user!.uid);
 
     await docRef.set({
-      'first_name': inputs.firstName,
-      'last_name': inputs.lastName,
+      'firstName': inputs.firstName,
+      'lastName': inputs.lastName,
       'email': inputs.email,
-      'phone_number': inputs.phoneNumber,
-      'UID': userCredential.user!.uid,
-      "looking_for_work": inputs.lookingForWork,
-      'looking_for_workers': inputs.lookingForWorkers,
-      'location': inputs.location,
+      'phoneNumber': inputs.phoneNumber,
+      'uid': userCredential.user!.uid,
+      "lookingForWork": inputs.lookingForWork,
+      'lookingForWorkers': inputs.lookingForWorkers,
+      'rating': 0,
+      
     });
 
     return docRef;
