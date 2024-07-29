@@ -118,3 +118,31 @@ Map<String, dynamic> _$AvailabilityPostingToJson(
       'avaPostID': instance.avaPostID,
       'posterID': instance.posterID,
     };
+
+Message _$MessageFromJson(Map<String, dynamic> json) => Message(
+      senderUID: json['senderUID'] as String,
+      message: json['message'] as String,
+      timeStampSent: DateTime.parse(json['timeStampSent'] as String),
+      imageUrl: json['imageUrl'] as String?,
+    );
+
+Map<String, dynamic> _$MessageToJson(Message instance) => <String, dynamic>{
+      'senderUID': instance.senderUID,
+      'message': instance.message,
+      'timeStampSent': instance.timeStampSent.toIso8601String(),
+      'imageUrl': instance.imageUrl,
+    };
+
+Chat _$ChatFromJson(Map<String, dynamic> json) => Chat(
+      participants: (json['participants'] as List<dynamic>)
+          .map((e) => e as String)
+          .toList(),
+      createdTS: DateTime.parse(json['createdTS'] as String),
+      lastMessageTS: DateTime.parse(json['lastMessageTS'] as String),
+    );
+
+Map<String, dynamic> _$ChatToJson(Chat instance) => <String, dynamic>{
+      'participants': instance.participants,
+      'createdTS': instance.createdTS.toIso8601String(),
+      'lastMessageTS': instance.lastMessageTS.toIso8601String(),
+    };

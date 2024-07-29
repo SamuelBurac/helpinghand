@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:firebase_storage/firebase_storage.dart';
@@ -10,6 +11,8 @@ class FirestoreService {
   final String _jobPostingsCollection = "jobs";
   final String _availabilityPostingsCollection = "availabilities";
   final String _usersCollection = "users";
+  final String _chatsCollection = "chats"; 
+  final String _messagesCollection = "messages"; // a subcollection of chats
 
   Future<List<JobPosting>> getJobs() async {
     var ref = _db.collection(_jobPostingsCollection);
@@ -153,4 +156,47 @@ class FirestoreService {
       print("Were cooked $e");
     }
   }
+
+  Future<void> addChat(Chat chat) async {
+    // Add the chat to the collection and wait for the operation to complete
+    await _db.collection(_chatsCollection).add(chat.toJson());
+  }
+  Future<void> deleteChat(String chatID) async {
+    // Delete the chat from the collection
+    await _db.collection(_chatsCollection).doc(chatID).delete();
+  }
+
+  Future<List<Chat>> getChats(String uid) async {
+    // Get the chats from the collection
+    var ref = _db.collection(_chatsCollection).where('participants', arrayContains: uid);
+    var snapshot = await ref.get();
+    var data = snapshot.docs.map((s) => s.data());
+    var chats = data.map((d) => Chat.fromJson(d));
+    return chats.toList();
+  }
+
+  Future<void> sendMessage(String chatID, Message message) async {
+    // Add the message to the collection and wait for the operation to complete
+    await _db.collection(_chatsCollection).doc(chatID).collection('messages').add(message.toJson());
+    await _db.collection(_chatsCollection).doc(chatID).update({'lastMessageTS': DateTime.now()});
+  }
+
+  Future<List<Message>> getMessages(String chatID) async {
+    // Get the messages from the collection
+    var ref = _db.collection(_chatsCollection).doc(chatID).collection(_messagesCollection);
+    var snapshot = await ref.get();
+    var data = snapshot.docs.map((s) => s.data());
+    var messages = data.map((d) => Message.fromJson(d));
+    return messages.toList();
+  }
+
+  Future<String> uploadChatImage(String chatID, File image) async {
+    // Upload the image to Firebase Storage
+    var ref = FirebaseStorage.instance.ref().child('chatImages/$chatID/${DateTime.now()}.png');
+    await ref.putFile(image);
+    var url = await ref.getDownloadURL();
+
+    return url;
+  }
+
 }

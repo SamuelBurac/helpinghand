@@ -138,9 +138,9 @@ class EditButtonState extends ChangeNotifier {
 
 class EditTextWithButton extends StatelessWidget {
   final TextEditingController controller;
-  late final String labelText;
+  final String labelText;
 
-  EditTextWithButton(
+  const EditTextWithButton(
       {required this.controller, required this.labelText, super.key});
 
   @override

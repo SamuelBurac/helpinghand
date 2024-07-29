@@ -16,6 +16,7 @@ class User{
   final bool displayPhoneNumber;
   final bool lookingForWork;
   final bool lookingForWorkers;
+  
 
   User({
      this.uid = " ",
@@ -30,6 +31,7 @@ class User{
      this.displayPhoneNumber = false,
      this.lookingForWork = true,
      this.lookingForWorkers = true,
+  
   });
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
@@ -123,4 +125,42 @@ class AvailabilityPosting {
 
   factory AvailabilityPosting.fromJson(Map<String, dynamic> json) => _$AvailabilityPostingFromJson(json);
   Map<String, dynamic> toJson() => _$AvailabilityPostingToJson(this);
+}
+
+
+
+@JsonSerializable()
+class Message {
+  final String senderUID;
+  final String message;
+  final DateTime timeStampSent;
+  final String? imageUrl;
+
+  Message({
+    required this.senderUID,
+    required this.message,
+    required this.timeStampSent ,
+    this.imageUrl,
+  });
+  factory Message.fromJson(Map<String, dynamic> json) => _$MessageFromJson(json);
+  Map<String, dynamic> toJson() => _$MessageToJson(this);
+
+}
+
+@JsonSerializable()
+class Chat {
+  final List<String> participants;
+  final DateTime createdTS;
+  final DateTime lastMessageTS;
+
+  Chat({
+    required this.participants,
+    required this.createdTS,
+    required this.lastMessageTS,
+
+  });
+
+  factory Chat.fromJson(Map<String, dynamic> json) => _$ChatFromJson(json);
+  Map<String, dynamic> toJson() => _$ChatToJson(this);
+
 }
