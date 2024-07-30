@@ -152,12 +152,13 @@ class Chat {
   final List<String> participants;
   final DateTime createdTS;
   final DateTime lastMessageTS;
+  final String lastMessage;
 
   Chat({
     required this.participants,
     required this.createdTS,
     required this.lastMessageTS,
-
+    required this.lastMessage,
   });
 
   factory Chat.fromJson(Map<String, dynamic> json) => _$ChatFromJson(json);

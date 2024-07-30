@@ -4,7 +4,10 @@ import 'package:flip_card/flip_card.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:helping_hand/UserPublicProfileScr.dart';
 import 'package:helping_hand/jobListingFiles/JobListingFullScr.dart';
+import 'package:helping_hand/services/UserState.dart';
+import 'package:helping_hand/services/firestore.dart';
 import 'package:helping_hand/services/models.dart';
+import 'package:provider/provider.dart';
 
 class JobCard extends StatelessWidget {
   final JobPosting jobPosting;
@@ -418,7 +421,29 @@ class JobCard extends StatelessWidget {
                           'Connect',
                           style: TextStyle(color: Colors.black),
                         ),
-                        onPressed: () {},
+                        onPressed: () async {
+                          DateTime date = DateTime.now();
+                          var currId =
+                              Provider.of<UserState>(context, listen: false)
+                                  .user
+                                  .uid;
+                          if (currId != jobPosting.jobPosterID) {
+                            bool chatExist = await FirestoreService()
+                                .checkIfChatExists(
+                                    jobPosting.jobPosterID, currId);
+                            if (!chatExist) {
+                              await FirestoreService().addChat(Chat(
+                                  participants: [
+                                    jobPosting.jobPosterID,
+                                    currId
+                                  ],
+                                  createdTS: date,
+                                  lastMessageTS: date,
+                                  lastMessage: "Send a message"));
+                            }
+                            
+                          }
+                        },
                       ),
                     ],
                   ),

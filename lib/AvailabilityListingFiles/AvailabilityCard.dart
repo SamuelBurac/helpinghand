@@ -3,8 +3,11 @@ import 'package:animated_rating_stars/animated_rating_stars.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:helping_hand/AvailabilityListingFiles/AvailabilityListingFScr.dart';
 import 'package:helping_hand/UserPublicProfileScr.dart';
+import 'package:helping_hand/services/UserState.dart';
+import 'package:helping_hand/services/firestore.dart';
 import 'package:helping_hand/services/models.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class AvailabilityCard extends StatelessWidget {
   final AvailabilityPosting availabilityPosting;
@@ -399,7 +402,28 @@ class AvailabilityCard extends StatelessWidget {
                             'Connect',
                             style: TextStyle(color: Colors.black),
                           ),
-                          onPressed: () {},
+                          onPressed: () async {
+                            DateTime date = DateTime.now();
+                            var currId =
+                                Provider.of<UserState>(context, listen: false)
+                                    .user
+                                    .uid;
+                            if (currId != availabilityPosting.posterID) {
+                              bool chatExist = await FirestoreService()
+                                  .checkIfChatExists(
+                                      availabilityPosting.posterID, currId);
+                              if (!chatExist) {
+                                await FirestoreService().addChat(Chat(
+                                    participants: [
+                                      availabilityPosting.posterID,
+                                      currId
+                                    ],
+                                    createdTS: date,
+                                    lastMessageTS: date,
+                                    lastMessage: "Send a message"));
+                              }
+                            }
+                          },
                         ),
                       ],
                     ),

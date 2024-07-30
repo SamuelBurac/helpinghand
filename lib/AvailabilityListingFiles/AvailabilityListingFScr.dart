@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:animated_rating_stars/animated_rating_stars.dart';
 import 'package:helping_hand/UserPublicProfileScr.dart';
+import 'package:helping_hand/services/UserState.dart';
+import 'package:helping_hand/services/firestore.dart';
 import 'package:helping_hand/services/models.dart';
+import 'package:provider/provider.dart';
 import 'AvailabilityCard.dart';
 
 class AvailabilityListingFScr extends StatelessWidget {
@@ -20,14 +23,14 @@ class AvailabilityListingFScr extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             InkWell(
-              onTap:() {
+              onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => UserPublicProfileScr(userID: avaPosting.posterID),
+                    builder: (context) =>
+                        UserPublicProfileScr(userID: avaPosting.posterID),
                   ),
                 );
-              
               },
               child: Row(
                 children: [
@@ -238,8 +241,8 @@ class AvailabilityListingFScr extends StatelessWidget {
                         ? Container(
                             margin: const EdgeInsets.only(left: 20),
                             decoration: BoxDecoration(
-                              color:
-                                  Colors.deepOrangeAccent.shade700.withOpacity(0.6),
+                              color: Colors.deepOrangeAccent.shade700
+                                  .withOpacity(0.6),
                               borderRadius: BorderRadius.circular(5),
                             ),
                             child: const Padding(
@@ -297,7 +300,21 @@ class AvailabilityListingFScr extends StatelessWidget {
           style: TextStyle(
               color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold),
         ),
-        onPressed: () {},
+        onPressed: () async {
+          DateTime date = DateTime.now();
+          var currId = Provider.of<UserState>(context, listen: false).user.uid;
+          if (currId != avaPosting.posterID) {
+            bool chatExist = await FirestoreService()
+                .checkIfChatExists(avaPosting.posterID, currId);
+            if (!chatExist) {
+              await FirestoreService().addChat(Chat(
+                  participants: [avaPosting.posterID, currId],
+                  createdTS: date,
+                  lastMessageTS: date,
+                  lastMessage: "Send a message"));
+            }
+          }
+        },
       ),
     );
   }
