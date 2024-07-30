@@ -1,4 +1,5 @@
 import 'package:animated_rating_stars/animated_rating_stars.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_toggle_tab/flutter_toggle_tab.dart';
@@ -25,13 +26,26 @@ class MenuScr extends StatelessWidget {
           Flexible(
             flex: 1,
             child: Padding(
-              padding: const EdgeInsets.only(top:20.0, left: 10),
+              padding: const EdgeInsets.only(top: 20.0, left: 10),
               child: Row(
                 children: [
                   CircleAvatar(
-                    radius: 30,
-                    backgroundImage:
-                        NetworkImage(Provider.of<UserState>(context).user.pfpURL),
+                    backgroundColor: Colors.transparent,
+                    radius: 40,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(50),
+                      child: CachedNetworkImage(
+                        fit: BoxFit.cover,
+                        imageUrl: Provider.of<UserState>(context).user.pfpURL,
+                        progressIndicatorBuilder:
+                            (context, url, downloadProgress) =>
+                                CircularProgressIndicator(
+                                    color: Colors.amber,
+                                    value: downloadProgress.progress),
+                        errorWidget: (context, url, error) =>
+                            const Icon(Icons.error),
+                      ),
+                    ),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(left: 13.0),
@@ -167,16 +181,14 @@ class MenuScr extends StatelessWidget {
                                       Provider.of<PostingsState>(context,
                                               listen: false)
                                           .showJobListings = false;
-                                          Provider.of<PostingsState>(context,
+                                      Provider.of<PostingsState>(context,
                                               listen: false)
                                           .selectedLabelIndex = 1;
-                                          
-
                                     } else {
                                       Provider.of<PostingsState>(context,
                                               listen: false)
                                           .showJobListings = true;
-                                          Provider.of<PostingsState>(context,
+                                      Provider.of<PostingsState>(context,
                                               listen: false)
                                           .selectedLabelIndex = 0;
                                     }
@@ -201,10 +213,11 @@ class MenuScr extends StatelessWidget {
                             const Divider(),
                             Expanded(
                               child: Provider.of<PostingsState>(context,
-                                    listen: false)
-                                .showJobListings
+                                          listen: false)
+                                      .showJobListings
                                   ? StreamBuilder(
-                                      stream: FirestoreService().streamJobs(AuthService().user!.uid),
+                                      stream: FirestoreService()
+                                          .streamJobs(AuthService().user!.uid),
                                       builder: (context, snapshot) {
                                         if (snapshot.connectionState ==
                                             ConnectionState.waiting) {
@@ -228,7 +241,8 @@ class MenuScr extends StatelessWidget {
                                       })
                                   : StreamBuilder(
                                       stream: FirestoreService()
-                                          .streamAvailabilitiesFiltered(AuthService().user!.uid),
+                                          .streamAvailabilitiesFiltered(
+                                              AuthService().user!.uid),
                                       builder: (context, snapshot) {
                                         if (snapshot.connectionState ==
                                             ConnectionState.waiting) {
@@ -242,8 +256,10 @@ class MenuScr extends StatelessWidget {
 
                                           return ListView(
                                             children: avaPostings
-                                                .map((ava) => AvailabilityListingCard(
-                                                    availabilityPosting: ava))
+                                                .map((ava) =>
+                                                    AvailabilityListingCard(
+                                                        availabilityPosting:
+                                                            ava))
                                                 .toList(),
                                           );
                                         } else {

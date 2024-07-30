@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:animated_rating_stars/animated_rating_stars.dart';
 import 'package:flip_card/flip_card.dart';
@@ -63,11 +64,16 @@ class JobCard extends StatelessWidget {
                                   radius: 35,
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(50),
-                                    child: FadeInImage.assetNetwork(
-                                      placeholder:
-                                          'assets/emptyProfilePic.png', // Replace with your placeholder asset
-                                      image: jobPosting.pfpURL,
+                                    child: CachedNetworkImage(
                                       fit: BoxFit.cover,
+                                      imageUrl: jobPosting.pfpURL,
+                                      progressIndicatorBuilder: (context, url,
+                                              downloadProgress) =>
+                                          CircularProgressIndicator(
+                                              color: Colors.amber,
+                                              value: downloadProgress.progress),
+                                      errorWidget: (context, url, error) =>
+                                          const Icon(Icons.error),
                                     ),
                                   ),
                                 ),
@@ -441,7 +447,6 @@ class JobCard extends StatelessWidget {
                                   lastMessageTS: date,
                                   lastMessage: "Send a message"));
                             }
-                            
                           }
                         },
                       ),

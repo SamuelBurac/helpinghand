@@ -140,6 +140,7 @@ Chat _$ChatFromJson(Map<String, dynamic> json) => Chat(
       createdTS: DateTime.parse(json['createdTS'] as String),
       lastMessageTS: DateTime.parse(json['lastMessageTS'] as String),
       lastMessage: json['lastMessage'] as String,
+      chatID: json['chatID'] as String?,
     );
 
 Map<String, dynamic> _$ChatToJson(Chat instance) => <String, dynamic>{
@@ -147,4 +148,5 @@ Map<String, dynamic> _$ChatToJson(Chat instance) => <String, dynamic>{
       'createdTS': instance.createdTS.toIso8601String(),
       'lastMessageTS': instance.lastMessageTS.toIso8601String(),
       'lastMessage': instance.lastMessage,
+      'chatID': instance.chatID,
     };

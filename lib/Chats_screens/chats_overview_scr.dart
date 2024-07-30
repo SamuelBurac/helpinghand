@@ -1,4 +1,6 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:helping_hand/Chats_screens/chat_screen.dart';
 import 'package:helping_hand/LoadingScreen.dart';
 import 'package:helping_hand/error.dart';
 import 'package:helping_hand/services/UserState.dart';
@@ -16,6 +18,7 @@ class ChatsOverviewScr extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: const Center(child: Text('Messages')),
       ),
       body: FutureBuilder(
@@ -32,7 +35,9 @@ class ChatsOverviewScr extends StatelessWidget {
                   ? ListView.builder(
                       itemCount: chats.length,
                       itemBuilder: (context, index) {
-                        return ChatCard(chat: chats[index]);
+                        if (chats[index].chatID != "") {
+                          return ChatCard(chat: chats[index]);
+                        }
                       })
                   : const Center(
                       child: Text("No Chats yet!"),
@@ -83,9 +88,25 @@ class ChatCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    User interlocutor = User();
     return Card(
       child: InkWell(
-        onTap: () => {/*navigate to chat screen*/},
+        onTap: () => {
+          if (interlocutor.uid != " ")
+            {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return ChatScr(
+                      chat: chat,
+                      interlocutor: interlocutor,
+                    );
+                  },
+                ),
+              ),
+            }
+        },
         child: FutureBuilder<User?>(
             future: FirestoreService().getUser(_getInterlocutorUID(
                 chat.participants,
@@ -98,18 +119,29 @@ class ChatCard extends StatelessWidget {
               } else if (snapshot.data == null) {
                 return const Text('User not found'); // Handle null user
               } else {
-                User user = snapshot.data!;
+                interlocutor = snapshot.data!;
                 return Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       CircleAvatar(
-                        radius: 30,
-                        backgroundImage: user.pfpURL != ""
-                            ? NetworkImage(user.pfpURL)
-                            : const AssetImage("assets/emptyProfilePic.png")
-                                as ImageProvider<Object>,
+                        backgroundColor: Colors.transparent,
+                        radius: 35,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(50),
+                          child: CachedNetworkImage(
+                            fit: BoxFit.cover,
+                            imageUrl: interlocutor.pfpURL,
+                            progressIndicatorBuilder:
+                                (context, url, downloadProgress) =>
+                                    CircularProgressIndicator(
+                                        color: Colors.amber,
+                                        value: downloadProgress.progress),
+                            errorWidget: (context, url, error) =>
+                                const Icon(Icons.error),
+                          ),
+                        ),
                       ),
                       Expanded(
                         child: Padding(
@@ -118,7 +150,7 @@ class ChatCard extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "${user.firstName} ${user.lastName}",
+                                "${interlocutor.firstName} ${interlocutor.lastName}",
                                 style: const TextStyle(
                                     fontSize: 20, fontWeight: FontWeight.bold),
                               ),

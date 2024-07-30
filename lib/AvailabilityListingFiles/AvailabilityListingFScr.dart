@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:animated_rating_stars/animated_rating_stars.dart';
 import 'package:helping_hand/UserPublicProfileScr.dart';
@@ -39,12 +40,17 @@ class AvailabilityListingFScr extends StatelessWidget {
                     radius: 40,
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(50),
-                      child: FadeInImage.assetNetwork(
-                        placeholder:
-                            'assets/emptyProfilePic.png', // Replace with your placeholder asset
-                        image: avaPosting.pfpURL,
-                        fit: BoxFit.cover,
-                      ),
+                      child: CachedNetworkImage(
+                                  fit: BoxFit.cover,
+                                  imageUrl: avaPosting.pfpURL,
+                                  progressIndicatorBuilder:
+                                      (context, url, downloadProgress) =>
+                                          CircularProgressIndicator(
+                                              color: Colors.amber,
+                                              value: downloadProgress.progress),
+                                  errorWidget: (context, url, error) =>
+                                      const Icon(Icons.error),
+                                ),
                     ),
                   ),
                   Padding(

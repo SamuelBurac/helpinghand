@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:animated_rating_stars/animated_rating_stars.dart';
 import 'package:auto_size_text/auto_size_text.dart';
@@ -64,12 +65,17 @@ class AvailabilityListingCard extends StatelessWidget {
                             radius: 35,
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(50),
-                              child: FadeInImage.assetNetwork(
-                                placeholder:
-                                    'assets/emptyProfilePic.png', // Replace with your placeholder asset
-                                image: availabilityPosting.pfpURL,
-                                fit: BoxFit.cover,
-                              ),
+                              child: CachedNetworkImage(
+                                      fit: BoxFit.cover,
+                                      imageUrl: availabilityPosting.pfpURL,
+                                      progressIndicatorBuilder: (context, url,
+                                              downloadProgress) =>
+                                          CircularProgressIndicator(
+                                              color: Colors.amber,
+                                              value: downloadProgress.progress),
+                                      errorWidget: (context, url, error) =>
+                                          const Icon(Icons.error),
+                                    ),
                             ),
                           ),
                         ),

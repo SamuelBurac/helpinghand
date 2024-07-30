@@ -52,6 +52,7 @@ class AccountDetails extends StatelessWidget {
                     EditTextWithButton(
                       controller: controller.descriptionController,
                       labelText: "Description",
+                      maxLines: 3,
                     ),
                     const Divider(),
                     CheckboxListTile(

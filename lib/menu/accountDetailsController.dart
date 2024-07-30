@@ -139,9 +139,13 @@ class EditButtonState extends ChangeNotifier {
 class EditTextWithButton extends StatelessWidget {
   final TextEditingController controller;
   final String labelText;
+  int maxLines;
 
-  const EditTextWithButton(
-      {required this.controller, required this.labelText, super.key});
+  EditTextWithButton(
+      {required this.controller,
+      required this.labelText,
+      this.maxLines = 1,
+      super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -153,6 +157,7 @@ class EditTextWithButton extends StatelessWidget {
             children: [
               Expanded(
                 child: TextField(
+                  maxLines: maxLines,
                   readOnly: !state.isEditing,
                   decoration: InputDecoration(
                       filled: !state.isEditing,
@@ -167,15 +172,16 @@ class EditTextWithButton extends StatelessWidget {
                 child: TextButton(
                   style: Theme.of(context).textButtonTheme.style!.copyWith(
                         backgroundColor: WidgetStateProperty.all<Color>(
-                            state.isEditing ? Colors.green: Colors.orange.shade900),
-                      
-                  ),
+                            state.isEditing
+                                ? Colors.green
+                                : Colors.orange.shade900),
+                      ),
                   onPressed: () {
                     Provider.of<EditButtonState>(context, listen: false)
                         .toggleEditing();
                   },
                   child: Text(
-                    state.isEditing ? "Good": "Edit",
+                    state.isEditing ? "Good" : "Edit",
                     style: const TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,

@@ -171,7 +171,10 @@ Future<bool> checkIfChatExists(String uid1, String uid2) async {
 
   Future<void> addChat(Chat chat) async {
     // Add the chat to the collection and wait for the operation to complete
-    await _db.collection(_chatsCollection).add(chat.toJson());
+    var ref = await _db.collection(_chatsCollection).add(chat.toJson());
+    chat.chatID = ref.id;
+    await ref.update({'chatID': chat.chatID});
+
   }
 
   Future<void> deleteChat(String chatID) async {
@@ -201,16 +204,15 @@ Future<bool> checkIfChatExists(String uid1, String uid2) async {
         {'lastMessageTS': DateTime.now(), 'lastMessage': message.message});
   }
 
-  Future<List<Message>> getMessages(String chatID) async {
+  Stream<List<Message>> getMessages(String chatID)  {
     // Get the messages from the collection
     var ref = _db
         .collection(_chatsCollection)
         .doc(chatID)
         .collection(_messagesCollection);
-    var snapshot = await ref.get();
-    var data = snapshot.docs.map((s) => s.data());
-    var messages = data.map((d) => Message.fromJson(d));
-    return messages.toList();
+    var snapshot = ref.snapshots();
+    return snapshot.map((list) =>
+        list.docs.map((doc) => Message.fromJson(doc.data())).toList());
   }
 
   Future<String> uploadChatImage(String chatID, File image) async {

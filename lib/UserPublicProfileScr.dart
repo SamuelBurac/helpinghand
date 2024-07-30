@@ -1,6 +1,7 @@
 // page seen when click on another user's profile
 import 'package:animated_rating_stars/animated_rating_stars.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:helping_hand/services/firestore.dart';
 import 'package:helping_hand/services/models.dart';
@@ -34,9 +35,16 @@ class UserPublicProfileScr extends StatelessWidget {
                         child: user.pfpURL != ""
                             ? ClipRRect(
                                 borderRadius: BorderRadius.circular(50),
-                                child: Image.network(
-                                  user.pfpURL,
+                                child: CachedNetworkImage(
                                   fit: BoxFit.cover,
+                                  imageUrl: user.pfpURL,
+                                  progressIndicatorBuilder:
+                                      (context, url, downloadProgress) =>
+                                          CircularProgressIndicator(
+                                              color: Colors.amber,
+                                              value: downloadProgress.progress),
+                                  errorWidget: (context, url, error) =>
+                                      const Icon(Icons.error),
                                 ),
                               )
                             : Image.asset("assets/emptyProfilePic.png"),
