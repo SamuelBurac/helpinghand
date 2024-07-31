@@ -1,4 +1,5 @@
 //data models
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'models.g.dart';
 
@@ -127,12 +128,32 @@ class AvailabilityPosting {
   Map<String, dynamic> toJson() => _$AvailabilityPostingToJson(this);
 }
 
+class TimestampConverter implements JsonConverter<DateTime, dynamic> {
+  const TimestampConverter();
+
+  @override
+  DateTime fromJson(dynamic json) {
+    if (json is Timestamp) {
+      return json.toDate();
+    } else if (json is String) {
+      return DateTime.parse(json);
+    } else {
+      throw ArgumentError('Invalid timestamp format');
+    }
+  }
+
+  @override
+  dynamic toJson(DateTime date) {
+    return Timestamp.fromDate(date);
+  }
+}
 
 
 @JsonSerializable()
 class Message {
   final String senderUID;
   final String message;
+  @TimestampConverter()
   final DateTime timeStampSent;
   final String? imageUrl;
 
@@ -150,7 +171,9 @@ class Message {
 @JsonSerializable()
 class Chat {
   final List<String> participants;
+  @TimestampConverter()
   final DateTime createdTS;
+  @TimestampConverter()
   final DateTime lastMessageTS;
   final String lastMessage;
   String? chatID;

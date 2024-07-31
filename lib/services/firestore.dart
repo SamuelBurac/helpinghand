@@ -215,11 +215,11 @@ Future<bool> checkIfChatExists(String uid1, String uid2) async {
         list.docs.map((doc) => Message.fromJson(doc.data())).toList());
   }
 
-  Future<String> uploadChatImage(String chatID, File image) async {
+  Future<String> uploadImage(String uid, File image) async {
     // Upload the image to Firebase Storage
     var ref = FirebaseStorage.instance
         .ref()
-        .child('chatImages/$chatID/${DateTime.now()}.png');
+        .child('chatImages/$uid/${DateTime.now()}.png');
     await ref.putFile(image);
     var url = await ref.getDownloadURL();
 

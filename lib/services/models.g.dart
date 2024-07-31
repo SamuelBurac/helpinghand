@@ -122,14 +122,15 @@ Map<String, dynamic> _$AvailabilityPostingToJson(
 Message _$MessageFromJson(Map<String, dynamic> json) => Message(
       senderUID: json['senderUID'] as String,
       message: json['message'] as String,
-      timeStampSent: DateTime.parse(json['timeStampSent'] as String),
+      timeStampSent: const TimestampConverter().fromJson(json['timeStampSent']),
       imageUrl: json['imageUrl'] as String?,
     );
 
 Map<String, dynamic> _$MessageToJson(Message instance) => <String, dynamic>{
       'senderUID': instance.senderUID,
       'message': instance.message,
-      'timeStampSent': instance.timeStampSent.toIso8601String(),
+      'timeStampSent':
+          const TimestampConverter().toJson(instance.timeStampSent),
       'imageUrl': instance.imageUrl,
     };
 
@@ -137,16 +138,17 @@ Chat _$ChatFromJson(Map<String, dynamic> json) => Chat(
       participants: (json['participants'] as List<dynamic>)
           .map((e) => e as String)
           .toList(),
-      createdTS: DateTime.parse(json['createdTS'] as String),
-      lastMessageTS: DateTime.parse(json['lastMessageTS'] as String),
+      createdTS: const TimestampConverter().fromJson(json['createdTS']),
+      lastMessageTS: const TimestampConverter().fromJson(json['lastMessageTS']),
       lastMessage: json['lastMessage'] as String,
       chatID: json['chatID'] as String?,
     );
 
 Map<String, dynamic> _$ChatToJson(Chat instance) => <String, dynamic>{
       'participants': instance.participants,
-      'createdTS': instance.createdTS.toIso8601String(),
-      'lastMessageTS': instance.lastMessageTS.toIso8601String(),
+      'createdTS': const TimestampConverter().toJson(instance.createdTS),
+      'lastMessageTS':
+          const TimestampConverter().toJson(instance.lastMessageTS),
       'lastMessage': instance.lastMessage,
       'chatID': instance.chatID,
     };

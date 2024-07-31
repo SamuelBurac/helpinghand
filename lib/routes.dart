@@ -4,7 +4,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:helping_hand/AvailabilityListingFiles/AvailabilityListingsScr.dart';
 import 'package:helping_hand/Chats_screens/chats_overview_scr.dart';
-import 'package:helping_hand/Chats_screens/chat_screen.dart';
 import 'package:helping_hand/gettting_in/ForgotPassScr.dart';
 import 'package:helping_hand/home.dart';
 import 'package:helping_hand/menu/accountDetails.dart';

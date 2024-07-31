@@ -20,7 +20,7 @@ class _LoginScrState extends State<LoginScr> {
         email: _emailController.text,
         password: _passwordController.text,
       );
-      Navigator.of(context).pushNamed('/');
+      Navigator.of(context).popAndPushNamed('/');
     } on FirebaseAuthException catch (e) {
       setState(() {
         _errorMessage = e.message!;

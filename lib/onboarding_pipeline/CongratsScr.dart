@@ -33,7 +33,7 @@ class CongratsScr extends StatelessWidget {
               children: [
                 ElevatedButton(
                   onPressed: () {
-                    Navigator.pushNamed(context, '/');
+                    Navigator.popAndPushNamed(context, '/');
                   },
                   child: const Column(
                     children: [

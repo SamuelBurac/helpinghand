@@ -38,6 +38,7 @@ class ChatsOverviewScr extends StatelessWidget {
                         if (chats[index].chatID != "") {
                           return ChatCard(chat: chats[index]);
                         }
+                        return null;
                       })
                   : const Center(
                       child: Text("No Chats yet!"),
