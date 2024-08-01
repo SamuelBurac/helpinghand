@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:animated_rating_stars/animated_rating_stars.dart';
 import 'package:flip_card/flip_card.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:helping_hand/Chats_screens/chat_screen.dart';
 import 'package:helping_hand/UserPublicProfileScr.dart';
 import 'package:helping_hand/jobListingFiles/JobListingFullScr.dart';
 import 'package:helping_hand/services/UserState.dart';
@@ -429,24 +430,50 @@ class JobCard extends StatelessWidget {
                         ),
                         onPressed: () async {
                           DateTime date = DateTime.now();
+                          User? interlocutor = await FirestoreService()
+                              .getUser(jobPosting.jobPosterID);
+                          if (interlocutor == null) {
+                            return;
+                          }
+
                           var currId =
                               Provider.of<UserState>(context, listen: false)
                                   .user
                                   .uid;
+
                           if (currId != jobPosting.jobPosterID) {
                             bool chatExist = await FirestoreService()
                                 .checkIfChatExists(
                                     jobPosting.jobPosterID, currId);
+
+                            Chat chat = chatExist
+                                ? await FirestoreService()
+                                    .getChat(jobPosting.jobPosterID, currId)
+                                : Chat(
+                                    participants: [
+                                        jobPosting.jobPosterID,
+                                        currId
+                                      ],
+                                    createdTS: date,
+                                    lastMessageTS: date,
+                                    lastMessage: "Send a message");
+
                             if (!chatExist) {
-                              await FirestoreService().addChat(Chat(
-                                  participants: [
-                                    jobPosting.jobPosterID,
-                                    currId
-                                  ],
-                                  createdTS: date,
-                                  lastMessageTS: date,
-                                  lastMessage: "Send a message"));
+                              await FirestoreService().addChat(chat);
                             }
+                            Navigator.pushNamed(context, "/chatsOverview");
+
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) {
+                                  return ChatScr(
+                                    chat: chat,
+                                    interlocutor: interlocutor,
+                                  );
+                                },
+                              ),
+                            );
                           }
                         },
                       ),

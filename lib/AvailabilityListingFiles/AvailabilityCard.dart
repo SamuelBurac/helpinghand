@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:animated_rating_stars/animated_rating_stars.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:helping_hand/AvailabilityListingFiles/AvailabilityListingFScr.dart';
+import 'package:helping_hand/Chats_screens/chat_screen.dart';
 import 'package:helping_hand/UserPublicProfileScr.dart';
 import 'package:helping_hand/services/UserState.dart';
 import 'package:helping_hand/services/firestore.dart';
@@ -71,7 +72,7 @@ class AvailabilityCard extends StatelessWidget {
                                 progressIndicatorBuilder:
                                     (context, url, downloadProgress) =>
                                         CircularProgressIndicator(
-                                          color: Colors.amber,
+                                            color: Colors.amber,
                                             value: downloadProgress.progress),
                                 errorWidget: (context, url, error) =>
                                     const Icon(Icons.error),
@@ -409,6 +410,12 @@ class AvailabilityCard extends StatelessWidget {
                           ),
                           onPressed: () async {
                             DateTime date = DateTime.now();
+                            User? interlocutor = await FirestoreService()
+                                .getUser(availabilityPosting.posterID);
+                            if (interlocutor == null) {
+                              return;
+                            }
+
                             var currId =
                                 Provider.of<UserState>(context, listen: false)
                                     .user
@@ -417,16 +424,34 @@ class AvailabilityCard extends StatelessWidget {
                               bool chatExist = await FirestoreService()
                                   .checkIfChatExists(
                                       availabilityPosting.posterID, currId);
+                              Chat chat = chatExist
+                                  ? await FirestoreService().getChat(
+                                      availabilityPosting.posterID, currId)
+                                  : Chat(
+                                      participants: [
+                                          availabilityPosting.posterID,
+                                          currId
+                                        ],
+                                      createdTS: date,
+                                      lastMessageTS: date,
+                                      lastMessage: "Send a message");
+
                               if (!chatExist) {
-                                await FirestoreService().addChat(Chat(
-                                    participants: [
-                                      availabilityPosting.posterID,
-                                      currId
-                                    ],
-                                    createdTS: date,
-                                    lastMessageTS: date,
-                                    lastMessage: "Send a message"));
+                                await FirestoreService().addChat(chat);
                               }
+                              Navigator.pushNamed(context, "/chatsOverview");
+
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) {
+                                    return ChatScr(
+                                      chat: chat,
+                                      interlocutor: interlocutor,
+                                    );
+                                  },
+                                ),
+                              );
                             }
                           },
                         ),

@@ -13,6 +13,7 @@ class User{
   final String pfpURL;
   final String location;
   final double rating;
+  final int numReviews;
   final String description;
   final bool displayPhoneNumber;
   final bool lookingForWork;
@@ -28,6 +29,7 @@ class User{
      this.pfpURL = " ",
      this.location = " ",
      this.rating = 0.0,
+     this.numReviews = 0,
      this.description = "",
      this.displayPhoneNumber = false,
      this.lookingForWork = true,
@@ -65,9 +67,9 @@ class JobPosting {
   String jobID;
 
   JobPosting({
-    this.jobTitle = "Ball Crusher",
+    this.jobTitle = "Soccer Ball Crusher",
     this.jobLocation = "Alpharetta, GA",
-    this.jobDetails = "I wanna buy me this damn ball crusher",
+    this.jobDetails = "I wanna play soccer but I need someone to crush the balls for me",
     this.jobStartTime = "6:00 AM",
     this.jobEndTime = "12:00 AM",
     this.oneDay = true,
@@ -155,13 +157,13 @@ class Message {
   final String message;
   @TimestampConverter()
   final DateTime timeStampSent;
-  final String? imageUrl;
+  final String imageUrl;
 
   Message({
     required this.senderUID,
     required this.message,
     required this.timeStampSent ,
-    this.imageUrl,
+    this.imageUrl = "",
   });
   factory Message.fromJson(Map<String, dynamic> json) => _$MessageFromJson(json);
   Map<String, dynamic> toJson() => _$MessageToJson(this);
@@ -176,17 +178,44 @@ class Chat {
   @TimestampConverter()
   final DateTime lastMessageTS;
   final String lastMessage;
-  String? chatID;
+  String unreadUID;
+  String chatID;
 
   Chat({
     required this.participants,
     required this.createdTS,
     required this.lastMessageTS,
     required this.lastMessage,
-    this.chatID,
+    this.unreadUID = "", //the UID of the user who sent the last message
+    this.chatID = "ABC",
   });
 
   factory Chat.fromJson(Map<String, dynamic> json) => _$ChatFromJson(json);
   Map<String, dynamic> toJson() => _$ChatToJson(this);
+
+}
+
+
+@JsonSerializable()
+class Review {
+  String reviewID;
+  final String reviewerID;
+  final String revieweeID;
+  final String reviewText;
+  final double rating;
+  @TimestampConverter()
+  final DateTime reviewDate; 
+
+  Review({
+    required this.rating,
+    required this.reviewDate,
+    required this.reviewText,
+    required this.reviewerID,
+    required this.revieweeID,
+    this.reviewID = "ABC",
+  });
+
+  factory Review.fromJson(Map<String, dynamic> json) => _$ReviewFromJson(json);
+  Map<String, dynamic> toJson() => _$ReviewToJson(this);
 
 }

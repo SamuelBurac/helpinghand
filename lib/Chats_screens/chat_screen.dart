@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:chat_bubbles/chat_bubbles.dart';
 import 'package:helping_hand/Chats_screens/camera_screen.dart';
+import 'package:helping_hand/UserPublicProfileScr.dart';
 import 'package:helping_hand/services/UserState.dart';
 import 'package:helping_hand/services/firestore.dart';
 import 'package:helping_hand/services/models.dart';
@@ -15,7 +16,7 @@ class ChatScr extends StatefulWidget {
   final Chat chat;
   final User interlocutor;
 
-  ChatScr({required this.interlocutor, required this.chat, super.key});
+  const ChatScr({required this.interlocutor, required this.chat, super.key});
 
   @override
   State<ChatScr> createState() => _ChatScrState();
@@ -48,28 +49,41 @@ class _ChatScrState extends State<ChatScr> {
       },
       child: Scaffold(
         appBar: AppBar(
-            title: Row(
-          children: [
-            CircleAvatar(
-              backgroundColor: Colors.transparent,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(50),
-                child: CachedNetworkImage(
-                  fit: BoxFit.cover,
-                  imageUrl: widget.interlocutor.pfpURL,
-                  progressIndicatorBuilder: (context, url, downloadProgress) =>
-                      CircularProgressIndicator(
-                          color: Colors.amber,
-                          value: downloadProgress.progress),
-                  errorWidget: (context, url, error) => const Icon(Icons.error),
+            title: InkWell(
+          onTap: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => UserPublicProfileScr(
+                          userID: widget.interlocutor.uid,
+                        )));
+          },
+          child: Row(
+            children: [
+              CircleAvatar(
+                backgroundColor: Colors.transparent,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(50),
+                  child: CachedNetworkImage(
+                    fit: BoxFit.cover,
+                    imageUrl: widget.interlocutor.pfpURL,
+                    progressIndicatorBuilder:
+                        (context, url, downloadProgress) =>
+                            CircularProgressIndicator(
+                                color: Colors.amber,
+                                value: downloadProgress.progress),
+                    errorWidget: (context, url, error) =>
+                        const Icon(Icons.error),
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(width: 10),
-            Text("${widget.interlocutor.firstName} ${widget.interlocutor.lastName}",
-                style:
-                    const TextStyle(fontSize: 30, fontWeight: FontWeight.bold)),
-          ],
+              const SizedBox(width: 10),
+              Text(
+                  "${widget.interlocutor.firstName} ${widget.interlocutor.lastName}",
+                  style: const TextStyle(
+                      fontSize: 30, fontWeight: FontWeight.bold)),
+            ],
+          ),
         )),
         body: Column(
           mainAxisAlignment: MainAxisAlignment.end,
@@ -77,7 +91,7 @@ class _ChatScrState extends State<ChatScr> {
           children: [
             Expanded(
               child: StreamBuilder(
-                stream: FirestoreService().getMessages(widget.chat.chatID!),
+                stream: FirestoreService().getMessages(widget.chat.chatID),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(child: CircularProgressIndicator());
@@ -110,11 +124,10 @@ class _ChatScrState extends State<ChatScr> {
                                       color: Colors.orangeAccent.shade700
                                           .withOpacity(0.5),
                                     ),
-                                  if (messages[index].imageUrl != null &&
-                                      messages[index].imageUrl != "")
+                                  if (messages[index].imageUrl != "")
                                     BubbleNormalImage(
                                       id: "${messages[index].senderUID} $index",
-                                      image: _image(messages[index].imageUrl!),
+                                      image: _image(messages[index].imageUrl),
                                       isSender: messages[index].senderUID !=
                                           widget.interlocutor.uid,
                                       tail: true,
@@ -148,7 +161,7 @@ class _ChatScrState extends State<ChatScr> {
                 onSend: (String imageURL) {
                   if (_controller.text.isNotEmpty || imageURL != "") {
                     FirestoreService().sendMessage(
-                        widget.chat.chatID!,
+                        widget.chat.chatID,
                         Message(
                             senderUID:
                                 Provider.of<UserState>(context, listen: false)
@@ -156,7 +169,7 @@ class _ChatScrState extends State<ChatScr> {
                                     .uid,
                             message: _controller.text,
                             timeStampSent: DateTime.now(),
-                            imageUrl: imageURL));
+                            imageUrl: imageURL), widget.interlocutor.uid); 
                     _controller.clear();
                   }
                 },

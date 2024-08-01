@@ -15,6 +15,7 @@ User _$UserFromJson(Map<String, dynamic> json) => User(
       pfpURL: json['pfpURL'] as String? ?? " ",
       location: json['location'] as String? ?? " ",
       rating: (json['rating'] as num?)?.toDouble() ?? 0.0,
+      numReviews: (json['numReviews'] as num?)?.toInt() ?? 0,
       description: json['description'] as String? ?? "",
       displayPhoneNumber: json['displayPhoneNumber'] as bool? ?? false,
       lookingForWork: json['lookingForWork'] as bool? ?? true,
@@ -30,6 +31,7 @@ Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'pfpURL': instance.pfpURL,
       'location': instance.location,
       'rating': instance.rating,
+      'numReviews': instance.numReviews,
       'description': instance.description,
       'displayPhoneNumber': instance.displayPhoneNumber,
       'lookingForWork': instance.lookingForWork,
@@ -37,10 +39,10 @@ Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
     };
 
 JobPosting _$JobPostingFromJson(Map<String, dynamic> json) => JobPosting(
-      jobTitle: json['jobTitle'] as String? ?? "Ball Crusher",
+      jobTitle: json['jobTitle'] as String? ?? "Soccer Ball Crusher",
       jobLocation: json['jobLocation'] as String? ?? "Alpharetta, GA",
       jobDetails: json['jobDetails'] as String? ??
-          "I wanna buy me this damn ball crusher",
+          "I wanna play soccer but I need someone to crush the balls for me",
       jobStartTime: json['jobStartTime'] as String? ?? "6:00 AM",
       jobEndTime: json['jobEndTime'] as String? ?? "12:00 AM",
       oneDay: json['oneDay'] as bool? ?? true,
@@ -123,7 +125,7 @@ Message _$MessageFromJson(Map<String, dynamic> json) => Message(
       senderUID: json['senderUID'] as String,
       message: json['message'] as String,
       timeStampSent: const TimestampConverter().fromJson(json['timeStampSent']),
-      imageUrl: json['imageUrl'] as String?,
+      imageUrl: json['imageUrl'] as String? ?? "",
     );
 
 Map<String, dynamic> _$MessageToJson(Message instance) => <String, dynamic>{
@@ -141,7 +143,8 @@ Chat _$ChatFromJson(Map<String, dynamic> json) => Chat(
       createdTS: const TimestampConverter().fromJson(json['createdTS']),
       lastMessageTS: const TimestampConverter().fromJson(json['lastMessageTS']),
       lastMessage: json['lastMessage'] as String,
-      chatID: json['chatID'] as String?,
+      unreadUID: json['unreadUID'] as String? ?? "",
+      chatID: json['chatID'] as String? ?? "ABC",
     );
 
 Map<String, dynamic> _$ChatToJson(Chat instance) => <String, dynamic>{
@@ -150,5 +153,24 @@ Map<String, dynamic> _$ChatToJson(Chat instance) => <String, dynamic>{
       'lastMessageTS':
           const TimestampConverter().toJson(instance.lastMessageTS),
       'lastMessage': instance.lastMessage,
+      'unreadUID': instance.unreadUID,
       'chatID': instance.chatID,
+    };
+
+Review _$ReviewFromJson(Map<String, dynamic> json) => Review(
+      rating: (json['rating'] as num).toDouble(),
+      reviewDate: const TimestampConverter().fromJson(json['reviewDate']),
+      reviewText: json['reviewText'] as String,
+      reviewerID: json['reviewerID'] as String,
+      revieweeID: json['revieweeID'] as String,
+      reviewID: json['reviewID'] as String? ?? "ABC",
+    );
+
+Map<String, dynamic> _$ReviewToJson(Review instance) => <String, dynamic>{
+      'reviewID': instance.reviewID,
+      'reviewerID': instance.reviewerID,
+      'revieweeID': instance.revieweeID,
+      'reviewText': instance.reviewText,
+      'rating': instance.rating,
+      'reviewDate': const TimestampConverter().toJson(instance.reviewDate),
     };

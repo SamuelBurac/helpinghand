@@ -196,7 +196,7 @@ class _MessageBarBetterState extends State<MessageBarBetter> {
                   imageFile!);
               imageFile = null;
             }
-            print(imageURL);
+            
             widget.onSend(imageURL);
           },
           icon: const Icon(

@@ -20,6 +20,7 @@ class UserPublicProfileScr extends StatelessWidget {
               User user = snapshot.data!;
               return Scaffold(
                 appBar: AppBar(
+                  centerTitle: true,
                   title: Text("${user.firstName} ${user.lastName}"),
                 ),
                 body: Padding(
