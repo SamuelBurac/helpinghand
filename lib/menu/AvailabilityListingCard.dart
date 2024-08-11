@@ -3,11 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:animated_rating_stars/animated_rating_stars.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:helping_hand/AvailabilityListingFiles/AvailabilityListingFScr.dart';
-import 'package:helping_hand/UserPublicProfileScr.dart';
+import 'package:helping_hand/global_methods.dart';
+import 'package:helping_hand/public_profile/UserPublicProfileScr.dart';
 import 'package:helping_hand/availability_listing_pipeline/InputAvailabilityScr.dart';
+import 'package:helping_hand/services/UserState.dart';
 import 'package:helping_hand/services/firestore.dart';
 import 'package:helping_hand/services/models.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class AvailabilityListingCard extends StatelessWidget {
   final AvailabilityPosting availabilityPosting;
@@ -49,33 +52,21 @@ class AvailabilityListingCard extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        InkWell(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => UserPublicProfileScr(
-                                  userID: availabilityPosting.posterID,
-                                ),
-                              ),
-                            );
-                          },
-                          child: CircleAvatar(
-                            backgroundColor: Colors.transparent,
-                            radius: 35,
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(50),
-                              child: CachedNetworkImage(
-                                      fit: BoxFit.cover,
-                                      imageUrl: availabilityPosting.pfpURL,
-                                      progressIndicatorBuilder: (context, url,
-                                              downloadProgress) =>
-                                          CircularProgressIndicator(
-                                              color: Colors.amber,
-                                              value: downloadProgress.progress),
-                                      errorWidget: (context, url, error) =>
-                                          const Icon(Icons.error),
-                                    ),
+                        CircleAvatar(
+                          backgroundColor: Colors.transparent,
+                          radius: 35,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(50),
+                            child: CachedNetworkImage(
+                              fit: BoxFit.cover,
+                              imageUrl: availabilityPosting.pfpURL,
+                              progressIndicatorBuilder:
+                                  (context, url, downloadProgress) =>
+                                      CircularProgressIndicator(
+                                          color: Colors.amber,
+                                          value: downloadProgress.progress),
+                              errorWidget: (context, url, error) =>
+                                  const Icon(Icons.error),
                             ),
                           ),
                         ),

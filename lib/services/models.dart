@@ -12,8 +12,8 @@ class User{
   final String phoneNumber;
   final String pfpURL;
   final String location;
-  final double rating;
-  final int numReviews;
+  double rating;
+  int numReviews;
   final String description;
   final bool displayPhoneNumber;
   final bool lookingForWork;
@@ -202,6 +202,8 @@ class Review {
   final String reviewerID;
   final String revieweeID;
   final String reviewText;
+  final String reviewerName;
+  final String reviewerPfpURL;
   final double rating;
   @TimestampConverter()
   final DateTime reviewDate; 
@@ -212,6 +214,8 @@ class Review {
     required this.reviewText,
     required this.reviewerID,
     required this.revieweeID,
+    required this.reviewerName,
+    required this.reviewerPfpURL,
     this.reviewID = "ABC",
   });
 

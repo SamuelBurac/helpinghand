@@ -2,7 +2,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:animated_rating_stars/animated_rating_stars.dart';
 import 'package:helping_hand/Chats_screens/chat_screen.dart';
-import 'package:helping_hand/UserPublicProfileScr.dart';
+import 'package:helping_hand/global_methods.dart';
+import 'package:helping_hand/public_profile/UserPublicProfileScr.dart';
 import 'package:helping_hand/services/UserState.dart';
 import 'package:helping_hand/services/firestore.dart';
 import 'package:helping_hand/services/models.dart';
@@ -26,13 +27,10 @@ class AvailabilityListingFScr extends StatelessWidget {
           children: <Widget>[
             InkWell(
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        UserPublicProfileScr(userID: avaPosting.posterID),
-                  ),
-                );
+                navigateToUserPublicProfileScr(
+                    context,
+                    avaPosting.posterID,
+                    Provider.of<UserState>(context, listen: false).user.uid);
               },
               child: Row(
                 children: [

@@ -4,7 +4,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:chat_bubbles/chat_bubbles.dart';
 import 'package:helping_hand/Chats_screens/camera_screen.dart';
-import 'package:helping_hand/UserPublicProfileScr.dart';
+import 'package:helping_hand/global_methods.dart';
+import 'package:helping_hand/public_profile/UserPublicProfileScr.dart';
 import 'package:helping_hand/services/UserState.dart';
 import 'package:helping_hand/services/firestore.dart';
 import 'package:helping_hand/services/models.dart';
@@ -51,12 +52,10 @@ class _ChatScrState extends State<ChatScr> {
         appBar: AppBar(
             title: InkWell(
           onTap: () {
-            Navigator.push(
+            navigateToUserPublicProfileScr(
                 context,
-                MaterialPageRoute(
-                    builder: (context) => UserPublicProfileScr(
-                          userID: widget.interlocutor.uid,
-                        )));
+                widget.interlocutor.uid,
+                Provider.of<UserState>(context, listen: false).user.uid);
           },
           child: Row(
             children: [
@@ -169,7 +168,8 @@ class _ChatScrState extends State<ChatScr> {
                                     .uid,
                             message: _controller.text,
                             timeStampSent: DateTime.now(),
-                            imageUrl: imageURL), widget.interlocutor.uid); 
+                            imageUrl: imageURL),
+                        widget.interlocutor.uid);
                     _controller.clear();
                   }
                 },

@@ -163,6 +163,8 @@ Review _$ReviewFromJson(Map<String, dynamic> json) => Review(
       reviewText: json['reviewText'] as String,
       reviewerID: json['reviewerID'] as String,
       revieweeID: json['revieweeID'] as String,
+      reviewerName: json['reviewerName'] as String,
+      reviewerPfpURL: json['reviewerPfpURL'] as String,
       reviewID: json['reviewID'] as String? ?? "ABC",
     );
 
@@ -171,6 +173,8 @@ Map<String, dynamic> _$ReviewToJson(Review instance) => <String, dynamic>{
       'reviewerID': instance.reviewerID,
       'revieweeID': instance.revieweeID,
       'reviewText': instance.reviewText,
+      'reviewerName': instance.reviewerName,
+      'reviewerPfpURL': instance.reviewerPfpURL,
       'rating': instance.rating,
       'reviewDate': const TimestampConverter().toJson(instance.reviewDate),
     };

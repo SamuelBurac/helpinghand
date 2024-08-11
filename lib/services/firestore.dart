@@ -366,7 +366,7 @@ class FirestoreService {
         .delete();
   }
 
-  //when called must check if the review exists
+  //when called must check if the review not null
   Future<Review?> getReview(String revieweeID, String reviewID) async {
     var doc = await _db
         .collection(_usersCollection)
@@ -394,4 +394,17 @@ class FirestoreService {
     var reviews = data.map((d) => Review.fromJson(d));
     return reviews.toList();
   }
+
+  Future<bool> hasReviewed(String reveiwerUID, String revieweeUID) async {
+    return _db
+        .collection(_usersCollection)
+        .doc(revieweeUID)
+        .collection(_reviewsCollection)
+        .where('reviewerID', isEqualTo: reveiwerUID)
+        .get()
+        .then((snapshot) => snapshot.docs.isNotEmpty);
+  }
+
+  
+
 }

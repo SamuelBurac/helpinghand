@@ -4,7 +4,8 @@ import 'package:animated_rating_stars/animated_rating_stars.dart';
 import 'package:flip_card/flip_card.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:helping_hand/Chats_screens/chat_screen.dart';
-import 'package:helping_hand/UserPublicProfileScr.dart';
+import 'package:helping_hand/global_methods.dart';
+import 'package:helping_hand/public_profile/UserPublicProfileScr.dart';
 import 'package:helping_hand/jobListingFiles/JobListingFullScr.dart';
 import 'package:helping_hand/services/UserState.dart';
 import 'package:helping_hand/services/firestore.dart';
@@ -51,14 +52,13 @@ class JobCard extends StatelessWidget {
                             children: [
                               InkWell(
                                 onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          UserPublicProfileScr(
-                                              userID: jobPosting.jobPosterID),
-                                    ),
-                                  );
+                                  navigateToUserPublicProfileScr(
+                                      context,
+                                      jobPosting.jobPosterID,
+                                      Provider.of<UserState>(context,
+                                              listen: false)
+                                          .user
+                                          .uid);
                                 },
                                 child: CircleAvatar(
                                   backgroundColor: Colors.transparent,

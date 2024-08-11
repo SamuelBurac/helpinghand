@@ -16,11 +16,16 @@ class _LoginScrState extends State<LoginScr> {
 
   Future<void> _signIn() async {
     try {
-      await _auth.signInWithEmailAndPassword(
-        email: _emailController.text,
-        password: _passwordController.text,
-      );
-      Navigator.of(context).popAndPushNamed('/');
+      if (mounted) {
+        await _auth.signInWithEmailAndPassword(
+          email: _emailController.text,
+          password: _passwordController.text,
+        );
+
+        if (mounted) {
+          Navigator.of(context).pushReplacementNamed('/');
+        }
+      }
     } on FirebaseAuthException catch (e) {
       setState(() {
         _errorMessage = e.message!;
@@ -43,7 +48,7 @@ class _LoginScrState extends State<LoginScr> {
               style: Theme.of(context).textTheme.displayMedium,
             ),
             const SizedBox(height: 20),
-             Row(
+            Row(
               children: [
                 const Text(
                   "Don't have an account?  ",
