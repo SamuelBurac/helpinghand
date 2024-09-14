@@ -132,7 +132,7 @@ class UserPublicProfileScr extends StatelessWidget {
                               ),
                             ),
                             const Divider(),
-                            (canReview && !state.submittedReview)
+                            (canReview && !hasReviewed && !state.submittedReview)
                                 ? Column(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceAround,

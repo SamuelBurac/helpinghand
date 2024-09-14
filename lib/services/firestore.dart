@@ -311,17 +311,13 @@ class FirestoreService {
     });
 
     // Add the review to the collection and wait for the operation to complete
-    DocumentReference docRef = await _db
+   await _db
         .collection(_usersCollection)
         .doc(review.revieweeID)
         .collection(_reviewsCollection)
-        .add(review.toJson());
-
-    // Once the document is added, Firestore generates a unique ID, which can be accessed through the DocumentReference
-    review.reviewID = docRef.id;
-
-    // Optionally, update the document with the generated ID if needed
-    await docRef.update({'reviewID': review.reviewID});
+        .doc(review.reviewerID)
+        .set(review.toJson());
+        
   }
 
   Future<void> updateReview(Review review) async {
@@ -382,13 +378,14 @@ class FirestoreService {
   }
 
   //when called must check if the review not null
-  Future<Review?> getReview(String revieweeID, String reviewID) async {
+  Future<Review?> getReview(String revieweeID, String reviewerID) async {
     var doc = await _db
         .collection(_usersCollection)
         .doc(revieweeID)
         .collection(_reviewsCollection)
-        .doc(reviewID)
+        .doc(reviewerID)
         .get();
+        
     if (doc.exists) {
       var data = doc.data();
       var review = Review.fromJson(data!);

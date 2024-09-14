@@ -22,12 +22,12 @@ class EditReviewCard extends StatelessWidget {
             child: CircularProgressIndicator(),
           );
         } else if (snapshot.hasError) {
-          return const Center(
-            child: ErrorMessage(),
+          return Center(
+            child: ErrorMessage(message: "Error ${snapshot.error}"),
           );
         } else if (snapshot.hasData) {
           Review review = snapshot.data!;
-          return ChangeNotifierProvider(
+           return ChangeNotifierProvider(
             create: (context) => EditReviewCardController(review),
             child: Consumer(
               builder: (context, EditReviewCardController state, child) {
@@ -94,7 +94,7 @@ class EditReviewCard extends StatelessWidget {
             ),
           );
         } else {
-          return const SizedBox();
+          return const Text("Should have a review ");
         }
       },
     );
