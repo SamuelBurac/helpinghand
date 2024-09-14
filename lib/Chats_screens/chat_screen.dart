@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:chat_bubbles/chat_bubbles.dart';
 import 'package:helping_hand/Chats_screens/camera_screen.dart';
 import 'package:helping_hand/global_methods.dart';
-import 'package:helping_hand/public_profile/UserPublicProfileScr.dart';
 import 'package:helping_hand/services/UserState.dart';
 import 'package:helping_hand/services/firestore.dart';
 import 'package:helping_hand/services/models.dart';

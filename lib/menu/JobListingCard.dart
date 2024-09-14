@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:animated_rating_stars/animated_rating_stars.dart';
 import 'package:flip_card/flip_card.dart';
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:helping_hand/public_profile/UserPublicProfileScr.dart';
 import 'package:helping_hand/jobListingFiles/JobListingFullScr.dart';
 import 'package:helping_hand/job_listing_pipeline/InputJobScr.dart';
 import 'package:helping_hand/services/firestore.dart';

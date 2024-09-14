@@ -3,6 +3,7 @@ import 'package:animated_rating_stars/animated_rating_stars.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_stars/flutter_rating_stars.dart';
 import 'package:helping_hand/Chats_screens/chat_screen.dart';
 import 'package:helping_hand/public_profile/edit_review_card.dart';
 import 'package:helping_hand/public_profile/review_card.dart';
@@ -80,19 +81,11 @@ class UserPublicProfileScr extends StatelessWidget {
                                       MainAxisAlignment.spaceBetween,
                                   mainAxisSize: MainAxisSize.max,
                                   children: [
-                                    AnimatedRatingStars(
-                                      initialRating: state.overallRating,
-                                      displayRatingValue: true,
-                                      readOnly: true,
-                                      onChanged: (value) {
-                                        
-                                      },
-                                      emptyColor: const Color.fromARGB(
-                                          255, 157, 157, 157),
-                                      customFilledIcon: Icons.star,
-                                      customHalfFilledIcon: Icons.star_half,
-                                      customEmptyIcon: Icons.star_border,
-                                      starSize: 25,
+                                    RatingStars(
+                                      value: state.overallRating,
+                                      onValueChanged: (value) {},
+                                      starColor: Colors.amber,
+                                      
                                     ),
                                     if (user.displayPhoneNumber)
                                       Text(
@@ -235,7 +228,7 @@ class UserPublicProfileScr extends StatelessWidget {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.start,
                                             children: [
-                                              const Center(
+                                              Center(
                                                 child: Text(
                                                   "No reviews yet",
                                                   style: TextStyle(

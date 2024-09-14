@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:animated_rating_stars/animated_rating_stars.dart';
 import 'package:helping_hand/Chats_screens/chat_screen.dart';
 import 'package:helping_hand/global_methods.dart';
-import 'package:helping_hand/public_profile/UserPublicProfileScr.dart';
 import 'package:helping_hand/services/UserState.dart';
 import 'package:helping_hand/services/firestore.dart';
 import 'package:helping_hand/services/models.dart';

@@ -1,8 +1,6 @@
 import 'package:animated_rating_stars/animated_rating_stars.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
-import 'package:helping_hand/services/firestore.dart';
 import 'package:helping_hand/services/models.dart';
 import 'package:intl/intl.dart';
 

@@ -54,6 +54,7 @@ class PublicProfileState with ChangeNotifier {
         _displayedUser!.numReviews++;
 
         await FirestoreService().updateUser(_displayedUser!);
+        await FirestoreService().updatePostingsRating(_displayedUser!.uid, _displayedUser!.rating);
 
         _overallRating = _displayedUser!.rating;
         _numReviews++;

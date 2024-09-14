@@ -3,14 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:animated_rating_stars/animated_rating_stars.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:helping_hand/AvailabilityListingFiles/AvailabilityListingFScr.dart';
-import 'package:helping_hand/global_methods.dart';
-import 'package:helping_hand/public_profile/UserPublicProfileScr.dart';
 import 'package:helping_hand/availability_listing_pipeline/InputAvailabilityScr.dart';
-import 'package:helping_hand/services/UserState.dart';
 import 'package:helping_hand/services/firestore.dart';
 import 'package:helping_hand/services/models.dart';
 import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
 
 class AvailabilityListingCard extends StatelessWidget {
   final AvailabilityPosting availabilityPosting;
