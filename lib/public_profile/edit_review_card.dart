@@ -81,7 +81,7 @@ class EditReviewCard extends StatelessWidget {
                                       ),
                                     ),
                                   ),
-                              onPressed: () {},
+                              onPressed: state.submitReview,
                               child: const Text("Submit"),
                             ),
                           ),

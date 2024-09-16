@@ -21,4 +21,23 @@ class EditReviewCardController extends ChangeNotifier {
     _rating = value;
     notifyListeners();
   }
+
+  Future<void> submitReview() async {
+    try {
+      final Review review = Review(
+        revieweeID: _review.revieweeID,
+        reviewerID: _review.reviewerID,
+        reviewerPfpURL: _review.reviewerPfpURL,
+        reviewerName: _review.reviewerName,
+        reviewText: _reviewController.text,
+        rating: _rating,
+        reviewDate: DateTime.now(),
+      );
+
+      await FirestoreService().updateReview(review);
+      
+    } catch (e) {
+      print(e);
+    }
+  }
 }

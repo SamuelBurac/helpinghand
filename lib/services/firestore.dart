@@ -91,7 +91,7 @@ class FirestoreService {
   }
   
   Future<void> updatePostingsRating(String uid, double rating) async {
-    // Update the user in the collection
+    // Update the users job and availability postings to reflect the new rating
     await _db.collection(_jobPostingsCollection).where('jobPosterID', isEqualTo: uid).get().then((snapshot) {
       for (DocumentSnapshot doc in snapshot.docs) {
         doc.reference.update({'rating': rating});
@@ -343,6 +343,9 @@ class FirestoreService {
     await _db.collection(_usersCollection).doc(review.revieweeID).update({
       'rating': totalRating,
     });
+
+    //update users postings 
+    await updatePostingsRating(reviewee.uid, totalRating);
 
     // Update the review in the collection
     await _db
