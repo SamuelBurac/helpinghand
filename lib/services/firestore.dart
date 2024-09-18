@@ -320,29 +320,13 @@ class FirestoreService {
         
   }
 
-  Future<void> updateReview(Review review) async {
-    Review oldReview = await _db
-        .collection(_usersCollection)
-        .doc(review.revieweeID)
-        .collection(_reviewsCollection)
-        .doc(review.reviewID)
-        .get()
-        .then((doc) => Review.fromJson(doc.data()!));
-
-    User? reviewee = await getUser(review.revieweeID);
-    if (reviewee == null) {
-      throw Exception("User does not exist");
-    }
+  Future<void> updateReview(Review oldReview, Review review, User reviewee) async {
+    
 
     double totalRating = ((reviewee.rating * reviewee.numReviews) +
             review.rating -
             oldReview.rating) /
         (reviewee.numReviews);
-
-    // Update the user's rating and number of reviews
-    await _db.collection(_usersCollection).doc(review.revieweeID).update({
-      'rating': totalRating,
-    });
 
     //update users postings 
     await updatePostingsRating(reviewee.uid, totalRating);
@@ -354,6 +338,12 @@ class FirestoreService {
         .collection(_reviewsCollection)
         .doc(review.reviewID)
         .update(review.toJson());
+
+
+    // Update the user's rating
+    await _db.collection(_usersCollection).doc(review.revieweeID).update({
+      'rating': totalRating,
+    });
   }
 
   Future<void> deleteReview(Review review) async {
@@ -398,16 +388,15 @@ class FirestoreService {
     }
   }
 
-  Future<List<Review>> getReviews(String uid) async {
+  Stream<List<Review>> getReviews(String uid)  {
     // Get the reviews from the collection
     var ref = _db
         .collection(_usersCollection)
         .doc(uid)
         .collection(_reviewsCollection);
-    var snapshot = await ref.get();
-    var data = snapshot.docs.map((s) => s.data());
-    var reviews = data.map((d) => Review.fromJson(d));
-    return reviews.toList();
+    var snapshots = ref.snapshots();
+    return snapshots.map((list) => list.docs.map((doc) => Review.fromJson(doc.data())).toList());
+
   }
 
   Future<bool> hasReviewed(String reveiwerUID, String revieweeUID) async {

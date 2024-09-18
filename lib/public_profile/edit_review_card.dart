@@ -7,15 +7,15 @@ import 'package:provider/provider.dart';
 part 'edit_review_card_controller.dart';
 
 class EditReviewCard extends StatelessWidget {
-  final String revieweeID;
+  final User reviewee;
   final String reviewerID;
   const EditReviewCard(
-      {required this.revieweeID, required this.reviewerID, super.key});
+      {required this.reviewee, required this.reviewerID, super.key});
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: FirestoreService().getReview(revieweeID, reviewerID),
+      future: FirestoreService().getReview(reviewee.uid, reviewerID),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(
@@ -27,69 +27,135 @@ class EditReviewCard extends StatelessWidget {
           );
         } else if (snapshot.hasData) {
           Review review = snapshot.data!;
-           return ChangeNotifierProvider(
+          
+          return ChangeNotifierProvider(
             create: (context) => EditReviewCardController(review),
             child: Consumer(
               builder: (context, EditReviewCardController state, child) {
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      "Edit your Review",
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    AnimatedRatingStars(
-                      initialRating: review.rating,
-                      readOnly: false,
-                      onChanged: (value) {
-                        state.rating = value;
-                      },
-                      emptyColor: const Color.fromARGB(255, 157, 157, 157),
-                      customFilledIcon: Icons.star,
-                      customHalfFilledIcon: Icons.star_half,
-                      customEmptyIcon: Icons.star_border,
-                      starSize: 25,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 8.0),
-                      child: Row(
+                return state.isSubmitting
+                    ? const Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Expanded(
-                            child: TextField(
-                              controller: state.reviewController,
-                              decoration: const InputDecoration(
-                                hintText: "Write a review",
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding:
-                                const EdgeInsets.only(left: 8.0, right: 8.0),
-                            child: ElevatedButton(
-                              style: Theme.of(context)
-                                  .elevatedButtonTheme
-                                  .style!
-                                  .copyWith(
-                                    shape: WidgetStateProperty.all<
-                                        RoundedRectangleBorder>(
-                                      RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
+                          Row(
+                            children: [
+                              Column(
+                                children: [
+                                  const Text(
+                                    "Edit your Review",
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
                                     ),
                                   ),
-                              onPressed: state.submitReview,
-                              child: const Text("Submit"),
+                                  AnimatedRatingStars(
+                                    initialRating: state.rating,
+                                    readOnly: false,
+                                    onChanged: (value) {
+                                      state.rating = value;
+                                    },
+                                    emptyColor:
+                                        const Color.fromARGB(255, 157, 157, 157),
+                                    customFilledIcon: Icons.star,
+                                    customHalfFilledIcon: Icons.star_half,
+                                    customEmptyIcon: Icons.star_border,
+                                    starSize: 25,
+                                  ),
+                                ],
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 8.0),
+                                child:  ElevatedButton.icon(
+                            icon: const Icon(Icons.delete_forever_rounded),
+                            style: Theme.of(context)
+                                .elevatedButtonTheme
+                                .style!
+                                .copyWith(
+                                  backgroundColor:
+                                      WidgetStateProperty.all<Color>(
+                                          Colors.red),
+                                ),
+                            onPressed: () {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: const Text("Delete Account"),
+                                    content: const Text(
+                                        "Are you sure you want to delete your review?"),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                        child: const Text("Cancel"),
+                                      ),
+                                      TextButton(
+                                        style: Theme.of(context)
+                                            .textButtonTheme
+                                            .style!
+                                            .copyWith(
+                                              backgroundColor:
+                                                  WidgetStateProperty.all<
+                                                      Color>(Colors.red),
+                                            ),
+                                        onPressed: () {
+                                         
+                                        },
+                                        child: const Text("Delete"),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            },
+                            label: const Text("Delete Review"),
+                          ),
+                              ),
+                            ],
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 8.0),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: TextField(
+                                    controller: state.reviewController,
+                                    decoration: const InputDecoration(
+                                      hintText: "Write a review",
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 8.0, right: 8.0),
+                                  child: ElevatedButton(
+                                    style: Theme.of(context)
+                                        .elevatedButtonTheme
+                                        .style!
+                                        .copyWith(
+                                          shape: WidgetStateProperty.all<
+                                              RoundedRectangleBorder>(
+                                            RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                            ),
+                                          ),
+                                        ),
+                                    onPressed: () async {
+                                      state.submitReview(reviewee);
+                                    },
+                                    child: const Text("Submit"),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ],
-                      ),
-                    ),
-                  ],
-                );
+                      );
               },
             ),
           );

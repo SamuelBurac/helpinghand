@@ -203,7 +203,7 @@ class UserPublicProfileScr extends StatelessWidget {
                                   )
                                 : (hasReviewed || state.submittedReview)
                                     ? EditReviewCard(
-                                        revieweeID: userID,
+                                        reviewee: user,
                                         reviewerID: Provider.of<UserState>(
                                                 context,
                                                 listen: false)
@@ -216,8 +216,8 @@ class UserPublicProfileScr extends StatelessWidget {
                             Expanded(
                               child: Padding(
                                 padding: const EdgeInsets.all(5.0),
-                                child: FutureBuilder<List<Review>>(
-                                    future:
+                                child: StreamBuilder<List<Review>>(
+                                    stream:
                                         FirestoreService().getReviews(userID),
                                     builder: (context, snapshot) {
                                       // check if there is any data
