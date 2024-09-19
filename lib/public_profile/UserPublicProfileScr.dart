@@ -34,7 +34,7 @@ class UserPublicProfileScr extends StatelessWidget {
               User user = snapshot.data!;
               return ChangeNotifierProvider(
                 create: (context) => PublicProfileState(
-                    user, Provider.of<UserState>(context, listen: false).user),
+                    user, Provider.of<UserState>(context, listen: false).user, canReview, hasReviewed),
                 child: Scaffold(
                   appBar: AppBar(
                     centerTitle: true,
@@ -132,7 +132,7 @@ class UserPublicProfileScr extends StatelessWidget {
                               ),
                             ),
                             const Divider(),
-                            (canReview && !hasReviewed && !state.submittedReview)
+                            (state.canReview && !state.hasReviewed && !state.submittedReview)
                                 ? Column(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceAround,
@@ -201,9 +201,10 @@ class UserPublicProfileScr extends StatelessWidget {
                                       ),
                                     ],
                                   )
-                                : (hasReviewed || state.submittedReview)
+                                : (state.hasReviewed || state.submittedReview)
                                     ? EditReviewCard(
                                         reviewee: user,
+                                        onDelete: state.onDelete,
                                         reviewerID: Provider.of<UserState>(
                                                 context,
                                                 listen: false)

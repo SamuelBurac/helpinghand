@@ -7,18 +7,34 @@ class PublicProfileState with ChangeNotifier {
   int _numReviews = 0;
   double _rating = 0.0;
   bool _submittedReview = false;
+  bool _canReview = false;
+  bool _hasReviewed = false; 
   final TextEditingController _reviewController = TextEditingController();
 
   //constructor for the class
-  PublicProfileState(User user, User currentUser) {
+  PublicProfileState(User user, User currentUser, bool canReview, bool hasReviewed) {
     _displayedUser = user;
     _overallRating = user.rating;
     _numReviews = user.numReviews;
     _currentUser = currentUser;
+    _canReview = canReview;
+    _hasReviewed = hasReviewed;
   }
   TextEditingController get reviewController => _reviewController;
 
   double get rating => _rating;
+
+  bool get canReview => _canReview;
+  bool get hasReviewed => _hasReviewed;
+
+  set canReview(bool value) {
+    _canReview = value;
+    notifyListeners();
+  }
+  set hasReviewed(bool value) {
+    _hasReviewed = value;
+    notifyListeners();
+  }
 
   set rating(double value) {
     _rating = value;
@@ -71,4 +87,14 @@ class PublicProfileState with ChangeNotifier {
       print(e);
     }
   }
+
+  void onDelete() {
+    _reviewController.clear();
+    _rating = 0.0;
+    _submittedReview = false;
+    _hasReviewed = false;
+    notifyListeners();
+  }
+
+
 }

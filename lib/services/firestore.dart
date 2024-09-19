@@ -336,7 +336,7 @@ class FirestoreService {
         .collection(_usersCollection)
         .doc(review.revieweeID)
         .collection(_reviewsCollection)
-        .doc(review.reviewID)
+        .doc(review.reviewerID)
         .update(review.toJson());
 
 
@@ -346,14 +346,15 @@ class FirestoreService {
     });
   }
 
-  Future<void> deleteReview(Review review) async {
-    User? reviewee = await getUser(review.revieweeID);
-    if (reviewee == null) {
-      throw Exception("User does not exist");
-    }
+  Future<void> deleteReview(Review review, User reviewee) async {
+    
     double totalRating =
         ((reviewee.rating * reviewee.numReviews) - review.rating) /
             (reviewee.numReviews - 1);
+
+    if ((reviewee.numReviews - 1) == 0) {
+      totalRating = 0;
+    }
 
     // Update the user's rating and number of reviews
     await _db.collection(_usersCollection).doc(review.revieweeID).update({
@@ -366,7 +367,7 @@ class FirestoreService {
         .collection(_usersCollection)
         .doc(review.revieweeID)
         .collection(_reviewsCollection)
-        .doc(review.reviewID)
+        .doc(review.reviewerID)
         .delete();
   }
 
