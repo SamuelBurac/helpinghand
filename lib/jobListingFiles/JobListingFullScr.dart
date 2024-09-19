@@ -1,8 +1,13 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:animated_rating_stars/animated_rating_stars.dart';
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:helping_hand/UserPublicProfileScr.dart';
+import 'package:helping_hand/Chats_screens/chat_screen.dart';
+import 'package:helping_hand/global_methods.dart';
+import 'package:helping_hand/services/UserState.dart';
+import 'package:helping_hand/services/firestore.dart';
 import 'package:helping_hand/services/models.dart';
+import 'package:provider/provider.dart';
 
 class JobListingFullScr extends StatelessWidget {
   final JobPosting jobPosting;
@@ -21,14 +26,8 @@ class JobListingFullScr extends StatelessWidget {
           children: <Widget>[
             InkWell(
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => UserPublicProfileScr(
-                      userID: jobPosting.jobPosterID,
-                    ),
-                  ),
-                );
+                navigateToUserPublicProfileScr(context, jobPosting.jobPosterID,
+                    Provider.of<UserState>(context, listen: false).user.uid);
               },
               child: Row(
                 children: [
@@ -37,11 +36,16 @@ class JobListingFullScr extends StatelessWidget {
                     radius: 40,
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(50),
-                      child: FadeInImage.assetNetwork(
-                        placeholder:
-                            'assets/emptyProfilePic.png', // Replace with your placeholder asset
-                        image: jobPosting.pfpURL,
+                      child: CachedNetworkImage(
                         fit: BoxFit.cover,
+                        imageUrl: jobPosting.pfpURL,
+                        progressIndicatorBuilder:
+                            (context, url, downloadProgress) =>
+                                CircularProgressIndicator(
+                                    color: Colors.amber,
+                                    value: downloadProgress.progress),
+                        errorWidget: (context, url, error) =>
+                            const Icon(Icons.error),
                       ),
                     ),
                   ),
@@ -294,7 +298,47 @@ class JobListingFullScr extends StatelessWidget {
           style: TextStyle(
               color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold),
         ),
-        onPressed: () {},
+        onPressed: () async {
+          DateTime date = DateTime.now();
+          User? interlocutor =
+              await FirestoreService().getUser(jobPosting.jobPosterID);
+          if (interlocutor == null) {
+            return;
+          }
+
+          var currId = Provider.of<UserState>(context, listen: false).user.uid;
+
+          if (currId != jobPosting.jobPosterID) {
+            bool chatExist = await FirestoreService()
+                .checkIfChatExists(jobPosting.jobPosterID, currId);
+
+            Chat chat = chatExist
+                ? await FirestoreService()
+                    .getChat(jobPosting.jobPosterID, currId)
+                : Chat(
+                    participants: [jobPosting.jobPosterID, currId],
+                    createdTS: date,
+                    lastMessageTS: date,
+                    lastMessage: "Send a message");
+
+            if (!chatExist) {
+              await FirestoreService().addChat(chat);
+            }
+            Navigator.pushNamed(context, "/chatsOverview");
+
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) {
+                  return ChatScr(
+                    chat: chat,
+                    interlocutor: interlocutor,
+                  );
+                },
+              ),
+            );
+          }
+        },
       ),
     );
   }

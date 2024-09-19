@@ -1,8 +1,8 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:animated_rating_stars/animated_rating_stars.dart';
 import 'package:flip_card/flip_card.dart';
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:helping_hand/UserPublicProfileScr.dart';
 import 'package:helping_hand/jobListingFiles/JobListingFullScr.dart';
 import 'package:helping_hand/job_listing_pipeline/InputJobScr.dart';
 import 'package:helping_hand/services/firestore.dart';
@@ -46,28 +46,21 @@ class JobListingCard extends StatelessWidget {
                           flex: 5,
                           child: Row(
                             children: [
-                              InkWell(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          UserPublicProfileScr(
-                                              userID: jobPosting.jobPosterID),
-                                    ),
-                                  );
-                                },
-                                child: CircleAvatar(
-                                  backgroundColor: Colors.transparent,
-                                  radius: 35,
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(50),
-                                    child: FadeInImage.assetNetwork(
-                                      placeholder:
-                                          'assets/emptyProfilePic.png', // Replace with your placeholder asset
-                                      image: jobPosting.pfpURL,
-                                      fit: BoxFit.cover,
-                                    ),
+                              CircleAvatar(
+                                backgroundColor: Colors.transparent,
+                                radius: 35,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(50),
+                                  child: CachedNetworkImage(
+                                    fit: BoxFit.cover,
+                                    imageUrl: jobPosting.pfpURL,
+                                    progressIndicatorBuilder: (context, url,
+                                            downloadProgress) =>
+                                        CircularProgressIndicator(
+                                            color: Colors.amber,
+                                            value: downloadProgress.progress),
+                                    errorWidget: (context, url, error) =>
+                                        const Icon(Icons.error),
                                   ),
                                 ),
                               ),
@@ -459,7 +452,8 @@ class JobListingCard extends StatelessWidget {
                           Icons.delete,
                           color: Colors.black,
                         ),
-                        onPressed: () => FirestoreService().deleteJob(jobPosting),
+                        onPressed: () =>
+                            FirestoreService().deleteJob(jobPosting),
                       ),
                     ],
                   ),

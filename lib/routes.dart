@@ -3,8 +3,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:helping_hand/AvailabilityListingFiles/AvailabilityListingsScr.dart';
-import 'package:helping_hand/Chats_screens/ChatsOverviewScr.dart';
-import 'package:helping_hand/Chats_screens/ChatScr.dart';
+import 'package:helping_hand/Chats_screens/chats_overview_scr.dart';
 import 'package:helping_hand/gettting_in/ForgotPassScr.dart';
 import 'package:helping_hand/home.dart';
 import 'package:helping_hand/menu/accountDetails.dart';
@@ -22,33 +21,25 @@ import 'availability_listing_pipeline/InputAvailabilityScr.dart';
 
 //miscellaneous
 import 'package:helping_hand/jobListingFiles/JobListingsScr.dart';
-import 'package:helping_hand/PersonReviewsScr.dart';
-import 'gettting_in/StartupScr.dart'; 
+
+import 'gettting_in/StartupScr.dart';
 import 'package:helping_hand/gettting_in/LoginScr.dart';
 import 'package:helping_hand/menu/MenuScr.dart';
-
 
 var appRoutes = {
   "/": (context) => const HomeScreen(),
   "/startup": (context) => const StartupScr(),
-  "/forgotPass": (context) =>  const ForgotPassScreen(),
-
-  "/chatScreen": (context) => const ChatScr(),
+  "/forgotPass": (context) => const ForgotPassScreen(),
   "/chatsOverview": (context) => const ChatsOverviewScr(),
-  
   "/inputJob": (context) => const InputJobScr(),
-  
   "/signup": (context) => const SignupScr(),
-  "/profileSetup": (context) => ProfileSetupScr(docRef: ModalRoute.of(context)!.settings.arguments as DocumentReference),
-
+  "/profileSetup": (context) => ProfileSetupScr(
+      docRef: ModalRoute.of(context)!.settings.arguments as DocumentReference),
   "/inputAvailability": (context) => const InputAvailabilityScr(),
-
   "/accountDetails": (context) => const AccountDetails(),
-
   "/jobListings": (context) => const JobListingsScr(),
   "/availabilityListings": (context) => const AvailabilityListingsScr(),
-  "/personReviews": (context) => const PersonReviewsScr(),
-  "/login": (context) =>  const LoginScr(),
+  "/login": (context) => const LoginScr(),
   "/congrats": (context) => const CongratsScr(),
   "/menu": (context) => const MenuScr(),
 };

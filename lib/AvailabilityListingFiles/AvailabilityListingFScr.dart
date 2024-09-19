@@ -1,7 +1,12 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:animated_rating_stars/animated_rating_stars.dart';
-import 'package:helping_hand/UserPublicProfileScr.dart';
+import 'package:helping_hand/Chats_screens/chat_screen.dart';
+import 'package:helping_hand/global_methods.dart';
+import 'package:helping_hand/services/UserState.dart';
+import 'package:helping_hand/services/firestore.dart';
 import 'package:helping_hand/services/models.dart';
+import 'package:provider/provider.dart';
 import 'AvailabilityCard.dart';
 
 class AvailabilityListingFScr extends StatelessWidget {
@@ -20,14 +25,11 @@ class AvailabilityListingFScr extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             InkWell(
-              onTap:() {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => UserPublicProfileScr(userID: avaPosting.posterID),
-                  ),
-                );
-              
+              onTap: () {
+                navigateToUserPublicProfileScr(
+                    context,
+                    avaPosting.posterID,
+                    Provider.of<UserState>(context, listen: false).user.uid);
               },
               child: Row(
                 children: [
@@ -36,11 +38,16 @@ class AvailabilityListingFScr extends StatelessWidget {
                     radius: 40,
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(50),
-                      child: FadeInImage.assetNetwork(
-                        placeholder:
-                            'assets/emptyProfilePic.png', // Replace with your placeholder asset
-                        image: avaPosting.pfpURL,
+                      child: CachedNetworkImage(
                         fit: BoxFit.cover,
+                        imageUrl: avaPosting.pfpURL,
+                        progressIndicatorBuilder:
+                            (context, url, downloadProgress) =>
+                                CircularProgressIndicator(
+                                    color: Colors.amber,
+                                    value: downloadProgress.progress),
+                        errorWidget: (context, url, error) =>
+                            const Icon(Icons.error),
                       ),
                     ),
                   ),
@@ -238,8 +245,8 @@ class AvailabilityListingFScr extends StatelessWidget {
                         ? Container(
                             margin: const EdgeInsets.only(left: 20),
                             decoration: BoxDecoration(
-                              color:
-                                  Colors.deepOrangeAccent.shade700.withOpacity(0.6),
+                              color: Colors.deepOrangeAccent.shade700
+                                  .withOpacity(0.6),
                               borderRadius: BorderRadius.circular(5),
                             ),
                             child: const Padding(
@@ -297,7 +304,44 @@ class AvailabilityListingFScr extends StatelessWidget {
           style: TextStyle(
               color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold),
         ),
-        onPressed: () {},
+        onPressed: () async {
+          DateTime date = DateTime.now();
+          User? interlocutor =
+              await FirestoreService().getUser(avaPosting.posterID);
+          if (interlocutor == null) {
+            return;
+          }
+
+          var currId = Provider.of<UserState>(context, listen: false).user.uid;
+          if (currId != avaPosting.posterID) {
+            bool chatExist = await FirestoreService()
+                .checkIfChatExists(avaPosting.posterID, currId);
+            Chat chat = chatExist
+                ? await FirestoreService().getChat(avaPosting.posterID, currId)
+                : Chat(
+                    participants: [avaPosting.posterID, currId],
+                    createdTS: date,
+                    lastMessageTS: date,
+                    lastMessage: "Send a message");
+
+            if (!chatExist) {
+              await FirestoreService().addChat(chat);
+            }
+            Navigator.pushNamed(context, "/chatsOverview");
+
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) {
+                  return ChatScr(
+                    chat: chat,
+                    interlocutor: interlocutor,
+                  );
+                },
+              ),
+            );
+          }
+        },
       ),
     );
   }

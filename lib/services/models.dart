@@ -1,4 +1,5 @@
 //data models
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'models.g.dart';
 
@@ -11,11 +12,13 @@ class User{
   final String phoneNumber;
   final String pfpURL;
   final String location;
-  final double rating;
+  double rating;
+  int numReviews;
   final String description;
   final bool displayPhoneNumber;
   final bool lookingForWork;
   final bool lookingForWorkers;
+  
 
   User({
      this.uid = " ",
@@ -26,10 +29,12 @@ class User{
      this.pfpURL = " ",
      this.location = " ",
      this.rating = 0.0,
+     this.numReviews = 0,
      this.description = "",
      this.displayPhoneNumber = false,
      this.lookingForWork = true,
      this.lookingForWorkers = true,
+  
   });
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
@@ -62,9 +67,9 @@ class JobPosting {
   String jobID;
 
   JobPosting({
-    this.jobTitle = "Ball Crusher",
+    this.jobTitle = "Soccer Ball Crusher",
     this.jobLocation = "Alpharetta, GA",
-    this.jobDetails = "I wanna buy me this damn ball crusher",
+    this.jobDetails = "I wanna play soccer but I need someone to crush the balls for me",
     this.jobStartTime = "6:00 AM",
     this.jobEndTime = "12:00 AM",
     this.oneDay = true,
@@ -123,4 +128,98 @@ class AvailabilityPosting {
 
   factory AvailabilityPosting.fromJson(Map<String, dynamic> json) => _$AvailabilityPostingFromJson(json);
   Map<String, dynamic> toJson() => _$AvailabilityPostingToJson(this);
+}
+
+class TimestampConverter implements JsonConverter<DateTime, dynamic> {
+  const TimestampConverter();
+
+  @override
+  DateTime fromJson(dynamic json) {
+    if (json is Timestamp) {
+      return json.toDate();
+    } else if (json is String) {
+      return DateTime.parse(json);
+    } else {
+      throw ArgumentError('Invalid timestamp format');
+    }
+  }
+
+  @override
+  dynamic toJson(DateTime date) {
+    return Timestamp.fromDate(date);
+  }
+}
+
+
+@JsonSerializable()
+class Message {
+  final String senderUID;
+  final String message;
+  @TimestampConverter()
+  final DateTime timeStampSent;
+  final String imageUrl;
+
+  Message({
+    required this.senderUID,
+    required this.message,
+    required this.timeStampSent ,
+    this.imageUrl = "",
+  });
+  factory Message.fromJson(Map<String, dynamic> json) => _$MessageFromJson(json);
+  Map<String, dynamic> toJson() => _$MessageToJson(this);
+
+}
+
+@JsonSerializable()
+class Chat {
+  final List<String> participants;
+  @TimestampConverter()
+  final DateTime createdTS;
+  @TimestampConverter()
+  final DateTime lastMessageTS;
+  final String lastMessage;
+  String unreadUID;
+  String chatID;
+
+  Chat({
+    required this.participants,
+    required this.createdTS,
+    required this.lastMessageTS,
+    required this.lastMessage,
+    this.unreadUID = "", //the UID of the user who sent the last message
+    this.chatID = "ABC",
+  });
+
+  factory Chat.fromJson(Map<String, dynamic> json) => _$ChatFromJson(json);
+  Map<String, dynamic> toJson() => _$ChatToJson(this);
+
+}
+
+
+@JsonSerializable()
+class Review {
+  String reviewID;
+  final String reviewerID;
+  final String revieweeID;
+  final String reviewText;
+  final String reviewerName;
+  final String reviewerPfpURL;
+  final double rating;
+  @TimestampConverter()
+  final DateTime reviewDate; 
+
+  Review({
+    required this.rating,
+    required this.reviewDate,
+    required this.reviewText,
+    required this.reviewerID,
+    required this.revieweeID,
+    required this.reviewerName,
+    required this.reviewerPfpURL,
+    this.reviewID = "ABC",
+  });
+
+  factory Review.fromJson(Map<String, dynamic> json) => _$ReviewFromJson(json);
+  Map<String, dynamic> toJson() => _$ReviewToJson(this);
+
 }
