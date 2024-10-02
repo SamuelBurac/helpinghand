@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>Helping Hand</string>
+	<string>Helpinghand</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -13,7 +13,7 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>helping_hand</string>
+	<string>helpinghand</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
@@ -46,12 +46,8 @@
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Helping Hand needs access to your photo library to upload photos.</string>
+	<string>We need access to your photo library to select photos and videos.</string>
 	<key>NSCameraUsageDescription</key>
-	<string>Helping Hand needs access to your camera to take photos.</string>
-	<key>NSCameraUsageDescription</key>
-	<string>Helping Hand can use pictures you take in the moment</string>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>Helping Hand can use pictures you take in the moment</string>
+	<string>We need access to the camera for capturing photos and videos.</string>
 </dict>
 </plist>
