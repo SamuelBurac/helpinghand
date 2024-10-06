@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:flutter_toggle_tab/flutter_toggle_tab.dart';
 import 'package:helping_hand/LoadingScreen.dart';
+import 'package:helping_hand/components/PostingFAB.dart';
 import 'package:helping_hand/error.dart';
 import 'package:helping_hand/components/AdsList.dart';
 import 'package:helping_hand/services/UserState.dart';
@@ -65,35 +65,7 @@ class AvailabilityListingsScr extends StatelessWidget {
               return const Text("No available people found");
             }
           }),
-      floatingActionButton: SpeedDial(
-        icon: Icons.add,
-        activeIcon: Icons.close,
-        backgroundColor: Colors.orange,
-        children: [
-          // Case 1: User is looking for work but not workers
-          if (Provider.of<UserState>(context).user.lookingForWork)
-            SpeedDialChild(
-              child: const Icon(Icons.calendar_month),
-              backgroundColor: Colors.orange,
-              label: 'Add Availability',
-              labelStyle: const TextStyle(fontSize: 18.0),
-              onTap: () {
-                Navigator.pushNamed(context, "/inputAvailability");
-              },
-            ),
-          // Case 2: User is looking for workers but not work
-          if (Provider.of<UserState>(context).user.lookingForWorkers)
-            SpeedDialChild(
-              child: const Icon(Icons.add),
-              backgroundColor: Colors.orange,
-              label: 'Add Job',
-              labelStyle: const TextStyle(fontSize: 18.0),
-              onTap: () {
-                Navigator.pushNamed(context, "/inputJob");
-              },
-            ),
-        ],
-      ),
+      floatingActionButton: Postingfab(),
       bottomNavigationBar: BottomNavigationBar(
         selectedItemColor:
             Colors.orange, // Set the color for selected item (icon + text)

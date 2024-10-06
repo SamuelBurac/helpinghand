@@ -279,7 +279,7 @@ class AvailabilityCard extends StatelessWidget {
                                                 child: Text(
                                                   " $date ${getDayName(date)}",
                                                   style: const TextStyle(
-                                                    fontSize: 12,
+                                                    fontSize: 11,
                                                     fontWeight: FontWeight.bold,
                                                   ),
                                                 ),
@@ -317,7 +317,7 @@ class AvailabilityCard extends StatelessWidget {
                                                   child: Text(
                                                     " $date ${getDayName(date)}",
                                                     style: const TextStyle(
-                                                      fontSize: 12,
+                                                      fontSize: 11,
                                                       fontWeight:
                                                           FontWeight.bold,
                                                     ),

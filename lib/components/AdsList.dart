@@ -33,12 +33,12 @@ class _AdsListState extends State<AdsList> {
               adUnitId: adState.bannerAdUnitId,
               size: AdSize.mediumRectangle,
               request: const AdRequest(),
-              listener: adState.adListener,
+              listener: adState.bannerAdListener,
             )..load(),
           ),
         );
 
-        if (itemList.length > 4) {
+        if (itemList.length > 5) {
           for (int i = itemList.length; i > 0; i--) {
             if (i % 4 == 0) {
               itemList.insert(
@@ -48,7 +48,7 @@ class _AdsListState extends State<AdsList> {
                     adUnitId: adState.bannerAdUnitId,
                     size: AdSize.mediumRectangle,
                     request: const AdRequest(),
-                    listener: adState.adListener,
+                    listener: adState.bannerAdListener,
                   )..load(),
                 ),
               );

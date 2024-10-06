@@ -7,11 +7,13 @@ part of 'models.dart';
 // **************************************************************************
 
 User _$UserFromJson(Map<String, dynamic> json) => User(
+      isPremium: json['isPremium'] as bool? ?? false,
       uid: json['uid'] as String? ?? " ",
       firstName: json['firstName'] as String? ?? " ",
       lastName: json['lastName'] as String? ?? " ",
       email: json['email'] as String? ?? " ",
       phoneNumber: json['phoneNumber'] as String? ?? " ",
+      numPostsLeft: (json['numPostsLeft'] as num?)?.toInt() ?? 0,
       pfpURL: json['pfpURL'] as String? ?? " ",
       location: json['location'] as String? ?? " ",
       rating: (json['rating'] as num?)?.toDouble() ?? 0.0,
@@ -30,6 +32,8 @@ Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'phoneNumber': instance.phoneNumber,
       'pfpURL': instance.pfpURL,
       'location': instance.location,
+      'isPremium': instance.isPremium,
+      'numPostsLeft': instance.numPostsLeft,
       'rating': instance.rating,
       'numReviews': instance.numReviews,
       'description': instance.description,

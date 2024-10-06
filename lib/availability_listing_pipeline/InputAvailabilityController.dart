@@ -71,8 +71,8 @@ class InputAvaState with ChangeNotifier {
 
   void _onSelectionChanged(DateRangePickerSelectionChangedArgs args) {
     if (args.value is PickerDateRange) {
-      _startDate = args.value.startDate;
-      _endDate = args.value.endDate;
+      _startDate = args.value.startDate ?? _startDate;
+      _endDate = args.value.endDate ?? _endDate;
       notifyListeners();
     } else if (args.value is List<DateTime>) {
       if (args.value.length <= 6) {

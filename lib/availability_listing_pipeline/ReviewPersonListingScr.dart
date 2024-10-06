@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:helping_hand/AvailabilityListingFiles/AvailabilityCard.dart';
+import 'package:helping_hand/services/UserState.dart';
 import 'package:helping_hand/services/firestore.dart';
 import 'package:helping_hand/services/models.dart';
+import 'package:provider/provider.dart';
 
 class ReviewPersonListingScr extends StatelessWidget {
   final AvailabilityPosting avaPosting;
@@ -29,11 +31,15 @@ class ReviewPersonListingScr extends StatelessWidget {
               ElevatedButton(
                 onPressed: () async {
                   await FirestoreService().addAvailability(avaPosting);
+                  Provider.of<UserState>(context, listen: false)
+                      .decrementPostsLeft();
+                  await FirestoreService().updateUser(
+                      Provider.of<UserState>(context, listen: false).user);
+
                   Navigator.popAndPushNamed(context, "/");
                 },
                 child: const Text("Submit Availability"),
               ),
-              
             ],
           ),
         ],
