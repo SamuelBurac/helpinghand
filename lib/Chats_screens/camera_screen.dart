@@ -32,6 +32,22 @@ class _CameraScreenState extends State<CameraScreen> {
   }
 
   @override
+void didChangeAppLifecycleState(AppLifecycleState state) {
+  final CameraController? cameraController = _controller;
+
+  // App state changed before we got the chance to initialize.
+  if (cameraController == null || !cameraController.value.isInitialized) {
+    return;
+  }
+
+  if (state == AppLifecycleState.inactive) {
+    cameraController.dispose();
+  } else if (state == AppLifecycleState.resumed) {
+    _initializeCamera();
+  }
+}
+
+  @override
   void dispose() {
     _controller.dispose();
     super.dispose();
@@ -40,7 +56,6 @@ class _CameraScreenState extends State<CameraScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Take a Picture')),
       body: FutureBuilder<void>(
         future: _initializeControllerFuture,
         builder: (context, snapshot) {

@@ -51,5 +51,7 @@
 	<string>We need access to the camera for capturing photos and videos.</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>We dont need access to your microphone just to your camera.</string>
+	<key>GADApplicationIdentifier</key>
+	<string>ca-app-pub-8257742415186372~1678686479</string>
 </dict>
 </plist>

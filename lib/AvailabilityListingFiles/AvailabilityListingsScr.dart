@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:flutter_toggle_tab/flutter_toggle_tab.dart';
-import 'package:helping_hand/AvailabilityListingFiles/AvailabilityCard.dart';
 import 'package:helping_hand/LoadingScreen.dart';
 import 'package:helping_hand/error.dart';
+import 'package:helping_hand/components/AdsList.dart';
 import 'package:helping_hand/services/UserState.dart';
 import 'package:helping_hand/services/firestore.dart';
 import 'package:provider/provider.dart';
@@ -60,12 +60,9 @@ class AvailabilityListingsScr extends StatelessWidget {
             } else if (snapshot.hasData) {
               var avaPostings = snapshot.data!;
 
-              return ListView(
-                children:
-                    avaPostings.map((ava) => AvailabilityCard(availabilityPosting: ava)).toList(),
-              );
+              return AdsList(items: avaPostings.map((ava) => ListItem(availabilityPosting: ava)).toList());
             } else {
-              return const Text("no jobs found");
+              return const Text("No available people found");
             }
           }),
       floatingActionButton: SpeedDial(

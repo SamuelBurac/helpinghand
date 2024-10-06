@@ -88,6 +88,7 @@ class FirestoreService {
   Future<void> updateUser(User user) async {
     // Update the user in the collection
     await _db.collection(_usersCollection).doc(user.uid).update(user.toJson());
+    
   }
   
   Future<void> updatePostingsRating(String uid, double rating) async {

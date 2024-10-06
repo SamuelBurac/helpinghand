@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:helping_hand/LoadingScreen.dart';
 import 'package:helping_hand/error.dart';
+import 'package:helping_hand/components/AdsList.dart';
 import 'package:helping_hand/services/UserState.dart';
 import 'package:provider/provider.dart';
-import 'JobCard.dart';
 import '../services/firestore.dart';
 import 'package:flutter_toggle_tab/flutter_toggle_tab.dart';
 
@@ -62,9 +62,8 @@ class JobListingsScr extends StatelessWidget {
             } else if (snapshot.hasData) {
               var jobPostings = snapshot.data!;
 
-              return ListView(
-                children:
-                    jobPostings.map((job) => JobCard(jobPosting: job)).toList(),
+              return AdsList(
+                items: jobPostings.map((job) => ListItem(jobPosting: job)).toList(),
               );
             } else {
               return const Text("no jobs found");

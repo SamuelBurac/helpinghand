@@ -204,6 +204,7 @@ class JobCard extends StatelessWidget {
                             Expanded(
                               child: AutoSizeText(
                                 jobPosting.jobLocation,
+                                softWrap: true,
                                 style: const TextStyle(
                                     height: 1, fontWeight: FontWeight.bold),
                                 maxLines: 2,

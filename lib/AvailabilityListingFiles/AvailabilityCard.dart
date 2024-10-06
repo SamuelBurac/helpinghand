@@ -78,36 +78,44 @@ class AvailabilityCard extends StatelessWidget {
                             ),
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 3.0),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(availabilityPosting.jobPosterName,
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 3.0),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                AutoSizeText(
+                                  availabilityPosting.jobPosterName,
+                                  softWrap: true,
+                                  maxLines: 2,
                                   style: const TextStyle(
-                                      fontSize: 20,
                                       fontWeight: FontWeight.bold,
-                                      height: 1)),
-                              AnimatedRatingStars(
-                                initialRating: availabilityPosting.rating,
-                                readOnly: true,
-                                onChanged: (value) {
-                                  // is static here
-                                },
-                                emptyColor: Colors.grey.shade900,
-                                customFilledIcon: Icons.star,
-                                customHalfFilledIcon: Icons.star_half,
-                                customEmptyIcon: Icons.star_border,
-                                starSize: 13,
-                              )
-                            ],
+                                      height: 1),
+                                  minFontSize:
+                                      15, // the minimum font size you want
+                                  maxFontSize: 25,
+                                ),
+                                AnimatedRatingStars(
+                                  initialRating: availabilityPosting.rating,
+                                  readOnly: true,
+                                  onChanged: (value) {
+                                    // is static here
+                                  },
+                                  emptyColor: Colors.grey.shade900,
+                                  customFilledIcon: Icons.star,
+                                  customHalfFilledIcon: Icons.star_half,
+                                  customEmptyIcon: Icons.star_border,
+                                  starSize: 13,
+                                )
+                              ],
+                            ),
                           ),
                         ),
                         Flexible(
                           flex: 1,
                           child: Padding(
-                            padding: const EdgeInsets.only(right: 18.0),
+                            padding: const EdgeInsets.only(right: 15.0),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
@@ -115,14 +123,17 @@ class AvailabilityCard extends StatelessWidget {
                                   Icons.location_on,
                                   color: Colors.grey,
                                 ),
-                                AutoSizeText(
-                                  availabilityPosting.generalLocation,
-                                  style: const TextStyle(
-                                      height: 1, fontWeight: FontWeight.bold),
-                                  maxLines: 2,
-                                  minFontSize:
-                                      15, // the minimum font size you want
-                                  maxFontSize: 25, // the initial font size
+                                Expanded(
+                                  child: AutoSizeText(
+                                    softWrap: true,
+                                    availabilityPosting.generalLocation,
+                                    style: const TextStyle(
+                                        height: 1, fontWeight: FontWeight.bold),
+                                    maxLines: 2,
+                                    minFontSize:
+                                        17, // the minimum font size you want
+                                    maxFontSize: 25,
+                                  ),
                                 ),
                               ],
                             ),

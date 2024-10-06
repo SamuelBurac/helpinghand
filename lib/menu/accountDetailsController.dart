@@ -12,6 +12,52 @@ class AccountDetailsController with ChangeNotifier {
   bool? displayPhoneNumber;
   bool? lookingForWork;
   bool? lookingForWorkers;
+  bool isEditingFName = false;
+  bool isEditingLName = false;
+  bool isEditingEmail = false;
+  bool isEditingPhone = false;
+  bool isEditingLocation = false;
+  bool isEditingDescription = false;
+
+  
+  
+
+  bool get getIsEditingFName => isEditingFName;
+  bool get getIsEditingLName => isEditingLName;
+  bool get getIsEditingEmail => isEditingEmail;
+  bool get getIsEditingPhone => isEditingPhone;
+  bool get getIsEditingLocation => isEditingLocation;
+  bool get getIsEditingDescription => isEditingDescription;
+
+  set setIsEditingFName(bool value) {
+    isEditingFName = value;
+    notifyListeners();
+  }
+
+  set setIsEditingLName(bool value) {
+    isEditingLName = value;
+    notifyListeners();
+  }
+
+  set setIsEditingEmail(bool value) {
+    isEditingEmail = value;
+    notifyListeners();
+  }
+
+  set setIsEditingPhone(bool value) {
+    isEditingPhone = value;
+    notifyListeners();
+  }
+
+  set setIsEditingLocation(bool value) {
+    isEditingLocation = value;
+    notifyListeners();
+  }
+
+  set setIsEditingDescription(bool value) {
+    isEditingDescription = value;
+    notifyListeners();
+  }
 
   TextEditingController firstNameController = TextEditingController();
   TextEditingController lastNameController = TextEditingController();
@@ -19,6 +65,7 @@ class AccountDetailsController with ChangeNotifier {
   TextEditingController phoneNumberController = TextEditingController();
   TextEditingController locationController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
 
   AccountDetailsController(this.context) {
     user = Provider.of<UserState>(context, listen: false).user;
@@ -48,6 +95,9 @@ class AccountDetailsController with ChangeNotifier {
   bool? get getDisplayPhoneNumber => displayPhoneNumber;
   bool? get getLookingForWork => lookingForWork;
   bool? get getLookingForWorkers => lookingForWorkers;
+
+
+  bool get isEditing => isEditingFName || isEditingLName || isEditingEmail || isEditingPhone || isEditingLocation || isEditingDescription;
 
   void setFirstName(String value) {
     firstName = value;
@@ -106,7 +156,12 @@ class AccountDetailsController with ChangeNotifier {
     return true;
   }
 
-  void updateProfile() {
+  
+
+  Future<void> updateProfile() async {
+    if (user.email != emailController.text) {
+      AuthService().updateEmail(emailController.text, passwordController.text);
+    }
     User updated = User(
       uid: user.uid,
       firstName: firstNameController.text,
@@ -122,7 +177,8 @@ class AccountDetailsController with ChangeNotifier {
       rating: user.rating,
     );
     Provider.of<UserState>(context, listen: false).user = updated;
-    FirestoreService().updateUser(updated);
+    await FirestoreService().updateUser(updated);
+    
     notifyListeners();
   }
 }
@@ -140,10 +196,12 @@ class EditTextWithButton extends StatelessWidget {
   final TextEditingController controller;
   final String labelText;
   int maxLines;
+  final Function? onPressed;
 
   EditTextWithButton(
       {required this.controller,
       required this.labelText,
+      this.onPressed,
       this.maxLines = 1,
       super.key});
 
@@ -177,6 +235,9 @@ class EditTextWithButton extends StatelessWidget {
                                 : Colors.orange.shade900),
                       ),
                   onPressed: () {
+                    if (onPressed != null) {
+                      onPressed!();
+                    }
                     Provider.of<EditButtonState>(context, listen: false)
                         .toggleEditing();
                   },

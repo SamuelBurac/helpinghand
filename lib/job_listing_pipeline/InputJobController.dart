@@ -101,8 +101,9 @@ class InputJobState with ChangeNotifier {
 
   void _onSelectionChanged(DateRangePickerSelectionChangedArgs args) {
     if (args.value is PickerDateRange) {
-      _startDate = args.value.startDate;
-      _endDate = args.value.endDate;
+      
+      _startDate = args.value.startDate ?? _startDate;
+      _endDate = args.value.endDate ?? _endDate;
       notifyListeners();
     } else if (args.value is DateTime) {
       _onlyDay = args.value;

@@ -38,7 +38,7 @@ if (flutterVersionName == null) {
 
 android {
     namespace = "com.example.helpinghand"
-    compileSdk = flutter.compileSdkVersion
+    compileSdk = 28
     ndkVersion = flutter.ndkVersion
 
     compileOptions {

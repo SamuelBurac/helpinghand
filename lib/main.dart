@@ -1,26 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:helping_hand/routes.dart';
 import 'package:helping_hand/services/UserState.dart';
+import 'package:helping_hand/services/adState.dart';
 import 'package:helping_hand/services/themes.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
 import 'services/firebase_options.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 ThemeMode thema = ThemeMode.system;
 //todo change later use provider to add button when time comes
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform,);
+  final initFuture = MobileAds.instance.initialize();
+  final adState = AdState(initFuture);
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   await dotenv.load(fileName: "bruh.env");
-  
+
   runApp(
-    ChangeNotifierProvider(
-      create: (context) => UserState(),
-      child: const MainApp()
-      ),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => UserState(),
+        ),
+        Provider.value(value: adState),
+      ],
+      child: const MainApp(),
+    ),
   );
 }
 
@@ -29,9 +39,9 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-     return MaterialApp(
+    return MaterialApp(
       title: 'Flutter Demo',
-      theme:lightTheme,
+      theme: lightTheme,
       darkTheme: darkTheme,
       themeMode: thema,
       routes: appRoutes,
