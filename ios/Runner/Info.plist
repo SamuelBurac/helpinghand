@@ -53,5 +53,7 @@
 	<string>We dont need access to your microphone just to your camera.</string>
 	<key>GADApplicationIdentifier</key>
 	<string>ca-app-pub-8257742415186372~1678686479</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>To enable GPS location access for Exif data</string>
 </dict>
 </plist>

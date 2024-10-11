@@ -1,83 +1,87 @@
 import 'package:flutter/material.dart';
-import 'package:camera/camera.dart';
+import 'package:camerawesome/camerawesome_plugin.dart';
 import 'dart:io';
 
-class CameraScreen extends StatefulWidget {
-  const CameraScreen({super.key});
-
-  @override
-  _CameraScreenState createState() => _CameraScreenState();
-}
-
-class _CameraScreenState extends State<CameraScreen> {
-  late CameraController _controller;
-  late Future<void> _initializeControllerFuture;
-
-  @override
-  void initState() {
-    super.initState();
-    _initializeControllerFuture = _initializeCamera();
-  }
-
-  Future<void> _initializeCamera() async {
-    final cameras = await availableCameras();
-    final firstCamera = cameras.first;
-
-    _controller = CameraController(
-      firstCamera,
-      ResolutionPreset.medium,
-    );
-
-    await _controller.initialize();
-  }
-
-  @override
-void didChangeAppLifecycleState(AppLifecycleState state) {
-  final CameraController? cameraController = _controller;
-
-  // App state changed before we got the chance to initialize.
-  if (cameraController == null || !cameraController.value.isInitialized) {
-    return;
-  }
-
-  if (state == AppLifecycleState.inactive) {
-    cameraController.dispose();
-  } else if (state == AppLifecycleState.resumed) {
-    _initializeCamera();
-  }
-}
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
+class CameraScreen extends StatelessWidget {
+  const CameraScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: FutureBuilder<void>(
-        future: _initializeControllerFuture,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.done) {
-            return CameraPreview(_controller);
-          } else {
-            return const Center(child: CircularProgressIndicator());
-          }
+      appBar: AppBar(
+        title: const Text('Camera Page'),
+      ),
+      body: CameraAwesomeBuilder.awesome(
+        saveConfig: SaveConfig.photo(),
+        onMediaTap: (mediaCapture) => _handleMediaCapture(context, mediaCapture),
+        bottomActionsBuilder: (state) {
+          return AwesomeBottomActions(
+            state: state,
+            onMediaTap: (mediaCapture) => _handleMediaCapture(context, mediaCapture),
+          );
         },
       ),
-      floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.camera),
-        onPressed: () async {
-          try {
-            await _initializeControllerFuture;
-            final image = await _controller.takePicture();
+    );
+  }
 
-            Navigator.of(context).pop(File(image.path));
-          } catch (e) {
-            print(e);
-          }
-        },
+  void _handleMediaCapture(BuildContext context, MediaCapture mediaCapture) {
+    if (mediaCapture.status == MediaCaptureStatus.success) {
+      final path = mediaCapture.captureRequest.path;
+      if (path != null) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => PreviewPage(imagePath: path),
+          ),
+        );
+      }
+    }
+  }
+}
+
+class PreviewPage extends StatelessWidget {
+  final String imagePath;
+
+  const PreviewPage({Key? key, required this.imagePath}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Preview'),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () => Navigator.pop(context),
+        ),
+      ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Expanded(
+            child: Image.file(File(imagePath), fit: BoxFit.contain),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                ElevatedButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: Text('Retake'),
+                  style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.pop(context); // Pop PreviewPage
+                    Navigator.pop(context, File(imagePath)); // Pop CameraPage and return image
+                  },
+                  child: Text('Confirm'),
+                  style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

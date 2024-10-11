@@ -9,7 +9,7 @@ import 'package:helping_hand/services/models.dart';
 class AdsList extends StatefulWidget {
   final List<ListItem> items;
 
-   AdsList({required this.items});
+   const AdsList({super.key, required this.items});
 
   @override
   _AdsListState createState() => _AdsListState();
