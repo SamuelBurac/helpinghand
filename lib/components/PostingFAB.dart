@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:helping_hand/services/UserState.dart';
 import 'package:helping_hand/services/firestore.dart';
-import 'package:helping_hand/shared_Screens/ListingPremiumPrompt.dart';
+import 'package:helping_hand/components/ListingPremiumPrompt.dart';
 import 'package:provider/provider.dart';
 
 class Postingfab extends StatelessWidget {

@@ -34,12 +34,9 @@ class AvailabilityCard extends StatelessWidget {
         child: Card(
           child: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(
-                maxWidth: double.infinity,
-                maxHeight: double.infinity,
-              ),
-              child: Column(
+            child:
+                LayoutBuilder(builder: (context, BoxConstraints constraints) {
+              return Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.max,
@@ -90,8 +87,7 @@ class AvailabilityCard extends StatelessWidget {
                                   softWrap: true,
                                   maxLines: 2,
                                   style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      height: 1),
+                                      fontWeight: FontWeight.bold, height: 1),
                                   minFontSize:
                                       15, // the minimum font size you want
                                   maxFontSize: 25,
@@ -152,11 +148,13 @@ class AvailabilityCard extends StatelessWidget {
                               const Text(
                                 "Available from: ",
                                 style: TextStyle(
-                                  fontSize: 15,
+                                  fontSize: 13,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
                               Container(
+                                height: constraints.maxHeight * 0.15,
+                                width: constraints.maxWidth * 0.3,
                                 margin: const EdgeInsets.only(
                                     left: 2.5, right: 2.5),
                                 decoration: BoxDecoration(
@@ -172,7 +170,7 @@ class AvailabilityCard extends StatelessWidget {
                                   child: Text(
                                     " ${availabilityPosting.startDate!} ${getDayName(availabilityPosting.startDate!)}",
                                     style: const TextStyle(
-                                      fontSize: 15,
+                                      fontSize: 14,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
@@ -186,6 +184,8 @@ class AvailabilityCard extends StatelessWidget {
                                 ),
                               ),
                               Container(
+                                height: constraints.maxHeight * 0.15,
+                                width: constraints.maxWidth * 0.3,
                                 margin: const EdgeInsets.only(
                                     left: 2.5, right: 2.5),
                                 decoration: BoxDecoration(
@@ -201,7 +201,7 @@ class AvailabilityCard extends StatelessWidget {
                                   child: Text(
                                     " ${availabilityPosting.endDate!} ${getDayName(availabilityPosting.endDate!)}",
                                     style: const TextStyle(
-                                      fontSize: 15,
+                                      fontSize: 14,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
@@ -218,36 +218,10 @@ class AvailabilityCard extends StatelessWidget {
                                   const Text(
                                     "Available on: ",
                                     style: TextStyle(
-                                      fontSize: 15,
+                                      fontSize: 11,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
-                                  availabilityPosting.needsPickup
-                                      ? Container(
-                                          margin: const EdgeInsets.only(
-                                              top: 5,
-                                              left: 2,
-                                              right: 5,
-                                              bottom: 2),
-                                          decoration: BoxDecoration(
-                                            color: Colors
-                                                .deepOrangeAccent.shade700
-                                                .withOpacity(0.6),
-                                            borderRadius:
-                                                BorderRadius.circular(5),
-                                          ),
-                                          child: const Padding(
-                                            padding: EdgeInsets.all(2.0),
-                                            child: Text(
-                                              "Needs pickup",
-                                              style: TextStyle(
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                          ),
-                                        )
-                                      : Container(),
                                 ],
                               ),
                               Column(
@@ -260,6 +234,10 @@ class AvailabilityCard extends StatelessWidget {
                                         .availabilityDates!
                                         .take(3)
                                         .map((date) => Container(
+                                              height:
+                                                  constraints.maxHeight * 0.12,
+                                              width:
+                                                  constraints.maxWidth * 0.25,
                                               margin: const EdgeInsets.only(
                                                   left: 2.5,
                                                   right: 2.5,
@@ -297,6 +275,10 @@ class AvailabilityCard extends StatelessWidget {
                                           .availabilityDates!
                                           .skip(3)
                                           .map((date) => Container(
+                                                height: constraints.maxHeight *
+                                                    0.12,
+                                                width:
+                                                    constraints.maxWidth * 0.25,
                                                 margin: const EdgeInsets.only(
                                                     left: 2.5,
                                                     right: 2.5,
@@ -333,53 +315,55 @@ class AvailabilityCard extends StatelessWidget {
                   ),
                   Flexible(
                     flex: 7,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.end,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Column(
+                        Row(
                           mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                const Text(
-                                  "Details:",
-                                  style: TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                (availabilityPosting.needsPickup &&
-                                        availabilityPosting.rangeOfDates)
-                                    ? Container(
-                                        margin: const EdgeInsets.only(
-                                            left: 10, right: 10),
-                                        decoration: BoxDecoration(
-                                          color: Colors
-                                              .deepOrangeAccent.shade700
-                                              .withOpacity(0.6),
-                                          borderRadius:
-                                              BorderRadius.circular(5),
-                                        ),
-                                        child: const Padding(
-                                          padding: EdgeInsets.all(2.0),
-                                          child: Text(
-                                            "Needs pickup",
-                                            style: TextStyle(
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                        ),
-                                      )
-                                    : Container(),
-                              ],
+                            const Text(
+                              "Details:",
+                              style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
+                            availabilityPosting.needsPickup
+                                ? Container(
+                                    height: constraints.maxHeight * 0.12,
+                                    width: constraints.maxWidth * 0.22,
+                                    margin: const EdgeInsets.only(
+                                        left: 10, right: 10),
+                                    decoration: BoxDecoration(
+                                      color: Colors.deepOrangeAccent.shade700
+                                          .withOpacity(0.6),
+                                      borderRadius: BorderRadius.circular(5),
+                                    ),
+                                    child: const Padding(
+                                      padding: EdgeInsets.only(
+                                          top: 2.0,
+                                          bottom: 2.0,
+                                          right: 5.0,
+                                          left: 5.0),
+                                      child: Text(
+                                        "Needs pickup",
+                                        style: TextStyle(
+                                          fontSize: 10,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                : Container(),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
                             Container(
-                              width: 250,
-                              height: 50,
+                              width: constraints.maxWidth * 0.63,
+                              height: constraints.maxHeight * 0.28,
                               decoration: BoxDecoration(
                                 color: Colors.blueGrey.shade300,
                                 border: Border.all(
@@ -397,79 +381,88 @@ class AvailabilityCard extends StatelessWidget {
                                   ),
                                 ),
                               ),
-                            )
-                          ],
-                        ),
-                        ElevatedButton(
-                          style: Theme.of(context)
-                              .elevatedButtonTheme
-                              .style!
-                              .copyWith(
-                                shape: WidgetStateProperty.all<
-                                    RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(
-                                        10.0), // adjust the value as needed
-                                  ),
-                                ),
+                            ),
+                            ConstrainedBox(
+                              constraints: BoxConstraints(
+                                maxHeight: constraints.maxHeight * 0.28,
+                                maxWidth: constraints.maxWidth * 0.36,
                               ),
-                          child: const Text(
-                            'Connect',
-                            style: TextStyle(color: Colors.black),
-                          ),
-                          onPressed: () async {
-                            DateTime date = DateTime.now();
-                            User? interlocutor = await FirestoreService()
-                                .getUser(availabilityPosting.posterID);
-                            if (interlocutor == null) {
-                              return;
-                            }
-
-                            var currId =
-                                Provider.of<UserState>(context, listen: false)
-                                    .user
-                                    .uid;
-                            if (currId != availabilityPosting.posterID) {
-                              bool chatExist = await FirestoreService()
-                                  .checkIfChatExists(
-                                      availabilityPosting.posterID, currId);
-                              Chat chat = chatExist
-                                  ? await FirestoreService().getChat(
-                                      availabilityPosting.posterID, currId)
-                                  : Chat(
-                                      participants: [
-                                          availabilityPosting.posterID,
-                                          currId
-                                        ],
-                                      createdTS: date,
-                                      lastMessageTS: date,
-                                      lastMessage: "Send a message");
-
-                              if (!chatExist) {
-                                await FirestoreService().addChat(chat);
-                              }
-                              Navigator.pushNamed(context, "/chatsOverview");
-
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) {
-                                    return ChatScr(
-                                      chat: chat,
-                                      interlocutor: interlocutor,
-                                    );
-                                  },
+                              child: ElevatedButton(
+                                style: Theme.of(context)
+                                    .elevatedButtonTheme
+                                    .style!
+                                    .copyWith(
+                                      shape: WidgetStateProperty.all<
+                                          RoundedRectangleBorder>(
+                                        RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(
+                                              10.0), // adjust the value as needed
+                                        ),
+                                      ),
+                                    ),
+                                child: const Text(
+                                  'Connect',
+                                  style: TextStyle(color: Colors.black),
                                 ),
-                              );
-                            }
-                          },
+                                onPressed: () async {
+                                  DateTime date = DateTime.now();
+                                  User? interlocutor = await FirestoreService()
+                                      .getUser(availabilityPosting.posterID);
+                                  if (interlocutor == null) {
+                                    return;
+                                  }
+
+                                  var currId = Provider.of<UserState>(context,
+                                          listen: false)
+                                      .user
+                                      .uid;
+                                  if (currId != availabilityPosting.posterID) {
+                                    bool chatExist = await FirestoreService()
+                                        .checkIfChatExists(
+                                            availabilityPosting.posterID,
+                                            currId);
+                                    Chat chat = chatExist
+                                        ? await FirestoreService().getChat(
+                                            availabilityPosting.posterID,
+                                            currId)
+                                        : Chat(
+                                            participants: [
+                                                availabilityPosting.posterID,
+                                                currId
+                                              ],
+                                            createdTS: date,
+                                            lastMessageTS: date,
+                                            lastMessage: "Send a message");
+
+                                    if (!chatExist) {
+                                      await FirestoreService().addChat(chat);
+                                    }
+                                    Navigator.pushNamed(
+                                        context, "/chatsOverview");
+
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) {
+                                          return ChatScr(
+                                            chat: chat,
+                                            interlocutor: interlocutor,
+                                          );
+                                        },
+                                      ),
+                                    );
+                                  }
+                                },
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),
                   ),
                 ],
-              ),
-            ),
+              );
+            }),
           ),
         ),
       ),

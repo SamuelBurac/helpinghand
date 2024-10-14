@@ -8,14 +8,24 @@ class AuthService {
     await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
   }
 
+  Future<String> createUserWEAndPass(email, password) async {
+    UserCredential userCredential =
+        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      email: email,
+      password: password,
+    );
+
+    return userCredential.user!.uid;
+  }
+
   Future<void> updateEmail(email, password) async {
     if (user == null) {
       throw Exception('User is null');
     }
     AuthCredential credential = EmailAuthProvider.credential(
-    email: user!.email!,
-    password: password,
-  );
+      email: user!.email!,
+      password: password,
+    );
     await user!.reauthenticateWithCredential(credential);
     await FirebaseAuth.instance.currentUser!.verifyBeforeUpdateEmail(email);
   }

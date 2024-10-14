@@ -26,9 +26,7 @@ class AvailabilityListingFScr extends StatelessWidget {
           children: <Widget>[
             InkWell(
               onTap: () {
-                navigateToUserPublicProfileScr(
-                    context,
-                    avaPosting.posterID,
+                navigateToUserPublicProfileScr(context, avaPosting.posterID,
                     Provider.of<UserState>(context, listen: false).user.uid);
               },
               child: Row(
@@ -152,83 +150,88 @@ class AvailabilityListingFScr extends StatelessWidget {
                       ),
                     ],
                   )
-                : Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        "Available on: ",
-                        style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold,
-                        ),
+                : Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      "Available on: ",
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
                       ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: avaPosting.availabilityDates!
-                                .take(3)
-                                .map((date) => Container(
-                                      margin: const EdgeInsets.only(
-                                          left: 2.5, right: 2.5, bottom: 4),
-                                      decoration: BoxDecoration(
-                                        color: Colors.amber.withOpacity(0.6),
-                                        borderRadius: BorderRadius.circular(5),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: avaPosting.availabilityDates!
+                          .take(3)
+                          .map((date) => Container(
+                                height:
+                                    MediaQuery.of(context).size.height *
+                                        0.025,
+                                width: MediaQuery.of(context).size.width *
+                                    0.24,
+                                margin: const EdgeInsets.only(
+                                    left: 2.5, right: 2.5, bottom: 4),
+                                decoration: BoxDecoration(
+                                  color: Colors.amber.withOpacity(0.6),
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.only(
+                                      top: 2.0,
+                                      bottom: 2.0,
+                                      left: 2.0,
+                                      right: 6.0),
+                                  child: Text(
+                                    " $date ${getDayName(date)}",
+                                    style: const TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ))
+                          .toList(),
+                    ),
+                    if (avaPosting.availabilityDates!.length > 3)
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: avaPosting.availabilityDates!
+                            .skip(3)
+                            .map((date) => Container(
+                                  height:
+                                      MediaQuery.of(context).size.height *
+                                          0.025,
+                                  width:
+                                      MediaQuery.of(context).size.width *
+                                          0.24,
+                                  margin: const EdgeInsets.only(
+                                      left: 2.5, right: 2.5, bottom: 4),
+                                  decoration: BoxDecoration(
+                                    color: Colors.amber.withOpacity(0.6),
+                                    borderRadius:
+                                        BorderRadius.circular(5),
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                        top: 2.0,
+                                        bottom: 2.0,
+                                        left: 2.0,
+                                        right: 6.0),
+                                    child: Text(
+                                      " $date ${getDayName(date)}",
+                                      style: const TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.bold,
                                       ),
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(
-                                            top: 2.0,
-                                            bottom: 2.0,
-                                            left: 2.0,
-                                            right: 6.0),
-                                        child: Text(
-                                          " $date ${getDayName(date)}",
-                                          style: const TextStyle(
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      ),
-                                    ))
-                                .toList(),
-                          ),
-                          if (avaPosting.availabilityDates!.length > 3)
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: avaPosting.availabilityDates!
-                                  .skip(3)
-                                  .map((date) => Container(
-                                        margin: const EdgeInsets.only(
-                                            left: 2.5, right: 2.5, bottom: 4),
-                                        decoration: BoxDecoration(
-                                          color: Colors.amber.withOpacity(0.6),
-                                          borderRadius:
-                                              BorderRadius.circular(5),
-                                        ),
-                                        child: Padding(
-                                          padding: const EdgeInsets.only(
-                                              top: 2.0,
-                                              bottom: 2.0,
-                                              left: 2.0,
-                                              right: 6.0),
-                                          child: Text(
-                                            " $date ${getDayName(date)}",
-                                            style: const TextStyle(
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                        ),
-                                      ))
-                                  .toList(),
-                            ),
-                        ],
+                                    ),
+                                  ),
+                                ))
+                            .toList(),
                       ),
-                    ],
-                  ),
+                  ],
+                ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

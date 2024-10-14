@@ -1,31 +1,10 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_password_strength/flutter_password_strength.dart';
-import 'package:validation_pro/validate.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
-// import 'package:google_places_flutter/google_places_flutter.dart';
-// import 'package:google_places_flutter/model/prediction.dart';
-
-class SignupInputs {
-  SignupInputs(
-      this.firstName,
-      this.lastName,
-      this.email,
-      this.phoneNumber,
-      this.password,
-      this.lookingForWork,
-      this.lookingForWorkers);
-  String firstName = '';
-  String lastName = '';
-  String email = '';
-  String phoneNumber = '';
-  String password = '';
-  bool lookingForWork = false;
-  bool lookingForWorkers = false;
-  
-}
+import 'package:helping_hand/onboarding_pipeline/ProfileSetupScr.dart';
+import 'package:helping_hand/services/models.dart';
+import 'SignUpController.dart';
 
 class SignupScr extends StatefulWidget {
   const SignupScr({super.key});
@@ -36,8 +15,6 @@ class SignupScr extends StatefulWidget {
 
 class _SignupScrState extends State<SignupScr> {
   String password = '';
-  String location = '';
-  String phoneNumber = '';
   bool lookingForWork = false;
   bool lookingForWorkers = false;
   final firstNameController = TextEditingController();
@@ -45,8 +22,8 @@ class _SignupScrState extends State<SignupScr> {
   final emailController = TextEditingController();
   final phoneNumberController = TextEditingController();
   final passwordController = TextEditingController();
-  
-  var docRef;
+
+  User? newUser;
 
   @override
   void initState() {
@@ -66,7 +43,7 @@ class _SignupScrState extends State<SignupScr> {
     emailController.dispose();
     phoneNumberController.dispose();
     passwordController.dispose();
-    
+
     super.dispose();
   }
 
@@ -99,7 +76,6 @@ class _SignupScrState extends State<SignupScr> {
                 ),
               ),
               Flexible(
-                //inputs
                 flex: 4,
                 child: Container(
                   padding: const EdgeInsets.all(15.0),
@@ -147,13 +123,14 @@ class _SignupScrState extends State<SignupScr> {
                             obscureText: true,
                             keyboardType: TextInputType.visiblePassword,
                             controller: passwordController),
-                        Row(
+                        Column(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             FlutterPasswordStrength(
                               password: password,
-                              width: MediaQuery.of(context).size.width * 0.2,
-                              height: 10,
+                              width: MediaQuery.of(context).size.width * 0.4,
+                              height: 15,
                               radius: 10,
                             ),
                             const Text(
@@ -163,7 +140,6 @@ class _SignupScrState extends State<SignupScr> {
                         const Padding(
                           padding: EdgeInsets.only(top: 10.0),
                         ),
-                        
                         Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           mainAxisSize: MainAxisSize.min,
@@ -204,7 +180,6 @@ class _SignupScrState extends State<SignupScr> {
                 ),
               ),
               Flexible(
-                //create account and login buttons
                 flex: 1,
                 child: Padding(
                   padding: const EdgeInsets.only(bottom: 15.0),
@@ -235,8 +210,7 @@ class _SignupScrState extends State<SignupScr> {
                                     ),
                                   ),
                                   minimumSize: WidgetStateProperty.all<Size>(
-                                      const Size(
-                                          0, 50)), // set the height as needed
+                                      const Size(0, 50)),
                                 ),
                             child: const Text("Already a member? Log in"),
                           ),
@@ -260,9 +234,14 @@ class _SignupScrState extends State<SignupScr> {
                                   lookingForWorkers);
 
                               if (validateInputs(inputs, context)) {
-                                docRef = await storeInputs(inputs, context);
-                                Navigator.pushNamed(context, '/profileSetup',
-                                    arguments: docRef);
+                                newUser = assembleUser(inputs);
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => ProfileSetupScr(
+                                            newUser: newUser!,
+                                            password:
+                                                passwordController.text)));
                               }
                             },
                             style: Theme.of(context)
@@ -276,8 +255,7 @@ class _SignupScrState extends State<SignupScr> {
                                     ),
                                   ),
                                   minimumSize: WidgetStateProperty.all<Size>(
-                                      const Size(
-                                          0, 50)), // set the height as needed
+                                      const Size(0, 50)),
                                 ),
                             child: const Text("Create Account"),
                           ),
@@ -292,103 +270,6 @@ class _SignupScrState extends State<SignupScr> {
         ),
       ),
     );
-  }
-}
-
-bool validateInputs(SignupInputs inputs, BuildContext context) {
-  // validate inputs
-  List invalids = [];
-  if (inputs.firstName.isEmpty) {
-    invalids.add('First Name');
-  }
-  if (inputs.lastName.isEmpty) {
-    invalids.add('Last Name');
-  }
-  if (inputs.email.isEmpty || !Validate.isEmail(inputs.email)) {
-    invalids.add('Email');
-  }
-  RegExp regExp = RegExp(r'^\d{10}$');
-  if (inputs.phoneNumber.isEmpty || !regExp.hasMatch(inputs.phoneNumber)) {
-    invalids.add('Phone Number');
-  }
-  if (inputs.password.isEmpty || inputs.password.length < 8) {
-    invalids.add('Password');
-  }
-  // if (inputs.location.isEmpty) {
-  //   invalids.add('Location');
-  // } location can be required if app has a large user base
-  if (invalids.isEmpty) {
-    if (inputs.lookingForWork == false && inputs.lookingForWorkers == false) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          backgroundColor: Color.fromARGB(255, 255, 255, 255),
-          content: Text(
-            'Please select at least one option for "Looking for work?" or "Looking for workers?"',
-            style: TextStyle(color: Color.fromARGB(255, 255, 46, 46)),
-          ),
-        ),
-      );
-      return false;
-    } else {
-      return true;
-    }
-  } else {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
-        content: Text(
-          'The field(s) ${invalids.join(', ')} are invalid. Please correct them.',
-          style: const TextStyle(color: Color.fromARGB(255, 255, 0, 0)),
-        ),
-      ),
-    );
-    return false;
-  }
-}
-
-Future<DocumentReference> storeInputs(
-    SignupInputs inputs, BuildContext context) async {
-  final firestoreInstance = FirebaseFirestore.instance;
-  final auth = FirebaseAuth.instance;
-  try {
-    UserCredential userCredential = await auth.createUserWithEmailAndPassword(
-      email: inputs.email,
-      password: inputs.password,
-    );
-
-    var docRef =
-        firestoreInstance.collection('users').doc(userCredential.user!.uid);
-
-    await docRef.set({
-      'firstName': inputs.firstName,
-      'lastName': inputs.lastName,
-      'email': inputs.email,
-      'phoneNumber': inputs.phoneNumber,
-      'uid': userCredential.user!.uid,
-      "lookingForWork": inputs.lookingForWork,
-      'lookingForWorkers': inputs.lookingForWorkers,
-      'rating': 0,
-      
-    });
-
-    return docRef;
-  } catch (error) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        backgroundColor: Colors.grey.shade600,
-        content: Text(
-          'Failed with error $error',
-          style: const TextStyle(color: Colors.white),
-        ),
-      ),
-    );
-
-    // If a user was created, delete it
-    if (auth.currentUser != null) {
-      await auth.currentUser!.delete();
-    }
-
-    rethrow;
   }
 }
 

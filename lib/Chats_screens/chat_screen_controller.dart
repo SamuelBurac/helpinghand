@@ -191,7 +191,7 @@ class _MessageBarBetterState extends State<MessageBarBetter> {
               _toggleImage();
             }
             if (imageFile != null) {
-              imageURL = await FirestoreService().uploadImage(
+              imageURL = await FirestoreService().uploadChatImage(
                   Provider.of<UserState>(context, listen: false).user.uid,
                   imageFile!);
               imageFile = null;

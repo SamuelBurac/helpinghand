@@ -3,7 +3,7 @@ import 'package:camerawesome/camerawesome_plugin.dart';
 import 'dart:io';
 
 class CameraScreen extends StatelessWidget {
-  const CameraScreen({Key? key}) : super(key: key);
+  const CameraScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +42,7 @@ class CameraScreen extends StatelessWidget {
 class PreviewPage extends StatelessWidget {
   final String imagePath;
 
-  const PreviewPage({Key? key, required this.imagePath}) : super(key: key);
+  const PreviewPage({super.key, required this.imagePath});
 
   @override
   Widget build(BuildContext context) {
@@ -67,16 +67,16 @@ class PreviewPage extends StatelessWidget {
               children: [
                 ElevatedButton(
                   onPressed: () => Navigator.pop(context),
-                  child: Text('Retake'),
                   style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+                  child: Text('Retake'),
                 ),
                 ElevatedButton(
                   onPressed: () {
                     Navigator.pop(context); // Pop PreviewPage
                     Navigator.pop(context, File(imagePath)); // Pop CameraPage and return image
                   },
-                  child: Text('Confirm'),
                   style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
+                  child: Text('Confirm'),
                 ),
               ],
             ),

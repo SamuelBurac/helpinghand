@@ -88,22 +88,28 @@ class FirestoreService {
   Future<void> updateUser(User user) async {
     // Update the user in the collection
     await _db.collection(_usersCollection).doc(user.uid).update(user.toJson());
-    
   }
-  
+
   Future<void> updatePostingsRating(String uid, double rating) async {
     // Update the users job and availability postings to reflect the new rating
-    await _db.collection(_jobPostingsCollection).where('jobPosterID', isEqualTo: uid).get().then((snapshot) {
+    await _db
+        .collection(_jobPostingsCollection)
+        .where('jobPosterID', isEqualTo: uid)
+        .get()
+        .then((snapshot) {
       for (DocumentSnapshot doc in snapshot.docs) {
         doc.reference.update({'rating': rating});
       }
     });
-    await _db.collection(_availabilityPostingsCollection).where('posterID', isEqualTo: uid).get().then((snapshot) {
+    await _db
+        .collection(_availabilityPostingsCollection)
+        .where('posterID', isEqualTo: uid)
+        .get()
+        .then((snapshot) {
       for (DocumentSnapshot doc in snapshot.docs) {
         doc.reference.update({'rating': rating});
       }
     });
-
   }
 
   Future<void> updateJob(JobPosting jobPosting) async {
@@ -133,6 +139,22 @@ class FirestoreService {
         .collection(_availabilityPostingsCollection)
         .doc(avaPosting.avaPostID)
         .delete();
+  }
+
+  Future<void> createNewUser(User user) async {
+    // Add the user to the collection and wait for the operation to complete
+    await _db.collection(_usersCollection).doc(user.uid).set(user.toJson());
+  }
+
+  Future<String> uploadProfilePicture(String uid, File image) async {
+    // Upload the image to Firebase Storage
+    var ref = FirebaseStorage.instance
+        .ref()
+        .child('profilePics/$uid/${DateTime.now()}.png');
+    await ref.putFile(image);
+    var url = await ref.getDownloadURL();
+
+    return url;
   }
 
   Future<void> deleteUser(User user) async {
@@ -227,6 +249,14 @@ class FirestoreService {
   Future<void> deleteChat(String chatID) async {
     // Delete the chat from the collection
     await _db.collection(_chatsCollection).doc(chatID).delete();
+
+    //delete images in the chat from storage
+    var ref = FirebaseStorage.instance.ref().child('chatImages/$chatID');
+    var listResult = await ref.listAll();
+
+    for (var item in listResult.items) {
+      await item.delete();
+    }
   }
 
   Stream<List<Chat>> getChats(String uid) {
@@ -285,11 +315,11 @@ class FirestoreService {
         list.docs.map((doc) => Message.fromJson(doc.data())).toList());
   }
 
-  Future<String> uploadImage(String uid, File image) async {
+  Future<String> uploadChatImage(String chatID, File image) async {
     // Upload the image to Firebase Storage
     var ref = FirebaseStorage.instance
         .ref()
-        .child('chatImages/$uid/${DateTime.now()}.png');
+        .child('chatImages/$chatID/${DateTime.now()}.png');
     await ref.putFile(image);
     var url = await ref.getDownloadURL();
 
@@ -312,24 +342,22 @@ class FirestoreService {
     });
 
     // Add the review to the collection and wait for the operation to complete
-   await _db
+    await _db
         .collection(_usersCollection)
         .doc(review.revieweeID)
         .collection(_reviewsCollection)
         .doc(review.reviewerID)
         .set(review.toJson());
-        
   }
 
-  Future<void> updateReview(Review oldReview, Review review, User reviewee) async {
-    
-
+  Future<void> updateReview(
+      Review oldReview, Review review, User reviewee) async {
     double totalRating = ((reviewee.rating * reviewee.numReviews) +
             review.rating -
             oldReview.rating) /
         (reviewee.numReviews);
 
-    //update users postings 
+    //update users postings
     await updatePostingsRating(reviewee.uid, totalRating);
 
     // Update the review in the collection
@@ -340,7 +368,6 @@ class FirestoreService {
         .doc(review.reviewerID)
         .update(review.toJson());
 
-
     // Update the user's rating
     await _db.collection(_usersCollection).doc(review.revieweeID).update({
       'rating': totalRating,
@@ -348,7 +375,6 @@ class FirestoreService {
   }
 
   Future<void> deleteReview(Review review, User reviewee) async {
-    
     double totalRating =
         ((reviewee.rating * reviewee.numReviews) - review.rating) /
             (reviewee.numReviews - 1);
@@ -380,7 +406,7 @@ class FirestoreService {
         .collection(_reviewsCollection)
         .doc(reviewerID)
         .get();
-        
+
     if (doc.exists) {
       var data = doc.data();
       var review = Review.fromJson(data!);
@@ -390,15 +416,15 @@ class FirestoreService {
     }
   }
 
-  Stream<List<Review>> getReviews(String uid)  {
+  Stream<List<Review>> getReviews(String uid) {
     // Get the reviews from the collection
     var ref = _db
         .collection(_usersCollection)
         .doc(uid)
         .collection(_reviewsCollection);
     var snapshots = ref.snapshots();
-    return snapshots.map((list) => list.docs.map((doc) => Review.fromJson(doc.data())).toList());
-
+    return snapshots.map(
+        (list) => list.docs.map((doc) => Review.fromJson(doc.data())).toList());
   }
 
   Future<bool> hasReviewed(String reveiwerUID, String revieweeUID) async {
@@ -410,7 +436,4 @@ class FirestoreService {
         .get()
         .then((snapshot) => snapshot.docs.isNotEmpty);
   }
-
-  
-
 }
