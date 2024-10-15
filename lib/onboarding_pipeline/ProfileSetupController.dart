@@ -1,6 +1,7 @@
 part of "ProfileSetupScr.dart";
 
 Future<User> submitProfileData(
+  bool thirdPartySignup,
   User newUser,
   String password,
   File selectedImage,
@@ -9,11 +10,13 @@ Future<User> submitProfileData(
   bool displayPhoneNumber,
 ) async {
   String storageURL = "";
-
+  final String userID;
   try {
-    final String userID =
-        await AuthService().createUserWEAndPass(newUser.email, password);
-
+    if (!thirdPartySignup) {
+      userID = await AuthService().createUserWEAndPass(newUser.email, password);
+    } else {
+      userID = AuthService().user!.uid;
+    }
     storageURL =
         await FirestoreService().uploadProfilePicture(userID, selectedImage);
 

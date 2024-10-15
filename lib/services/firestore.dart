@@ -90,6 +90,54 @@ class FirestoreService {
     await _db.collection(_usersCollection).doc(user.uid).update(user.toJson());
   }
 
+  Future<void> updateUserPFP(
+      String uid, String url) async {
+    // Update the user's name in the collection
+    await _db
+        .collection(_jobPostingsCollection)
+        .where('jobPosterID', isEqualTo: uid)
+        .get()
+        .then((snapshot) {
+      for (DocumentSnapshot doc in snapshot.docs) {
+        doc.reference.update({'pfpURL': url});
+      }
+    });
+
+    await _db
+        .collection(_availabilityPostingsCollection)
+        .where('posterID', isEqualTo: uid)
+        .get()
+        .then((snapshot) {
+      for (DocumentSnapshot doc in snapshot.docs) {
+        doc.reference.update({'pfpURL': url});
+      }
+    });
+  }
+
+  Future<void> updateUserName(
+      String uid, String firstName, String lastName) async {
+    // Update the user's name in the collection
+    await _db
+        .collection(_jobPostingsCollection)
+        .where('jobPosterID', isEqualTo: uid)
+        .get()
+        .then((snapshot) {
+      for (DocumentSnapshot doc in snapshot.docs) {
+        doc.reference.update({'jobPosterName': "$firstName $lastName"});
+      }
+    });
+
+    await _db
+        .collection(_availabilityPostingsCollection)
+        .where('posterID', isEqualTo: uid)
+        .get()
+        .then((snapshot) {
+      for (DocumentSnapshot doc in snapshot.docs) {
+        doc.reference.update({'jobPosterName': "$firstName $lastName"});
+      }
+    });
+  }
+
   Future<void> updatePostingsRating(String uid, double rating) async {
     // Update the users job and availability postings to reflect the new rating
     await _db

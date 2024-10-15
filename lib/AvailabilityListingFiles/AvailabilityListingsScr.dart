@@ -8,8 +8,27 @@ import 'package:helping_hand/services/UserState.dart';
 import 'package:helping_hand/services/firestore.dart';
 import 'package:provider/provider.dart';
 
-class AvailabilityListingsScr extends StatelessWidget {
+class AvailabilityListingsScr extends StatefulWidget {
   const AvailabilityListingsScr({super.key});
+
+  @override
+  State<AvailabilityListingsScr> createState() => _AvailabilityListingsScrState();
+}
+
+class _AvailabilityListingsScrState extends State<AvailabilityListingsScr> {
+  late Future<List<dynamic>> _avasFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _avasFuture = FirestoreService().getAvailabilities();
+  }
+
+  Future<void> _refreshAvailabilities() async {
+    setState(() {
+      _avasFuture = FirestoreService().getAvailabilities();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,21 +69,25 @@ class AvailabilityListingsScr extends StatelessWidget {
         ),
         automaticallyImplyLeading: false,
       ),
-      body:  FutureBuilder(
-          future: FirestoreService().getAvailabilities(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const LoadingScreen();
-            } else if (snapshot.hasError) {
-              return ErrorMessage(message: snapshot.error.toString());
-            } else if (snapshot.hasData) {
-              var avaPostings = snapshot.data!;
-
-              return AdsList(items: avaPostings.map((ava) => ListItem(availabilityPosting: ava)).toList());
-            } else {
-              return const Text("No available people found");
-            }
-          }),
+      body:  RefreshIndicator(
+        color: Colors.orange,
+        onRefresh: _refreshAvailabilities,
+        child: FutureBuilder(
+            future: _avasFuture,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const LoadingScreen();
+              } else if (snapshot.hasError) {
+                return ErrorMessage(message: snapshot.error.toString());
+              } else if (snapshot.hasData) {
+                var avaPostings = snapshot.data!;
+        
+                return AdsList(items: avaPostings.map((ava) => ListItem(availabilityPosting: ava)).toList());
+              } else {
+                return const Text("No available people found");
+              }
+            }),
+      ),
       floatingActionButton: Postingfab(),
       bottomNavigationBar: BottomNavigationBar(
         selectedItemColor:

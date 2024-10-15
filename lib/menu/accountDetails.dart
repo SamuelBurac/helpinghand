@@ -1,14 +1,25 @@
+import 'dart:io';
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:helping_hand/components/CropPic.dart';
 import 'package:helping_hand/services/UserState.dart';
 import 'package:helping_hand/services/auth.dart';
 import 'package:helping_hand/services/firestore.dart';
 import 'package:helping_hand/services/models.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+
 part 'accountDetailsController.dart';
 
-class AccountDetails extends StatelessWidget {
+class AccountDetails extends StatefulWidget {
   const AccountDetails({super.key});
 
+  @override
+  State<AccountDetails> createState() => _AccountDetailsState();
+}
+
+class _AccountDetailsState extends State<AccountDetails> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,6 +35,11 @@ class AccountDetails extends StatelessWidget {
                 padding: const EdgeInsets.all(10.0),
                 child: Column(
                   children: [
+                    Padding(
+                      padding: EdgeInsets.only(
+                          bottom: MediaQuery.of(context).size.height * 0.02),
+                      child: _buildProfilePictureSection(controller),
+                    ),
                     EditTextWithButton(
                       controller: controller.firstNameController,
                       labelText: "First Name",
@@ -407,5 +423,88 @@ class AccountDetails extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Widget _buildProfilePictureSection(AccountDetailsController controller) {
+    return InkWell(
+      onTap: () => _selectProfilePicture(controller),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          CircleAvatar(
+            backgroundColor: Colors.transparent,
+            radius: 40,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(50),
+              child: CachedNetworkImage(
+                fit: BoxFit.cover,
+                imageUrl: Provider.of<UserState>(context).user.pfpURL,
+                progressIndicatorBuilder: (context, url, downloadProgress) =>
+                    CircularProgressIndicator(
+                        color: Colors.amber, value: downloadProgress.progress),
+                errorWidget: (context, url, error) => const Icon(Icons.error),
+              ),
+            ),
+          ),
+          const Text(
+            "Click to update profile picture",
+            style: TextStyle(fontSize: 20),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _selectProfilePicture(AccountDetailsController controller) async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      File? croppedImage = await Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => CropPic(
+            imageFile: File(pickedFile.path),
+          ),
+        ),
+      );
+      try {
+        if (!controller.isEditing &&
+            controller.verifyInputs() &&
+            croppedImage != null) {
+          await controller.updatePFP(croppedImage);
+        }
+      } catch (e) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return Banner(
+              message: 'An error occurred while updating profile picture. Please try again.',
+              location: BannerLocation.topEnd,
+              color: Colors.red,
+              layoutDirection: TextDirection.ltr,
+              child: Container(),
+            );
+          },
+        );
+      }
+
+      setState(() {
+      });
+    } else {
+      showDialog<String>(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          title: const Text('You must select a profile picture'),
+          content: const Text('You need a profile picture to continue.'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.pop(context, 'OK'),
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      );
+    }
   }
 }

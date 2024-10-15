@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:helping_hand/onboarding_pipeline/SignupScr.dart';
+import 'package:helping_hand/services/auth.dart';
 
 class StartupScr extends StatelessWidget {
   const StartupScr({super.key});
@@ -34,7 +36,6 @@ class StartupScr extends StatelessWidget {
                 child: Image.asset('assets/logoHH.png'),
               ),
             ),
-            
             Flexible(
               child: Container(
                 padding: const EdgeInsets.all(10.0).copyWith(bottom: 25.0),
@@ -44,7 +45,6 @@ class StartupScr extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      
                       SizedBox(
                         width: MediaQuery.of(context).size.width * 0.8,
                         child: TextButton(
@@ -96,6 +96,99 @@ class StartupScr extends StatelessWidget {
                           child: const Text("Sign up to work"),
                         ),
                       ),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.01,
+                      ),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.8,
+                        child: TextButton(
+                          onPressed: () async {
+                            await AuthService().signInWithGoogle();
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    SignupScr(thirdPartySignup: true),
+                              ),
+                            );
+                          },
+                          style: Theme.of(context)
+                              .textButtonTheme
+                              .style
+                              ?.copyWith(
+                                backgroundColor: WidgetStateProperty.all<Color>(
+                                  Colors.indigo.shade700,
+                                ),
+                                textStyle: WidgetStateProperty.all<TextStyle>(
+                                  const TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                minimumSize: WidgetStateProperty.all<Size>(
+                                    const Size(
+                                        0, 50)), // set the height as needed
+                              ),
+                          child: Stack(
+                            children: [
+                              Image.asset(
+                                'assets/google_logo.png',
+                                height: 30.0,
+                              ), // Add the image
+                              Center(
+                                child: const Text(
+                                  "Sign in with Google",
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.01,
+                      ),
+                      // if the platform is iOS, show the Apple sign in button
+                      if (Theme.of(context).platform == TargetPlatform.iOS)
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.8,
+                          child: TextButton(
+                            onPressed: () async {
+                              // await AuthService().signInWithApple();
+                              Navigator.pushNamed(context, '/signup');
+                            },
+                            style: Theme.of(context)
+                                .textButtonTheme
+                                .style
+                                ?.copyWith(
+                                  backgroundColor:
+                                      WidgetStateProperty.all<Color>(
+                                    Colors.indigo.shade700,
+                                  ),
+                                  textStyle: WidgetStateProperty.all<TextStyle>(
+                                    const TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  minimumSize: WidgetStateProperty.all<Size>(
+                                      const Size(
+                                          0, 50)), // set the height as needed
+                                ),
+                            child: Stack(
+                              children: [
+                                Image.asset(
+                                  'assets/apple_logo.png',
+                                  height: 30.0,
+                                ), // Add the image
+                                Center(
+                                  child: const Text(
+                                    "Sign in with Apple",
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
                     ],
                   ),
                 ),

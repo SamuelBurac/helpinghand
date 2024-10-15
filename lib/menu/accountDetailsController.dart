@@ -19,9 +19,6 @@ class AccountDetailsController with ChangeNotifier {
   bool isEditingLocation = false;
   bool isEditingDescription = false;
 
-  
-  
-
   bool get getIsEditingFName => isEditingFName;
   bool get getIsEditingLName => isEditingLName;
   bool get getIsEditingEmail => isEditingEmail;
@@ -96,8 +93,13 @@ class AccountDetailsController with ChangeNotifier {
   bool? get getLookingForWork => lookingForWork;
   bool? get getLookingForWorkers => lookingForWorkers;
 
-
-  bool get isEditing => isEditingFName || isEditingLName || isEditingEmail || isEditingPhone || isEditingLocation || isEditingDescription;
+  bool get isEditing =>
+      isEditingFName ||
+      isEditingLName ||
+      isEditingEmail ||
+      isEditingPhone ||
+      isEditingLocation ||
+      isEditingDescription;
 
   void setFirstName(String value) {
     firstName = value;
@@ -156,12 +158,38 @@ class AccountDetailsController with ChangeNotifier {
     return true;
   }
 
-  
+  Future<void> updatePFP(File image) async {
+    String url;
+    try {
+      url = await FirestoreService().uploadProfilePicture(user.uid, image);
+    } catch (e) {
+      throw Exception("Error uploading profile picture: $e");
+    }
+
+    User updated = User(
+      uid: user.uid,
+      firstName: firstNameController.text,
+      lastName: lastNameController.text,
+      email: emailController.text,
+      phoneNumber: phoneNumberController.text,
+      location: locationController.text,
+      description: descriptionController.text,
+      displayPhoneNumber: displayPhoneNumber!,
+      lookingForWork: lookingForWork!,
+      lookingForWorkers: lookingForWorkers!,
+      pfpURL: url,
+      rating: user.rating,
+    );
+    Provider.of<UserState>(context, listen: false).user = updated;
+    await FirestoreService().updateUser(updated);
+    await FirestoreService().updateUserPFP(user.uid, url);
+  }
 
   Future<void> updateProfile() async {
     if (user.email != emailController.text) {
       AuthService().updateEmail(emailController.text, passwordController.text);
     }
+
     User updated = User(
       uid: user.uid,
       firstName: firstNameController.text,
@@ -178,7 +206,13 @@ class AccountDetailsController with ChangeNotifier {
     );
     Provider.of<UserState>(context, listen: false).user = updated;
     await FirestoreService().updateUser(updated);
-    
+
+    if (firstNameController.text != user.firstName ||
+        lastNameController.text != user.lastName) {
+      FirestoreService().updateUserName(
+          user.uid, firstNameController.text, lastNameController.text);
+    }
+
     notifyListeners();
   }
 }

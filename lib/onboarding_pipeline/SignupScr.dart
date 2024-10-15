@@ -3,11 +3,14 @@ import 'package:flutter/services.dart';
 import 'package:flutter_password_strength/flutter_password_strength.dart';
 import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
 import 'package:helping_hand/onboarding_pipeline/ProfileSetupScr.dart';
+import 'package:helping_hand/services/auth.dart';
+
 import 'package:helping_hand/services/models.dart';
 import 'SignUpController.dart';
 
 class SignupScr extends StatefulWidget {
-  const SignupScr({super.key});
+  final bool thirdPartySignup;
+  const SignupScr({this.thirdPartySignup = false, super.key});
 
   @override
   State<SignupScr> createState() => _SignupScrState();
@@ -113,30 +116,33 @@ class _SignupScrState extends State<SignupScr> {
                               ),
                               LengthLimitingTextInputFormatter(14)
                             ]),
-                        CustomTextField(
-                            labelText: 'Email',
-                            obscureText: false,
-                            keyboardType: TextInputType.emailAddress,
-                            controller: emailController),
-                        CustomTextField(
-                            labelText: 'Password',
-                            obscureText: true,
-                            keyboardType: TextInputType.visiblePassword,
-                            controller: passwordController),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            FlutterPasswordStrength(
-                              password: password,
-                              width: MediaQuery.of(context).size.width * 0.4,
-                              height: 15,
-                              radius: 10,
-                            ),
-                            const Text(
-                                "Password must be at least 8 characters long"),
-                          ],
-                        ),
+                        if (!widget.thirdPartySignup)
+                          CustomTextField(
+                              labelText: 'Email',
+                              obscureText: false,
+                              keyboardType: TextInputType.emailAddress,
+                              controller: emailController),
+                        if (!widget.thirdPartySignup)
+                          CustomTextField(
+                              labelText: 'Password',
+                              obscureText: true,
+                              keyboardType: TextInputType.visiblePassword,
+                              controller: passwordController),
+                        if (!widget.thirdPartySignup)
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              FlutterPasswordStrength(
+                                password: password,
+                                width: MediaQuery.of(context).size.width * 0.4,
+                                height: 15,
+                                radius: 10,
+                              ),
+                              const Text(
+                                  "Password must be at least 8 characters long"),
+                            ],
+                          ),
                         const Padding(
                           padding: EdgeInsets.only(top: 10.0),
                         ),
@@ -189,32 +195,34 @@ class _SignupScrState extends State<SignupScr> {
                       mainAxisAlignment: MainAxisAlignment.end,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.8,
-                          height: MediaQuery.of(context).size.height * 0.05,
-                          child: TextButton(
-                            onPressed: () {
-                              Navigator.pushNamed(context, '/login');
-                            },
-                            style: Theme.of(context)
-                                .textButtonTheme
-                                .style
-                                ?.copyWith(
-                                  backgroundColor:
-                                      WidgetStateProperty.all<Color>(
-                                          Colors.grey.shade600),
-                                  textStyle: WidgetStateProperty.all<TextStyle>(
-                                    const TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
+                        if (!widget.thirdPartySignup)
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.8,
+                            height: MediaQuery.of(context).size.height * 0.05,
+                            child: TextButton(
+                              onPressed: () {
+                                Navigator.pushNamed(context, '/login');
+                              },
+                              style: Theme.of(context)
+                                  .textButtonTheme
+                                  .style
+                                  ?.copyWith(
+                                    backgroundColor:
+                                        WidgetStateProperty.all<Color>(
+                                            Colors.grey.shade600),
+                                    textStyle:
+                                        WidgetStateProperty.all<TextStyle>(
+                                      const TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
+                                    minimumSize: WidgetStateProperty.all<Size>(
+                                        const Size(0, 50)),
                                   ),
-                                  minimumSize: WidgetStateProperty.all<Size>(
-                                      const Size(0, 50)),
-                                ),
-                            child: const Text("Already a member? Log in"),
+                              child: const Text("Already a member? Log in"),
+                            ),
                           ),
-                        ),
                         SizedBox(
                           height: MediaQuery.of(context).size.height * 0.01,
                         ),
@@ -223,6 +231,25 @@ class _SignupScrState extends State<SignupScr> {
                           height: MediaQuery.of(context).size.height * 0.05,
                           child: TextButton(
                             onPressed: () async {
+                              if (widget.thirdPartySignup) {
+                                newUser = assembleUser(SignupInputs(
+                                    firstNameController.text,
+                                    lastNameController.text,
+                                    AuthService().user!.email!,
+                                    phoneNumberController.text
+                                        .replaceAll(RegExp(r'\D'), ''),
+                                    passwordController.text,
+                                    lookingForWork,
+                                    lookingForWorkers));
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => ProfileSetupScr(
+                                            thirdPartySignup: true,
+                                            newUser: newUser!,
+                                            password: "")));
+                                return;
+                              }
                               SignupInputs inputs = SignupInputs(
                                   firstNameController.text,
                                   lastNameController.text,
@@ -239,6 +266,7 @@ class _SignupScrState extends State<SignupScr> {
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) => ProfileSetupScr(
+                                            thirdPartySignup: false,
                                             newUser: newUser!,
                                             password:
                                                 passwordController.text)));

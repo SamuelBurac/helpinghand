@@ -8,10 +8,27 @@ import 'package:provider/provider.dart';
 import '../services/firestore.dart';
 import 'package:flutter_toggle_tab/flutter_toggle_tab.dart';
 
-class JobListingsScr extends StatelessWidget {
-  const JobListingsScr({
-    super.key,
-  });
+class JobListingsScr extends StatefulWidget {
+  const JobListingsScr({super.key});
+
+  @override
+  _JobListingsScrState createState() => _JobListingsScrState();
+}
+
+class _JobListingsScrState extends State<JobListingsScr> {
+  late Future<List<dynamic>> _jobsFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _jobsFuture = FirestoreService().getJobs();
+  }
+
+  Future<void> _refreshJobs() async {
+    setState(() {
+      _jobsFuture = FirestoreService().getJobs();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +41,7 @@ class JobListingsScr extends StatelessWidget {
                     buttonTheme: const ButtonThemeData(),
                   ),
                   child: FlutterToggleTab(
-                    width: 70, // width in percent
+                    width: 70,
                     borderRadius: 20,
                     height: 40,
                     selectedIndex: 0,
@@ -52,8 +69,11 @@ class JobListingsScr extends StatelessWidget {
         ),
         automaticallyImplyLeading: false,
       ),
-      body: FutureBuilder(
-          future: FirestoreService().getJobs(),
+      body: RefreshIndicator(
+        color: Colors.orange,
+        onRefresh: _refreshJobs,
+        child: FutureBuilder(
+          future: _jobsFuture,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const LoadingScreen();
@@ -61,7 +81,6 @@ class JobListingsScr extends StatelessWidget {
               return ErrorMessage(message: snapshot.error.toString());
             } else if (snapshot.hasData) {
               var jobPostings = snapshot.data!;
-
               return AdsList(
                 items: jobPostings
                     .map((job) => ListItem(jobPosting: job))
@@ -70,13 +89,13 @@ class JobListingsScr extends StatelessWidget {
             } else {
               return const Text("no jobs found");
             }
-          }),
+          },
+        ),
+      ),
       floatingActionButton: Postingfab(),
       bottomNavigationBar: BottomNavigationBar(
-        selectedItemColor:
-            Colors.orange, // Set the color for selected item (icon + text)
-        unselectedItemColor: const Color.fromARGB(149, 255, 172,
-            64), // Set the color for unselected items (icon + text)
+        selectedItemColor: Colors.orange,
+        unselectedItemColor: const Color.fromARGB(149, 255, 172, 64),
         items: const [
           BottomNavigationBarItem(
             icon: Icon(

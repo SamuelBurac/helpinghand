@@ -51,6 +51,7 @@ dependencies:
   camerawesome: ^2.0.1
   carousel_slider: ^4.2.1
   image_cropper: ^8.0.2
+  google_sign_in: ^6.2.1
 
 
   
@@ -67,3 +68,4 @@ flutter:
     - assets/logoHH.png
     - assets/emptyProfilePic.png
     - bruh.env
+    - assets/google_logo.png

@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_places_autocomplete_text_field/google_places_autocomplete_text_field.dart';
-import 'package:helping_hand/onboarding_pipeline/CropPic.dart';
+import 'package:helping_hand/components/CropPic.dart';
 import 'package:helping_hand/services/UserState.dart';
 import 'package:helping_hand/services/auth.dart';
 import 'package:helping_hand/services/firestore.dart';
@@ -14,10 +14,11 @@ import 'package:provider/provider.dart';
 part 'ProfileSetupController.dart';
 
 class ProfileSetupScr extends StatefulWidget {
+  final thirdPartySignup;
   final User newUser;
   final String password;
   const ProfileSetupScr(
-      {required this.newUser, required this.password, super.key});
+      {required this.thirdPartySignup, required this.newUser, required this.password, super.key});
 
   @override
   State<ProfileSetupScr> createState() => _ProfileSetupScrState();
@@ -346,6 +347,7 @@ class _ProfileSetupScrState extends State<ProfileSetupScr> {
       try {
         Provider.of<UserState>(context, listen: false).user =
             await submitProfileData(
+          widget.thirdPartySignup,
           widget.newUser,
           widget.password,
           _selectedImage!,
