@@ -90,6 +90,11 @@ class FirestoreService {
     await _db.collection(_usersCollection).doc(user.uid).update(user.toJson());
   }
 
+  Future<bool> checkIfUserExists(String uid) async {
+    var doc = await _db.collection(_usersCollection).doc(uid).get();
+    return doc.exists;
+  }
+
   Future<void> updateUserPFP(
       String uid, String url) async {
     // Update the user's name in the collection

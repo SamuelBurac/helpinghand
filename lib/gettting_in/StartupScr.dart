@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:helping_hand/onboarding_pipeline/SignupScr.dart';
 import 'package:helping_hand/services/auth.dart';
+import 'package:helping_hand/services/firestore.dart';
 
-class StartupScr extends StatelessWidget {
+class StartupScr extends StatefulWidget {
   const StartupScr({super.key});
 
+  @override
+  State<StartupScr> createState() => _StartupScrState();
+}
+
+class _StartupScrState extends State<StartupScr> {
   @override
   Widget build(BuildContext context) {
     double boxSize = MediaQuery.of(context).size.height * 0.3;
@@ -33,7 +39,7 @@ class StartupScr extends StatelessWidget {
               child: ClipRRect(
                 borderRadius:
                     BorderRadius.circular(boxSize * 0.1), // 10% of the box size
-                child: Image.asset('assets/logoHH.png'),
+                child: Image.asset('assets/acquisition.png'),
               ),
             ),
             Flexible(
@@ -104,13 +110,19 @@ class StartupScr extends StatelessWidget {
                         child: TextButton(
                           onPressed: () async {
                             await AuthService().signInWithGoogle();
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    SignupScr(thirdPartySignup: true),
-                              ),
-                            );
+                            if (!mounted) return;
+                            if (await FirestoreService()
+                                .checkIfUserExists(AuthService().user!.uid)) {
+                              Navigator.popAndPushNamed(context, "/");
+                            } else {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      SignupScr(thirdPartySignup: true),
+                                ),
+                              );
+                            }
                           },
                           style: Theme.of(context)
                               .textButtonTheme
@@ -135,9 +147,12 @@ class StartupScr extends StatelessWidget {
                                 'assets/google_logo.png',
                                 height: 30.0,
                               ), // Add the image
-                              Center(
-                                child: const Text(
-                                  "Sign in with Google",
+                              Padding(
+                                padding: const EdgeInsets.only(top: 3.0),
+                                child: Center(
+                                  child: const Text(
+                                    "Sign in with Google",
+                                  ),
                                 ),
                               ),
                             ],
@@ -154,7 +169,19 @@ class StartupScr extends StatelessWidget {
                           child: TextButton(
                             onPressed: () async {
                               // await AuthService().signInWithApple();
-                              Navigator.pushNamed(context, '/signup');
+                              if (!mounted) return;
+                              if (await FirestoreService()
+                                  .checkIfUserExists(AuthService().user!.uid)) {
+                                Navigator.popAndPushNamed(context, "/");
+                              } else {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        SignupScr(thirdPartySignup: true),
+                                  ),
+                                );
+                              }
                             },
                             style: Theme.of(context)
                                 .textButtonTheme
@@ -162,7 +189,7 @@ class StartupScr extends StatelessWidget {
                                 ?.copyWith(
                                   backgroundColor:
                                       WidgetStateProperty.all<Color>(
-                                    Colors.indigo.shade700,
+                                    Colors.grey.shade900,
                                   ),
                                   textStyle: WidgetStateProperty.all<TextStyle>(
                                     const TextStyle(
@@ -178,11 +205,15 @@ class StartupScr extends StatelessWidget {
                               children: [
                                 Image.asset(
                                   'assets/apple_logo.png',
+                                  color: Colors.white,
                                   height: 30.0,
                                 ), // Add the image
-                                Center(
-                                  child: const Text(
-                                    "Sign in with Apple",
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 3.0),
+                                  child: Center(
+                                    child: const Text(
+                                      "Sign in with Apple",
+                                    ),
                                   ),
                                 ),
                               ],

@@ -4,6 +4,7 @@ import 'package:helping_hand/LoadingScreen.dart';
 import 'package:helping_hand/components/PostingFAB.dart';
 import 'package:helping_hand/error.dart';
 import 'package:helping_hand/components/AdsList.dart';
+import 'package:helping_hand/components/NoAds.dart';
 import 'package:helping_hand/services/UserState.dart';
 import 'package:helping_hand/services/firestore.dart';
 import 'package:provider/provider.dart';
@@ -12,7 +13,8 @@ class AvailabilityListingsScr extends StatefulWidget {
   const AvailabilityListingsScr({super.key});
 
   @override
-  State<AvailabilityListingsScr> createState() => _AvailabilityListingsScrState();
+  State<AvailabilityListingsScr> createState() =>
+      _AvailabilityListingsScrState();
 }
 
 class _AvailabilityListingsScrState extends State<AvailabilityListingsScr> {
@@ -34,6 +36,9 @@ class _AvailabilityListingsScrState extends State<AvailabilityListingsScr> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        actions: [
+          NoAds(),
+        ],
         title: Center(
           child: Provider.of<UserState>(context).user.lookingForWork
               ? Theme(
@@ -58,8 +63,7 @@ class _AvailabilityListingsScrState extends State<AvailabilityListingsScr> {
                     labels: const ["Jobs", "Workers"],
                     selectedLabelIndex: (index) {
                       if (index == 0) {
-                        Navigator.popAndPushNamed(
-                            context, "/jobListings");
+                        Navigator.popAndPushNamed(context, "/jobListings");
                       }
                     },
                     isScroll: false,
@@ -69,7 +73,7 @@ class _AvailabilityListingsScrState extends State<AvailabilityListingsScr> {
         ),
         automaticallyImplyLeading: false,
       ),
-      body:  RefreshIndicator(
+      body: RefreshIndicator(
         color: Colors.orange,
         onRefresh: _refreshAvailabilities,
         child: FutureBuilder(
@@ -81,8 +85,11 @@ class _AvailabilityListingsScrState extends State<AvailabilityListingsScr> {
                 return ErrorMessage(message: snapshot.error.toString());
               } else if (snapshot.hasData) {
                 var avaPostings = snapshot.data!;
-        
-                return AdsList(items: avaPostings.map((ava) => ListItem(availabilityPosting: ava)).toList());
+
+                return AdsList(
+                    items: avaPostings
+                        .map((ava) => ListItem(availabilityPosting: ava))
+                        .toList());
               } else {
                 return const Text("No available people found");
               }

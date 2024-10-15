@@ -28,6 +28,7 @@ class MenuScr extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.only(top: 20.0, left: 10),
               child: Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   CircleAvatar(
                     backgroundColor: Colors.transparent,
@@ -71,6 +72,40 @@ class MenuScr extends StatelessWidget {
                           customHalfFilledIcon: Icons.star_half,
                           customEmptyIcon: Icons.star_border,
                           starSize: 21,
+                        ),
+                      ],
+                    ),
+                  ),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.amber,
+                      foregroundColor: Colors.purple.shade900,
+                      elevation: 8,
+                      shadowColor: Colors.amberAccent,
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 18, vertical: 10),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                        side:
+                            BorderSide(color: Colors.amber.shade600, width: 2),
+                      ),
+                    ),
+                    onPressed: () {
+                      // TODO: Implement premium purchase logic
+                    },
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(Icons.star,
+                            color: Colors.purple.shade900, size: 23),
+                        SizedBox(width: 12),
+                        Text(
+                          "Buy Premium",
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                            letterSpacing: 0.5,
+                          ),
                         ),
                       ],
                     ),

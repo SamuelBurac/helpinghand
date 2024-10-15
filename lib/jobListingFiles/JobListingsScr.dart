@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:helping_hand/LoadingScreen.dart';
+import 'package:helping_hand/components/NoAds.dart';
 import 'package:helping_hand/components/PostingFAB.dart';
+
 import 'package:helping_hand/error.dart';
 import 'package:helping_hand/components/AdsList.dart';
 import 'package:helping_hand/services/UserState.dart';
@@ -34,6 +36,9 @@ class _JobListingsScrState extends State<JobListingsScr> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        actions: [
+          NoAds(),
+        ],
         title: Center(
           child: Provider.of<UserState>(context).user.lookingForWorkers
               ? Theme(
