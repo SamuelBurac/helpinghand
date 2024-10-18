@@ -96,7 +96,7 @@ class _ListingPremiumPromptState extends State<ListingPremiumPrompt> {
                     // TODO: Implement premium purchase logic
                   },
                   icon: const Icon(Icons.star, color: Colors.deepOrange),
-                  label: const Text('Buy Premium for \$1.99'),
+                  label: const Text('Buy Premium for \$1.99/month'),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.amber,
                     foregroundColor: Colors.black,

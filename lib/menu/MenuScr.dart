@@ -76,7 +76,7 @@ class MenuScr extends StatelessWidget {
                       ],
                     ),
                   ),
-                  ElevatedButton(
+                  if (!Provider.of<UserState>(context).user.isPremium) ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.amber,
                       foregroundColor: Colors.purple.shade900,
