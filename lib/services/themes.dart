@@ -19,7 +19,8 @@ final ThemeData lightTheme = ThemeData(
     displayLarge: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
     displayMedium: TextStyle(fontSize: 35.0, fontWeight: FontWeight.bold),
     titleLarge: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
-    bodyMedium: TextStyle(fontSize: 14.0, fontFamily: 'Hind', color: Colors.black),
+    bodyMedium:
+        TextStyle(fontSize: 14.0, fontFamily: 'Hind', color: Colors.black),
   ),
   inputDecorationTheme: InputDecorationTheme(
     border: OutlineInputBorder(
@@ -96,7 +97,6 @@ final ThemeData darkTheme = ThemeData(
           fontSize: 36.0, fontStyle: FontStyle.italic, color: Colors.white),
       bodyMedium:
           TextStyle(fontSize: 14.0, fontFamily: 'Hind', color: Colors.white),
-          
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ButtonStyle(
@@ -133,6 +133,7 @@ final ThemeData darkTheme = ThemeData(
       margin: const EdgeInsets.all(7),
       surfaceTintColor: Colors.orange,
     ),
+    cardColor: Colors.grey[800],
     textButtonTheme: TextButtonThemeData(
       style: ButtonStyle(
         foregroundColor: WidgetStateProperty.all<Color>(Colors.white),
@@ -147,4 +148,7 @@ final ThemeData darkTheme = ThemeData(
         ),
       ),
     ),
-    colorScheme: const ColorScheme.dark().copyWith(surface: Colors.black));
+    colorScheme: const ColorScheme.dark().copyWith(
+        primary: Colors.orange,
+        secondary: Colors.orange,
+        surface: Colors.black));

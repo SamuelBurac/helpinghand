@@ -7,6 +7,7 @@ import 'package:helping_hand/LoadingScreen.dart';
 import 'package:helping_hand/error.dart';
 import 'package:helping_hand/menu/AvailabilityListingCard.dart';
 import 'package:helping_hand/menu/JobListingCard.dart';
+import 'package:helping_hand/menu/SettingsPage.dart';
 import 'package:helping_hand/services/UserState.dart';
 import 'package:helping_hand/services/auth.dart';
 import 'package:helping_hand/services/firestore.dart';
@@ -124,6 +125,7 @@ class MenuScr extends StatelessWidget {
                         .elevatedButtonTheme
                         .style!
                         .copyWith(
+                          backgroundColor:  WidgetStateProperty.all<Color>(Colors.blueGrey),
                           shape:
                               WidgetStateProperty.all<RoundedRectangleBorder>(
                             RoundedRectangleBorder(
@@ -133,15 +135,18 @@ class MenuScr extends StatelessWidget {
                           ),
                         ),
                     onPressed: () {
-                      Navigator.pushNamed(context, "/accountDetails");
+                      Navigator.push(context, MaterialPageRoute(builder: (context) {
+                        return const SettingsPage();
+                      }));
                     },
-                    label: const Text("Account Details"),
-                    icon: const Icon(Icons.account_circle)),
+                    label: const Text("Settings"),
+                    icon: const Icon(Icons.settings)),
                 ElevatedButton.icon(
                     style: Theme.of(context)
                         .elevatedButtonTheme
                         .style!
                         .copyWith(
+                          backgroundColor: WidgetStateProperty.all<Color>(Colors.red.shade600),
                           shape:
                               WidgetStateProperty.all<RoundedRectangleBorder>(
                             RoundedRectangleBorder(

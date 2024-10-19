@@ -491,20 +491,6 @@ class _AccountDetailsState extends State<AccountDetails> {
 
       setState(() {
       });
-    } else {
-      showDialog<String>(
-        context: context,
-        builder: (BuildContext context) => AlertDialog(
-          title: const Text('You must select a profile picture'),
-          content: const Text('You need a profile picture to continue.'),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () => Navigator.pop(context, 'OK'),
-              child: const Text('OK'),
-            ),
-          ],
-        ),
-      );
-    }
+    } 
   }
 }
