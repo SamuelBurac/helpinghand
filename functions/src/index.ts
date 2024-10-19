@@ -4,13 +4,12 @@ import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
 import * as express from "express";
 import * as cors from "cors";
-import {getMessaging} from "firebase-admin/messaging"
+import {getMessaging} from "firebase-admin/messaging";
 
 // Initialize Firebase Admin
 admin.initializeApp({
   credential: admin.credential.applicationDefault(),
 });
-
 
 
 interface NotificationPayload {
@@ -174,5 +173,3 @@ app.post("/send-chat-notification",
 
 // Export the Express app as a Firebase Cloud Function
 export const api = functions.https.onRequest(app);
-
-
