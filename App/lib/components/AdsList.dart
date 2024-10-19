@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:helping_hand/AvailabilityListingFiles/AvailabilityCard.dart';
 import 'package:helping_hand/jobListingFiles/JobCard.dart';
+import 'package:helping_hand/services/UserState.dart';
 import 'package:helping_hand/services/adState.dart';
 import 'package:provider/provider.dart';
 import 'package:helping_hand/services/models.dart';
@@ -9,11 +10,12 @@ import 'package:helping_hand/services/models.dart';
 class AdsList extends StatefulWidget {
   final List<ListItem> items;
 
-   const AdsList({super.key, required this.items});
+  const AdsList({super.key, required this.items});
 
   @override
   _AdsListState createState() => _AdsListState();
 }
+
 class _AdsListState extends State<AdsList> {
   late List<ListItem> itemList;
 
@@ -66,9 +68,16 @@ class _AdsListState extends State<AdsList> {
       itemBuilder: (context, index) {
         final item = itemList[index];
         if (item.jobPosting != null) {
-          return JobCard(jobPosting: item.jobPosting!);
+          if (item.jobPosting!.jobPosterID !=
+              Provider.of<UserState>(context).user.uid) {
+            return JobCard(jobPosting: item.jobPosting!);
+          }
         } else if (item.availabilityPosting != null) {
-          return AvailabilityCard(availabilityPosting: item.availabilityPosting!);
+          if (item.availabilityPosting!.posterID !=
+              Provider.of<UserState>(context).user.uid) {
+            return AvailabilityCard(
+                availabilityPosting: item.availabilityPosting!);
+          }
         } else if (item.bannerAd != null) {
           return Container(
             margin: const EdgeInsets.only(bottom: 5.0, top: 5.0),
@@ -85,8 +94,6 @@ class _AdsListState extends State<AdsList> {
   }
 }
 
-
-
 class ListItem {
   final JobPosting? jobPosting;
   final AvailabilityPosting? availabilityPosting;
@@ -94,7 +101,3 @@ class ListItem {
 
   ListItem({this.availabilityPosting, this.jobPosting, this.bannerAd});
 }
-
-
-
-

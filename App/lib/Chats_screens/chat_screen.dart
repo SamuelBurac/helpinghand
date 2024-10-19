@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:chat_bubbles/chat_bubbles.dart';
 import 'package:helping_hand/Chats_screens/camera_screen.dart';
+import 'package:helping_hand/backend.dart';
 import 'package:helping_hand/global_methods.dart';
 import 'package:helping_hand/services/UserState.dart';
 import 'package:helping_hand/services/firestore.dart';
@@ -156,19 +157,23 @@ class _ChatScrState extends State<ChatScr> {
               child: MessageBarBetter(
                 hintText: "",
                 controller: _controller,
-                onSend: (String imageURL) {
+                onSend: (String imageURL) async {
                   if (_controller.text.isNotEmpty || imageURL != "") {
-                    FirestoreService().sendMessage(
+                    User currUser = Provider.of<UserState>(context, listen: false)
+                                    .user;
+                    await FirestoreService().sendMessage(
                         widget.chat.chatID,
                         Message(
                             senderUID:
-                                Provider.of<UserState>(context, listen: false)
-                                    .user
-                                    .uid,
+                                currUser                                    .uid,
                             message: _controller.text,
                             timeStampSent: DateTime.now(),
                             imageUrl: imageURL),
                         widget.interlocutor.uid);
+
+                      sendChatNotification(currUser
+                                    .uid, _controller.text, "${currUser.firstName} ${currUser.lastName}", widget.chat.chatID);
+
                     _controller.clear();
                   }
                 },

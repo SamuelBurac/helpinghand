@@ -35,26 +35,33 @@ class FirestoreService {
     var doc = await _db.collection(_usersCollection).doc(uid).get();
     var data = doc.data();
     var fcmTokens = data!['fcmTokens'];
-    if (fcmTokens.contains(token)) {
+
+    if (fcmTokens == null) {
+      await _db.collection(_usersCollection).doc(uid).update({
+        'fcmTokens': FieldValue.arrayUnion([token]),
+      });
       return;
+    } else if (fcmTokens.contains(token)) {
+      return;
+    } else {
+      // otherwise add the token to the array
+      await _db.collection(_usersCollection).doc(uid).update({
+        'fcmTokens': FieldValue.arrayUnion([token]),
+      });
     }
-    // otherwise add the token to the array
-    await _db.collection(_usersCollection).doc(uid).update({
-      'fcmTokens': FieldValue.arrayUnion([token]),
-    });
   }
 
-   Future<void> removeFCMToken(String uid, String token) async {
+  Future<void> removeFCMToken(String uid, String token) async {
     await _db.collection(_usersCollection).doc(uid).update({
       'fcmTokens': FieldValue.arrayRemove([token]),
     });
   }
 
   Future<List<String>> getFCMTokens(String uid) async {
-    DocumentSnapshot doc = await _db.collection(_usersCollection).doc(uid).get();
+    DocumentSnapshot doc =
+        await _db.collection(_usersCollection).doc(uid).get();
     return List<String>.from(doc['fcmTokens'] ?? []);
   }
-
 
   Stream<List<JobPosting>> streamJobs(String currUID) {
     var ref = _db
@@ -363,6 +370,14 @@ class FirestoreService {
     });
     var data = doc.data();
     var chat = Chat.fromJson(data);
+    return chat;
+  }
+
+  Future<Chat> getChatByID(String chatID) async {
+    // Get the chat from the collection
+    var doc = await _db.collection(_chatsCollection).doc(chatID).get();
+    var data = doc.data();
+    var chat = Chat.fromJson(data!);
     return chat;
   }
 

@@ -1,8 +1,12 @@
 // lib/services/firebase_messaging_service.dart
 
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:helping_hand/services/firestore.dart';
+import 'package:helping_hand/services/models.dart';
+import 'package:helping_hand/Chats_screens/chat_screen.dart';
+
 
 class FirebaseMessagingService {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
@@ -99,9 +103,26 @@ class FirebaseMessagingService {
     }
   }
 
-  void _handleNotificationOpen(RemoteMessage message) {
+  void _handleNotificationOpen(RemoteMessage message) async{
     // Handle notification tap
     print('Notification tapped!');
+    print(message.data);
+    // if (message.data['type'] == 'chat') {
+    //   // Handle chat notification
+    //   // Add navigation logic here
+    //   Chat chat = await FirestoreService().getChatByID(message.data['chatID']);
+    //   User? interlocutor = await FirestoreService().getUser(message.data['senderUID']);
+    //   if (interlocutor != null) {
+    //     Navigator.of(context).push(
+    //       MaterialPageRoute(
+    //         builder: (context) => ChatScr(
+    //           chat: chat,
+    //           interlocutor: interlocutor,
+    //         ),
+    //       ),
+    //     );
+    //   }
+    // }
     // Add navigation logic here
   }
 
