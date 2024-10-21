@@ -52,9 +52,7 @@ class _ChatScrState extends State<ChatScr> {
         appBar: AppBar(
             title: InkWell(
           onTap: () {
-            navigateToUserPublicProfileScr(
-                context,
-                widget.interlocutor.uid,
+            navigateToUserPublicProfileScr(context, widget.interlocutor.uid,
                 Provider.of<UserState>(context, listen: false).user.uid);
           },
           child: Row(
@@ -159,20 +157,22 @@ class _ChatScrState extends State<ChatScr> {
                 controller: _controller,
                 onSend: (String imageURL) async {
                   if (_controller.text.isNotEmpty || imageURL != "") {
-                    User currUser = Provider.of<UserState>(context, listen: false)
-                                    .user;
+                    User currUser =
+                        Provider.of<UserState>(context, listen: false).user;
                     await FirestoreService().sendMessage(
                         widget.chat.chatID,
                         Message(
-                            senderUID:
-                                currUser                                    .uid,
+                            senderUID: currUser.uid,
                             message: _controller.text,
                             timeStampSent: DateTime.now(),
                             imageUrl: imageURL),
                         widget.interlocutor.uid);
 
-                      sendChatNotification(currUser
-                                    .uid, _controller.text, "${currUser.firstName} ${currUser.lastName}", widget.chat.chatID);
+                    sendChatNotification(
+                        widget.interlocutor.uid,
+                        _controller.text,
+                        "${currUser.firstName} ${currUser.lastName}",
+                        widget.chat.chatID);
 
                     _controller.clear();
                   }

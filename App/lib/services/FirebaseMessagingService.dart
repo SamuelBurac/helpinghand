@@ -35,7 +35,7 @@ class FirebaseMessagingService {
     // Initialize local notifications
     await _localNotifications.initialize(
       const InitializationSettings(
-        android: AndroidInitializationSettings('@mipmap/ic_launcher'),
+        android: AndroidInitializationSettings('@drawable/colored_app_icon'),
         // iOS settings can be added later
       ),
     );
@@ -96,7 +96,7 @@ class FirebaseMessagingService {
             _channel.id,
             _channel.name,
             channelDescription: _channel.description,
-            icon: '@mipmap/launcher_icon',
+            icon: '@drawable/colored_app_icon',
           ),
         ),
       );

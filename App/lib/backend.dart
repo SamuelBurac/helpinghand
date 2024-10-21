@@ -6,6 +6,7 @@ String localTestUrl = 'http://127.0.0.1:5001/helping-hand-9002c/us-central1/api/
 String prodUrl = 'https://api-ly3obdkoua-uc.a.run.app/send-chat-notification';
 
 Future<void> sendChatNotification(String recipientUid, String message, String senderName, String chatID) async {
+  print("recipientUID " + recipientUid);
   final idToken = await AuthService().user?.getIdToken();
   
   

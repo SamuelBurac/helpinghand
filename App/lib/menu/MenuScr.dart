@@ -157,9 +157,9 @@ class MenuScr extends StatelessWidget {
                           ),
                         ),
                     onPressed: () async {
-                      FirebaseAuth.instance.signOut();
-                      Provider.of<NotificationPreferences>(context, listen: false)
+                      await Provider.of<NotificationPreferences>(context, listen: false)
                           .messagingService.removeToken();
+                      FirebaseAuth.instance.signOut();
                       Navigator.popAndPushNamed(context, "/startup");
                     },
                     label: const Text("Log Out"),
