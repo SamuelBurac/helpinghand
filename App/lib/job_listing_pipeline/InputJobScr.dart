@@ -115,46 +115,48 @@ class InputJobScr extends StatelessWidget {
                                       style:
                                           Theme.of(context).textTheme.bodyLarge,
                                     ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 10.0),
-                                      child: Theme(
-                                        data: ThemeData(
-                                          buttonTheme: const ButtonThemeData(),
-                                        ),
-                                        child: FlutterToggleTab(
-                                          width: 60,
-                                          borderRadius: 20,
-                                          height: 30,
-                                          selectedIndex: state.dOrR,
-                                          selectedBackgroundColors: [
-                                            Colors.green.shade600
-                                          ],
-                                          unSelectedBackgroundColors: const [
-                                            Color.fromARGB(255, 154, 238, 198)
-                                          ],
-                                          selectedTextStyle: const TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.w700),
-                                          unSelectedTextStyle: const TextStyle(
-                                              color: Color.fromARGB(
-                                                  202, 69, 90, 100),
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.w700),
-                                          labels: const [
-                                            "one day",
-                                            "Range of days"
-                                          ],
-                                          selectedLabelIndex: (index) {
-                                            if (index == 1) {
-                                              state.oneDayJob = false;
-                                              state.dOrR = 1;
-                                            } else {
-                                              state.oneDayJob = true;
-                                              state.dOrR = 0;
-                                            }
-                                          },
-                                          isScroll: false,
+                                    Center(
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(top: 10.0),
+                                        child: Theme(
+                                          data: ThemeData(
+                                            buttonTheme: const ButtonThemeData(),
+                                          ),
+                                          child: FlutterToggleTab(
+                                            width: 75,
+                                            borderRadius: 20,
+                                            height: 30,
+                                            selectedIndex: state.dOrR,
+                                            selectedBackgroundColors: [
+                                              Colors.orange.shade600
+                                            ],
+                                            unSelectedBackgroundColors: [
+                                              Colors.amber.shade600
+                                            ],
+                                            selectedTextStyle: const TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.w700),
+                                            unSelectedTextStyle: const TextStyle(
+                                                color: Color.fromARGB(
+                                                    202, 69, 90, 100),
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.w700),
+                                            labels: const [
+                                              "one day",
+                                              "Range of days"
+                                            ],
+                                            selectedLabelIndex: (index) {
+                                              if (index == 1) {
+                                                state.oneDayJob = false;
+                                                state.dOrR = 1;
+                                              } else {
+                                                state.oneDayJob = true;
+                                                state.dOrR = 0;
+                                              }
+                                            },
+                                            isScroll: false,
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -192,23 +194,31 @@ class InputJobScr extends StatelessWidget {
                                           style: ButtonStyle(
                                               backgroundColor:
                                                   WidgetStateProperty.all<Color?>(
-                                                      Colors.green.shade800)))),
+                                                      Colors.orange.shade800)))),
                                   child: SfDateRangePicker(
                                     controller: state.datePickerController,
                                     enablePastDates: false,
                                     showTodayButton: true,
-                                    startRangeSelectionColor: Colors.lightGreen,
-                                    endRangeSelectionColor: Colors.lightGreen,
+                                    backgroundColor: Theme.of(context).brightness == Brightness.dark
+                                      ? Colors.black
+                                      : Colors.grey.shade800,
+                                    startRangeSelectionColor: Colors.orangeAccent.shade700,
+                                    endRangeSelectionColor: Colors.orangeAccent.shade700,
                                     monthCellStyle: DateRangePickerMonthCellStyle(
+                                      textStyle: TextStyle(
+                                        color: Theme.of(context).brightness == Brightness.dark
+                                          ? Colors.white
+                                          : Colors.grey.shade100,
+                                      ),
+                                     
                                       todayCellDecoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(20),
                                         border: Border.all(
-                                          color: const Color.fromARGB(
-                                              103, 86, 255, 64),
+                                          color: Colors.deepOrange.shade500,
                                         ),
                                       ),
                                       todayTextStyle: TextStyle(
-                                          color: Colors.green.shade500,
+                                          color: Colors.orange.shade500,
                                           fontWeight: FontWeight.bold),
                                     ),
                                     selectionShape:
@@ -222,9 +232,9 @@ class InputJobScr extends StatelessWidget {
                                         const DateRangePickerMonthViewSettings(
                                       enableSwipeSelection: true,
                                     ),
-                                    selectionColor: Colors.green.shade800,
+                                    selectionColor: Colors.orange.shade800,
                                     rangeSelectionColor:
-                                        Colors.green.shade800.withOpacity(0.5),
+                                        Colors.orange.shade800.withOpacity(0.5),
                                     initialSelectedDate: state.startDate,
                                     initialSelectedRange: PickerDateRange(
                                         state.startDate, state.endDate
@@ -344,7 +354,7 @@ class InputJobScr extends StatelessWidget {
                                         .copyWith(
                                             backgroundColor:
                                                 WidgetStateProperty.all(
-                                                    Colors.green.shade700)),
+                                                    Colors.orange.shade700)),
                                     onPressed: () {
                                       if (state.validateJob(context)) {
                                         state.assembleJob(context);
@@ -361,7 +371,7 @@ class InputJobScr extends StatelessWidget {
                                         .copyWith(
                                             backgroundColor:
                                                 WidgetStateProperty.all(
-                                                    Colors.green.shade700)),
+                                                    Colors.orange.shade700)),
                                     onPressed: () {
                                       if (state.validateJob(context)) {
                                         state.assembleJob(context);

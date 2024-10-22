@@ -175,21 +175,21 @@ class SettingsPage extends StatelessWidget {
                   ),
                   const Divider(),
 
-                  // New Job Notifications
-                  _buildNotificationSection(
-                    context,
-                    'New Job Notifications',
-                    notifPrefs.newJobFrequency,
-                    (freq) => notifPrefs.setNewJobFrequency(freq),
-                  ),
+                  // // New Job Notifications
+                  // _buildNotificationSection(
+                  //   context,
+                  //   'New Job Notifications',
+                  //   notifPrefs.newJobFrequency,
+                  //   (freq) => notifPrefs.setNewJobFrequency(freq),
+                  // ),
 
-                  // New Available Person Notifications
-                  _buildNotificationSection(
-                    context,
-                    'New Available Person Notifications',
-                    notifPrefs.newPersonFrequency,
-                    (freq) => notifPrefs.setNewPersonFrequency(freq),
-                  ),
+                  // // New Available Person Notifications
+                  // _buildNotificationSection(
+                  //   context,
+                  //   'New Available Person Notifications',
+                  //   notifPrefs.newPersonFrequency,
+                  //   (freq) => notifPrefs.setNewPersonFrequency(freq),
+                  // ),
                 ],
               ),
             ),

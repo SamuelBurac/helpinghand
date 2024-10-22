@@ -13,6 +13,7 @@ class FirebaseMessagingService {
   final FlutterLocalNotificationsPlugin _localNotifications =
       FlutterLocalNotificationsPlugin();
   late final String uid;
+  bool hasToken = false;
 
   // Initialize notification channels for Android
   final AndroidNotificationChannel _channel = const AndroidNotificationChannel(
@@ -23,6 +24,7 @@ class FirebaseMessagingService {
   );
 
   Future<void> initialize(String uid) async {
+
     this.uid = uid;
     // Request permission (will be used later for iOS)
     NotificationSettings settings = await _firebaseMessaging.requestPermission(
@@ -35,8 +37,9 @@ class FirebaseMessagingService {
     // Initialize local notifications
     await _localNotifications.initialize(
       const InitializationSettings(
-        android: AndroidInitializationSettings('@drawable/colored_app_icon'),
+        android: AndroidInitializationSettings('@drawable/notification_icon'),
         // iOS settings can be added later
+        iOS: DarwinInitializationSettings(),
       ),
     );
 
@@ -61,6 +64,7 @@ class FirebaseMessagingService {
     String? token = await _firebaseMessaging.getToken();
     // print('FCM Token: $token'); // Save this token to your backend
     if (token != null) {
+      hasToken = true;
       await FirestoreService().addFCMToken(this.uid, token);
     }
 
@@ -76,6 +80,9 @@ class FirebaseMessagingService {
   }
 
   Future<void> removeToken() async {
+    if (!hasToken) {
+      return;
+    }
     String? token = await _firebaseMessaging.getToken();
     if (token != null) {
       await FirestoreService().removeFCMToken(uid, token);
@@ -96,7 +103,9 @@ class FirebaseMessagingService {
             _channel.id,
             _channel.name,
             channelDescription: _channel.description,
-            icon: '@drawable/colored_app_icon',
+            icon: '@drawable/notification_icon',
+            color: Colors.orange,
+            largeIcon: DrawableResourceAndroidBitmap('@mipmap/launcher_icon'),
           ),
         ),
       );

@@ -108,44 +108,46 @@ class InputAvailabilityScr extends StatelessWidget {
                                       style:
                                           Theme.of(context).textTheme.bodyLarge,
                                     ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 10.0),
-                                      child: Theme(
-                                        data: ThemeData(
-                                          buttonTheme: const ButtonThemeData(),
-                                        ),
-                                        child: FlutterToggleTab(
-                                          width: 60,
-                                          borderRadius: 20,
-                                          height: 30,
-                                          selectedIndex: state.datesOrRange,
-                                          selectedBackgroundColors: [
-                                            Colors.green.shade600
-                                          ],
-                                          unSelectedBackgroundColors: const [
-                                            Color.fromARGB(255, 154, 238, 198)
-                                          ],
-                                          selectedTextStyle: const TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.w700),
-                                          unSelectedTextStyle: const TextStyle(
-                                              color: Color.fromARGB(
-                                                  202, 69, 90, 100),
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.w700),
-                                          labels: const [
-                                            "Date(s)",
-                                            "Range of days"
-                                          ],
-                                          selectedLabelIndex: (index) {
-                                            if (index == 1) {
-                                              state.datesOrRange = 1;
-                                            } else {
-                                              state.datesOrRange = 0;
-                                            }
-                                          },
-                                          isScroll: false,
+                                    Center(
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(top: 10.0),
+                                        child: Theme(
+                                          data: ThemeData(
+                                            buttonTheme: const ButtonThemeData(),
+                                          ),
+                                          child: FlutterToggleTab(
+                                            width: 75,
+                                            borderRadius: 20,
+                                            height: 30,
+                                            selectedIndex: state.datesOrRange,
+                                            selectedBackgroundColors: [
+                                              Colors.orange.shade600
+                                            ],
+                                            unSelectedBackgroundColors: const [
+                                              Colors.amber
+                                            ],
+                                            selectedTextStyle: const TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.w700),
+                                            unSelectedTextStyle: const TextStyle(
+                                                color: Color.fromARGB(
+                                                    202, 69, 90, 100),
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.w700),
+                                            labels: const [
+                                              "Date(s)",
+                                              "Range of days"
+                                            ],
+                                            selectedLabelIndex: (index) {
+                                              if (index == 1) {
+                                                state.datesOrRange = 1;
+                                              } else {
+                                                state.datesOrRange = 0;
+                                              }
+                                            },
+                                            isScroll: false,
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -155,7 +157,9 @@ class InputAvailabilityScr extends StatelessWidget {
                                         "Selected ${state._datesOrRange == 0 ? "dates" : "range"}: ${state._datesOrRange == 0 ? state.avaDates.map((e) => DateFormat.yMMMd().format(e)).join(", ") : "${DateFormat.yMMMd().format(state.startDate)} - ${DateFormat.yMMMd().format(state.endDate)}"}",
                                         style: Theme.of(context)
                                             .textTheme
-                                            .bodyLarge,
+                                            .bodyLarge?.copyWith(
+                                              fontSize: 18,
+                                            ),
                                       ),
                                     ),
                                   ],
@@ -185,12 +189,12 @@ class InputAvailabilityScr extends StatelessWidget {
                                               backgroundColor:
                                                   WidgetStateProperty.all<
                                                           Color?>(
-                                                      Colors.green.shade800)))),
+                                                      Colors.orange.shade800)))),
                                   child: SfDateRangePicker(
                                     enablePastDates: false,
                                     showTodayButton: true,
-                                    startRangeSelectionColor: Colors.lightGreen,
-                                    endRangeSelectionColor: Colors.lightGreen,
+                                    startRangeSelectionColor: Colors.orangeAccent,
+                                    endRangeSelectionColor: Colors.orangeAccent,
                                     controller: state.dateRangePickerController,
                                     monthCellStyle:
                                         DateRangePickerMonthCellStyle(
@@ -202,7 +206,7 @@ class InputAvailabilityScr extends StatelessWidget {
                                         ),
                                       ),
                                       todayTextStyle: TextStyle(
-                                          color: Colors.green.shade500,
+                                          color: Colors.orange.shade500,
                                           fontWeight: FontWeight.bold),
                                     ),
                                     selectionShape:
@@ -216,9 +220,9 @@ class InputAvailabilityScr extends StatelessWidget {
                                         const DateRangePickerMonthViewSettings(
                                       enableSwipeSelection: true,
                                     ),
-                                    selectionColor: Colors.green.shade800,
+                                    selectionColor: Colors.orange.shade800,
                                     rangeSelectionColor:
-                                        Colors.green.shade800.withOpacity(0.5),
+                                        Colors.orange.shade800.withOpacity(0.5),
                                     initialSelectedDate: state.startDate,
                                     initialSelectedRange: PickerDateRange(
                                         state.startDate, state.endDate),
@@ -280,7 +284,7 @@ class InputAvailabilityScr extends StatelessWidget {
                               .style!
                               .copyWith(
                                   backgroundColor: WidgetStateProperty.all(
-                                      Colors.green.shade700)),
+                                      Colors.orange.shade700)),
                           onPressed: () {
                             if (state.validateAva(context)) {
                               state.assembleAva(context);
@@ -296,7 +300,7 @@ class InputAvailabilityScr extends StatelessWidget {
                               .style!
                               .copyWith(
                                   backgroundColor: WidgetStateProperty.all(
-                                      Colors.green.shade700)),
+                                      Colors.orange.shade700)),
                           onPressed: () {
                             if (state.validateAva(context)) {
                               state.assembleAva(context);

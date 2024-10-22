@@ -107,7 +107,7 @@ app.post("/send-chat-notification",
 
       const message: admin.messaging.MulticastMessage = {
         notification: {
-          title: `New message from ${senderName}`,
+          title: `New message from <b>${senderName}</b>`,
           body: messageText,
         },
         data: {
@@ -122,7 +122,8 @@ app.post("/send-chat-notification",
           notification: {
             channelId: "high_importance_channel",
             priority: "high",
-            icon: "@mipmap/ic_launcher",
+            icon: "@drawable/notification_icon",
+            color: "#FFFF9800",
             sound: "default",
           },
         },
